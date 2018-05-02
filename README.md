@@ -1,1 +1,1 @@
-# SM2000-Squid-Monk
+# SM2000-SquidMonk
