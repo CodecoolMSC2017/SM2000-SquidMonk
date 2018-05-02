@@ -58,7 +58,7 @@ INSERT INTO users (name, email, password, is_admin) VALUES
 INSERT INTO schedules (user_id, name, count, is_public) VALUES
     (1, 'Schedule 1', 6, true),
     (2, 'Schedule 2', 7, true),
-    (2, 'Schedule 3', 8, true);
+    (2, 'Schedule 3', 6, true);
 
 INSERT INTO columns (schedule_id, name, count) VALUES
     (1, 'Column 1', 20),
@@ -66,7 +66,7 @@ INSERT INTO columns (schedule_id, name, count) VALUES
     (1, 'Column 3', 15),
     (1, 'Column 4', 21),
     (1, 'Column 5', 24),
-    (1, 'Column 6', 25),
+    (1, 'Column 6', 22),
     (2, 'Column 1', 11),
     (2, 'Column 2', 9),
     (2, 'Column 3', 21),
@@ -97,4 +97,4 @@ INSERT INTO col_tsk (col_id, task_id, schedule_id, task_start, task_end) VALUES
     (1, 1, 1, 1, 1),
     (1, 2, 1, 2, 1),
     (2, 1, 2, 1, 2),
-    (1, 1, 4, 5, 7);
+    (1, 1, 2, 5, 7);
