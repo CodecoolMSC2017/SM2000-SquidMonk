@@ -50,3 +50,51 @@ CREATE TABLE col_tsk (
     FOREIGN KEY (task_id) REFERENCES tasks(id),
     FOREIGN KEY (schedule_id) REFERENCES schedules(id)
 );
+
+INSERT INTO users (name, email, password, is_admin) VALUES
+    ('Admin', 'admin@codecool.hu', 'admin', true),
+    ('User', 'user@codecool.hu', 'admin', false);
+
+INSERT INTO schedules (user_id, name, count, is_public) VALUES
+    (1, 'Schedule 1', 6, true),
+    (2, 'Schedule 2', 7, true),
+    (2, 'Schedule 3', 8, true);
+
+INSERT INTO columns (schedule_id, name, count) VALUES
+    (1, 'Column 1', 20),
+    (1, 'Column 2', 18),
+    (1, 'Column 3', 15),
+    (1, 'Column 4', 21),
+    (1, 'Column 5', 24),
+    (1, 'Column 6', 25),
+    (2, 'Column 1', 11),
+    (2, 'Column 2', 9),
+    (2, 'Column 3', 21),
+    (2, 'Column 4', 15),
+    (2, 'Column 5', 13),
+    (2, 'Column 6', 19),
+    (2, 'Column 7', 20),
+    (3, 'Column 1', 10),
+    (3, 'Column 2', 11),
+    (3, 'Column 3', 12),
+    (3, 'Column 4', 13),
+    (3, 'Column 5', 14),
+    (3, 'Column 6', 15),
+    (3, 'Column 7', 16),
+    (3, 'Column 8', 17);
+
+INSERT INTO tasks (user_id, name, content) VALUES
+    (1, 'Task 1', 'Content'),
+    (1, 'Task 2', 'Content'),
+    (1, 'Task 3', 'Content'),
+    (1, 'Task 4', 'Content'),
+    (2, 'Task 1', 'Content'),
+    (2, 'Task 2', 'Content'),
+    (2, 'Task 3', 'Content'),
+    (2, 'Task 4', 'Content');
+
+INSERT INTO col_tsk (col_id, task_id, schedule_id, task_start, task_end) VALUES
+    (1, 1, 1, 1, 1),
+    (1, 2, 1, 2, 1),
+    (2, 1, 2, 1, 2),
+    (1, 1, 4, 5, 7);
