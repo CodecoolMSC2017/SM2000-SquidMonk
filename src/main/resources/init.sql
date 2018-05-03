@@ -19,7 +19,7 @@ CREATE TABLE schedules (
     count INTEGER,
     is_public BOOLEAN,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT count_less_than_seven CHECK (count < 8)
+    CONSTRAINT column_overflow CHECK (count < 8)
 );
 
 CREATE TABLE columns (
@@ -28,7 +28,7 @@ CREATE TABLE columns (
     name TEXT NOT NULL,
     count INTEGER,
     FOREIGN KEY (schedule_id) REFERENCES schedules(id),
-    CONSTRAINT task_less_than_twentyfive CHECK (count < 25)
+    CONSTRAINT task_overflow CHECK (count < 25)
 );
 
 CREATE TABLE tasks (
@@ -40,61 +40,49 @@ CREATE TABLE tasks (
 );
 
 CREATE TABLE col_tsk (
-    col_id INTEGER,
     task_id INTEGER,
+    col_id INTEGER,
     schedule_id INTEGER,
     task_start INTEGER,
     task_end INTEGER,
 	PRIMARY KEY (col_id, task_id, schedule_id),
     FOREIGN KEY (col_id) REFERENCES columns(id),
     FOREIGN KEY (task_id) REFERENCES tasks(id),
-    FOREIGN KEY (schedule_id) REFERENCES schedules(id)
+    FOREIGN KEY (schedule_id) REFERENCES schedules(id),
+    CONSTRAINT incorrect_start_time CHECK (task_end > task_start)
 );
 
 INSERT INTO users (name, email, password, is_admin) VALUES
-    ('Admin', 'admin@codecool.hu', 'admin', true),
-    ('User', 'user@codecool.hu', 'admin', false);
+    ('Admin', 'admin@codecool.hu', 'admin', true), --1
+    ('User', 'user@codecool.hu', 'admin', false), --2
+    ('Alexandra Pekár', 'alexa@codecool.hu', 'alexa', false), --3
+    ('Csizmadia Bálint', 'csba@codecool.hu', 'csba', false); --4
 
 INSERT INTO schedules (user_id, name, count, is_public) VALUES
-    (1, 'Schedule 1', 6, true),
-    (2, 'Schedule 2', 7, true),
-    (2, 'Schedule 3', 6, true);
+    (2, 'Empty User sched', 0, true), --1
+    (3, 'Alexa sched #1', 3, true), --2
+    (4, 'Csba sched #1', 0, true), --3
+    (4, 'Csba sched #2', 7, true); --4
 
 INSERT INTO columns (schedule_id, name, count) VALUES
-    (1, 'Column 1', 20),
-    (1, 'Column 2', 18),
-    (1, 'Column 3', 15),
-    (1, 'Column 4', 21),
-    (1, 'Column 5', 24),
-    (1, 'Column 6', 22),
-    (2, 'Column 1', 11),
-    (2, 'Column 2', 9),
-    (2, 'Column 3', 21),
-    (2, 'Column 4', 15),
-    (2, 'Column 5', 13),
-    (2, 'Column 6', 19),
-    (2, 'Column 7', 20),
-    (3, 'Column 1', 10),
-    (3, 'Column 2', 11),
-    (3, 'Column 3', 12),
-    (3, 'Column 4', 13),
-    (3, 'Column 5', 14),
-    (3, 'Column 6', 15),
-    (3, 'Column 7', 16),
+    (2, 'Alexa Column 1', 0), --1
+    (2, 'Alexa Column 2', 0), --2
+    (2, 'Alexa Column 3', 0), --3
+    (4, 'Csba Column 1', 1), --4
+    (4, 'Csba Column 2', 1), --5
+    (4, 'Csba Column 3', 1), --6
+    (4, 'Csba Column 4', 0), --7
+    (4, 'Csba Column 5', 0), --8
+    (4, 'Csba Column 6', 0), --9
+    (4, 'Csba Column 7', 0), --10
     (3, 'Column 8', 17);
 
 INSERT INTO tasks (user_id, name, content) VALUES
-    (1, 'Task 1', 'Content'),
-    (1, 'Task 2', 'Content'),
-    (1, 'Task 3', 'Content'),
-    (1, 'Task 4', 'Content'),
-    (2, 'Task 1', 'Content'),
-    (2, 'Task 2', 'Content'),
-    (2, 'Task 3', 'Content'),
-    (2, 'Task 4', 'Content');
+    (4, 'Csba Task 1', 'Content'), --1
+    (4, 'Csba Task 2', 'Content'), --2
+    (4, 'Csba Task 3', 'Content'); --3
 
-INSERT INTO col_tsk (col_id, task_id, schedule_id, task_start, task_end) VALUES
-    (1, 1, 1, 1, 1),
-    (1, 2, 1, 2, 1),
-    (2, 1, 2, 1, 2),
-    (1, 1, 2, 5, 7);
+INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
+    (1, 4, 4, 10, 14),
+    (2, 5, 4, 8, 10),
+    (3, 6, 4, 7, 18);
