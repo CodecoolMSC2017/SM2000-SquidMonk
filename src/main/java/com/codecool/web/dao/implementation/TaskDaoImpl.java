@@ -84,6 +84,17 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
     }
 
+    @Override
+    public void updateName(int taskId, String name) throws SQLException {
+        String sql = "UPDATE tasks SET name = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, taskId);
+
+            executeInsert(statement);
+        }
+    }
+
     private Task fetchTask(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");

@@ -15,4 +15,6 @@ public interface TaskDao {
 
     void deleteTask (int taskId) throws SQLException;
 
+    void updateName (int taskId, String name) throws SQLException;
+
 }
