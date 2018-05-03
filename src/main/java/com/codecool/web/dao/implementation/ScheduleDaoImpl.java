@@ -13,7 +13,7 @@ import java.util.List;
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     private final String querySchedules = "SELECT id, name, is_public FROM schedules ";
-    private final String insertSchedule = "INSERT INTO schedules (user_id, name, is_public) VALUES (?, ?, ?);";
+    private final String insertSchedule = "INSERT INTO schedules (user_id, name, is_public) VALUES (?, ?, ?) ";
 
     public ScheduleDaoImpl(Connection connection) {
         super(connection);
@@ -57,6 +57,21 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
             statement.setBoolean(3, isPublic);
             executeInsert(statement);
         }
+    }
+
+    @Override
+    public void updateVisibility(int scheduleId, boolean isPublic) throws SQLException {
+
+    }
+
+    @Override
+    public void updateName(int scheduleId, String name) throws SQLException {
+
+    }
+
+    @Override
+    public void deleteSchedule(int scheduleId) throws SQLException {
+
     }
 
     private Schedule fetchSchedule(ResultSet resultSet) throws SQLException {
