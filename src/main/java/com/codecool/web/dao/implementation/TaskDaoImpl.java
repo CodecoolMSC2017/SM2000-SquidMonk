@@ -65,6 +65,25 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
     }
 
+    @Override
+    public void deleteTask(int taskId) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "DELETE FROM tasks WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, taskId);
+
+            executeInsert(statement);
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
     private Task fetchTask(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
