@@ -2,7 +2,7 @@ package com.codecool.web.model;
 
 public class Schedule {
 
-    private int id;
+    private final int id;
     private String name;
     private boolean isPublic;
 
