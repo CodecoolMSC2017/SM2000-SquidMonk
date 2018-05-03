@@ -49,8 +49,24 @@ public class UserDaoImplTest {
     }
 
     @Test
-    void findByEmail() {
+    void findByEmail() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            UserDao userDao = new UserDaoImpl(con);
+            User user = userDao.findByEmail("admin@codecool.hu");
+            assertEquals("Admin", user.getName());
 
+            user = userDao.findByEmail("alexa@codecool.hu");
+            assertEquals("alexa@codecool.hu", user.getEmail());
+
+            user = userDao.findByEmail("fbence@codecool.hu");
+            assertFalse(user.isAdmin());
+
+            user = userDao.findByEmail("kiskutya@farka.hu");
+            assertNull(user);
+
+            assertThrows(IllegalArgumentException.class, () -> userDao.findByEmail(""));
+            assertThrows(IllegalArgumentException.class, () -> userDao.findByEmail(null));
+        }
     }
 
     @Test
