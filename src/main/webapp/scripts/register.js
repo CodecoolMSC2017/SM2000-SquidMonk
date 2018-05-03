@@ -21,6 +21,7 @@ function onRegButtonClick() {
 
     if (password != passconf) {
         document.getElementById('message-content').textContent = 'Passwords do not match';
+        return;
     } else {
         document.getElementById('message-content').textContent = '';
     }
@@ -32,14 +33,23 @@ function onRegButtonClick() {
     params.append('passconf', passconf);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onLoginResponse);
+    xhr.addEventListener('load', onRegisterResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'register');
     xhr.send(params);
 }
 
-function onLoginResponse() {
-    console.log(this.status);
+function onRegisterResponse() {
+    if (this.status === 200) {
+        const resp = JSON.parse(this.responseText);
+        const text = resp.message;
+        showContents(['login-content', 'message-content']);
+        document.getElementById('message-content').textContent = text;
+    } else {
+        const resp = JSON.parse(this.responseText);
+        const text = resp.message;
+        document.getElementById('message-content').textContent = text;
+    }
 }
 
 function onNetworkError() {
