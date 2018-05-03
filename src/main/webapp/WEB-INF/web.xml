@@ -14,4 +14,14 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>com.codecool.web.filter.SessionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+    </filter-mapping>
+
+
 </web-app>
