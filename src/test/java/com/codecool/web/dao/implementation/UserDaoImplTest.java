@@ -71,10 +71,36 @@ public class UserDaoImplTest {
     }
 
     @Test
-    void insertUser() {
+    void insertUser() throws SQLException, ServiceException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            UserDao userDao = new UserDaoImpl(con);
+
+            User insertUser = userDao.insertUser("test", "test@test", "test");
+
+            User checkUser = userDao.findByEmail("test@test");
+            assertEquals(insertUser.getName(), checkUser.getName());
+            assertEquals(insertUser.isAdmin(), checkUser.isAdmin());
+
+            checkUser = userDao.findById(insertUser.getId());
+            assertEquals(insertUser.getPassword(), checkUser.getPassword());
+
+            assertThrows(SQLException.class, ()-> userDao.insertUser(null, "kiskutya@farka.hu", ""));
+            assertThrows(SQLException.class, ()-> userDao.insertUser("valami", "bence@codecool.hu", "test"));
+        }
     }
 
     @Test
-    void changeRole() {
+    void changeRole() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            UserDao userDao = new UserDaoImpl(con);
+
+            userDao.changeRole(1, false);
+            User user = userDao.findById(1);
+            assertFalse(user.isAdmin());
+
+            userDao.changeRole(2, true);
+            user = userDao.findById(2);
+            assertTrue(user.isAdmin());
+        }
     }
 }
