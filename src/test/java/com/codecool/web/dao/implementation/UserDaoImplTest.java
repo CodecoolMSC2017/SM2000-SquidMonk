@@ -20,11 +20,8 @@ public class UserDaoImplTest {
     String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
 
     @BeforeEach
-    void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
+    void setUp() {
+
     }
 
     @AfterEach
@@ -32,8 +29,9 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void findById() throws SQLException {
+    public void findById() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            resetDb();
             UserDao userDao = new UserDaoImpl(con);
             User user = userDao.findById(1);
             assertEquals("Admin", user.getName());
@@ -101,6 +99,13 @@ public class UserDaoImplTest {
             userDao.changeRole(2, true);
             user = userDao.findById(2);
             assertTrue(user.isAdmin());
+        }
+    }
+
+    void resetDb() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
     }
 }
