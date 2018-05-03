@@ -1,7 +1,9 @@
 function onRegisterClick() {
     document.getElementById('login-content').classList.add('hidden');
     document.getElementById('register-content').classList.remove('hidden');
-    document.getElementById('back-to-login-button').addEventListener('click', onLoad);
+    document.getElementById('back-to-login-button').addEventListener('click', (event) => {
+        showContents(['login-content']);
+    });
     document.getElementById('reg-button').addEventListener('click', onRegButtonClick);
 }
 
