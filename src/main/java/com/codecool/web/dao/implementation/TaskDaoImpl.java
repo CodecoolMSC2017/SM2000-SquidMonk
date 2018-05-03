@@ -54,14 +54,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             statement.setInt(1, userId);
             statement.setString(2, name);
             statement.setString(3, content);
-
             executeInsert(statement);
-
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 
@@ -74,13 +67,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);
-
             executeInsert(statement);
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 
