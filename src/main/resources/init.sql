@@ -74,8 +74,7 @@ INSERT INTO columns (schedule_id, name, count) VALUES
     (4, 'Csba Column 4', 0), --7
     (4, 'Csba Column 5', 0), --8
     (4, 'Csba Column 6', 0), --9
-    (4, 'Csba Column 7', 0), --10
-    (3, 'Column 8', 17);
+    (4, 'Csba Column 7', 0); --10
 
 INSERT INTO tasks (user_id, name, content) VALUES
     (4, 'Csba Task 1', 'Content'), --1
