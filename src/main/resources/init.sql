@@ -53,10 +53,10 @@ CREATE TABLE col_tsk (
 );
 
 INSERT INTO users (name, email, password, is_admin) VALUES
-    ('Admin', 'admin@codecool.hu', 'admin', true), --1
-    ('User', 'user@codecool.hu', 'admin', false), --2
-    ('Alexandra Pekár', 'alexa@codecool.hu', 'alexa', false), --3
-    ('Csizmadia Bálint', 'csba@codecool.hu', 'csba', false); --4
+    ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
+    ('User', 'user@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', false), --2
+    ('Alexandra Pekár', 'alexa@codecool.hu', 'A9BY34T5ftt4YLqJ0Ixolg==', false), --3
+    ('Csizmadia Bálint', 'csba@codecool.hu', 'nbAINbUmfpZW3BhmIz/yng==', false); --4
 
 INSERT INTO schedules (user_id, name, count, is_public) VALUES
     (2, 'Empty User sched', 0, true), --1

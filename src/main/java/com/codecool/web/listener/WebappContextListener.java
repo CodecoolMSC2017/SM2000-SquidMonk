@@ -21,7 +21,7 @@ public final class WebappContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         registerCharacterEncodingFilter(sce);
         DataSource dataSource = putDataSourceToServletContext(sce);
-        runDatabaseInitScript(dataSource, "/init.sql");
+        runDatabaseInitScript(dataSource);
     }
 
     private void registerCharacterEncodingFilter(ServletContextEvent sce) {
@@ -42,9 +42,9 @@ public final class WebappContextListener implements ServletContextListener {
         }
     }
 
-    private void runDatabaseInitScript(DataSource dataSource, String resource) {
+    private void runDatabaseInitScript(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource(resource));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("/init.sql"));
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new IllegalStateException(ex);
