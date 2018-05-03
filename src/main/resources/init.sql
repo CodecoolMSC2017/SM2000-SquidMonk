@@ -108,7 +108,7 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (5, 'Bence Task 22', 'Content'), --25
     (5, 'Bence Task 23', 'Content'), --26
     (5, 'Bence Task 24', 'Content'), --27
-    (6, 'FBence Task 1', ''), --28
+    (6, 'FBence Task 1', ''); --28
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
