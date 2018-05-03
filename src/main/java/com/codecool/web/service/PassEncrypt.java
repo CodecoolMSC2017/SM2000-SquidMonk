@@ -7,7 +7,7 @@ public class PassEncrypt {
     private StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
 
     public PassEncrypt() {
-        textEncryptor.setPassword("Sandwich");
+        textEncryptor.setPassword("Squid");
     }
 
     public String encrypt(String pass) {
