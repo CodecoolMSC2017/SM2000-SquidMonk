@@ -19,7 +19,7 @@ public class JsLoginService implements LoginService {
     public User loginUser(String email, String password) throws SQLException, ServiceException {
         User user = userDao.findByEmail(email);
 
-        if (user == null || !email.equals(user.getEmail())){
+        if (user == null) {
             throw new ServiceException("Invalid Login!");
         }
 
