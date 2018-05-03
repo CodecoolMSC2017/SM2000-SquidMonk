@@ -82,7 +82,7 @@ public class UserDaoImplTest {
             assertEquals(insertUser.isAdmin(), checkUser.isAdmin());
 
             checkUser = userDao.findById(insertUser.getId());
-            assertEquals(insertUser.getPassword(), checkUser.getPassword());
+            assertEquals(insertUser.getEmail(), checkUser.getEmail());
 
             assertThrows(SQLException.class, ()-> userDao.insertUser(null, "kiskutya@farka.hu", ""));
             assertThrows(SQLException.class, ()-> userDao.insertUser("valami", "bence@codecool.hu", "test"));
