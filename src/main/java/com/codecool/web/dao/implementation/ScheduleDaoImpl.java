@@ -13,7 +13,7 @@ import java.util.List;
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     private final String querySchedules = "SELECT id, name, is_public FROM schedules ";
-    private final String insertSchedule = "INSERT INTO schedules (user_id, name, is_public) VALUES (?, ?, ?) ";
+    private final String insertSchedule = "INSERT INTO schedules (user_id, name, count, is_public) VALUES (?, ?, 0, ?) ";
 
     public ScheduleDaoImpl(Connection connection) {
         super(connection);
@@ -61,17 +61,31 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     @Override
     public void updateVisibility(int scheduleId, boolean isPublic) throws SQLException {
-
+        String sql = "UPDATE schedules SET is_public=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isPublic);
+            statement.setInt(2, scheduleId);
+            executeInsert(statement);
+        }
     }
 
     @Override
     public void updateName(int scheduleId, String name) throws SQLException {
-
+        String sql = "UPDATE schedules SET name=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, scheduleId);
+            executeInsert(statement);
+        }
     }
 
     @Override
     public void deleteSchedule(int scheduleId) throws SQLException {
-
+        String sql = "DELETE FROM schedules WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, scheduleId);
+            executeInsert(statement);
+        }
     }
 
     private Schedule fetchSchedule(ResultSet resultSet) throws SQLException {
