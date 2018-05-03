@@ -3,6 +3,7 @@ package com.codecool.web.service.jsService;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
 import com.codecool.web.service.LoginService;
+import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.SQLException;
@@ -20,6 +21,10 @@ public class JsLoginService implements LoginService {
         User user = userDao.findByEmail(email);
 
         if (user == null) {
+            throw new ServiceException("Invalid Login!");
+        }
+        String decryptedPassword = new PassEncrypt().decrypt(user.getPassword());
+        if (!decryptedPassword.equals(password)) {
             throw new ServiceException("Invalid Login!");
         }
 
