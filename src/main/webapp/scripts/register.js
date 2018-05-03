@@ -24,4 +24,24 @@ function onRegButtonClick() {
     } else {
         document.getElementById('message-content').textContent = '';
     }
+
+    const params = new URLSearchParams();
+    params.append('name', name);
+    params.append('email', email);
+    params.append('password', password);
+    params.append('passconf', passconf);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onLoginResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'register');
+    xhr.send(params);
+}
+
+function onLoginResponse() {
+    console.log('onLoginResponse()');
+}
+
+function onNetworkError() {
+    console.log('onNetworkError()');
 }
