@@ -1,4 +1,13 @@
 package com.codecool.web.dao;
 
-public class UserDao {
+import com.codecool.web.model.User;
+
+import java.sql.SQLException;
+
+public interface UserDao {
+
+    User findById(int id) throws SQLException;
+
+    User findByEmail(String email) throws SQLException;
+
 }
