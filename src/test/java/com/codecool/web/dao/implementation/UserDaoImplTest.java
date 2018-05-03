@@ -1,5 +1,7 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.UserDao;
+import com.codecool.web.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDaoImplTest {
+public class UserDaoImplTest {
 
     String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
 
@@ -29,11 +31,26 @@ class UserDaoImplTest {
     }
 
     @Test
-    void findById() {
+    public void findById() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            UserDao userDao = new UserDaoImpl(con);
+            User user = userDao.findById(1);
+            assertEquals("Admin", user.getName());
+
+            user = userDao.findById(3);
+            assertEquals("alexa@codecool.hu", user.getEmail());
+
+            user = userDao.findById(6);
+            assertFalse(user.isAdmin());
+
+            user = userDao.findById(58745);
+            assertNull(user);
+        }
     }
 
     @Test
     void findByEmail() {
+
     }
 
     @Test
