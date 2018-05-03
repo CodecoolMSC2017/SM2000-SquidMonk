@@ -11,4 +11,6 @@ public interface ScheduleDao {
 
     List<Schedule> findAllByUserId(int userId) throws SQLException;
 
+    void insertSchedule(int userId, String name, boolean isPublic) throws SQLException;
+
 }
