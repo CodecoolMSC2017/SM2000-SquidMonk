@@ -54,7 +54,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             String encryptedPassword = new PassEncrypt().encrypt(password);
             statement.setString(1, name);
             statement.setString(2, email);
-            statement.setString(3, password);
             statement.setString(3, encryptedPassword);
 
             executeInsert(statement);
