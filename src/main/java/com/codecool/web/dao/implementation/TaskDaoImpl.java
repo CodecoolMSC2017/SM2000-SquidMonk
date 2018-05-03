@@ -3,10 +3,7 @@ package com.codecool.web.dao.implementation;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.model.Task;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +42,28 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             }
         }
         return tasks;
+    }
+
+    @Override
+    public void insertTask(String name, String content) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "INSERT INTO tasks (name, content) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setString(2, content);
+
+            executeInsert(statement);
+            int id = fetchGeneratedId(statement);
+
+            Task task = new Task(id, name, content);
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
     }
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {
