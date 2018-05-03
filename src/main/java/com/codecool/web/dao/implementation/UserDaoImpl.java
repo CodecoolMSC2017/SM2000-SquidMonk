@@ -3,10 +3,7 @@ package com.codecool.web.dao.implementation;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
 
@@ -45,6 +42,30 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             }
         }
         return null;
+    }
+
+    @Override
+    public User insertUser(String name, String email, String password) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setString(2, email);
+            statement.setString(3, password);
+            statement.setBoolean(4, false);
+
+            executeInsert(statement);
+            int id = fetchGeneratedId(statement);
+
+            return new User(id, name, email, password);
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
     }
 
     private User fetchUser(ResultSet resultSet) throws SQLException {

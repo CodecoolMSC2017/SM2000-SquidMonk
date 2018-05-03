@@ -10,4 +10,6 @@ public interface UserDao {
 
     User findByEmail(String email) throws SQLException;
 
+    User insertUser(String name, String email, String password) throws SQLException;
+
 }
