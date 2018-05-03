@@ -14,6 +14,7 @@ public class User {
         this.isAdmin = false;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -34,6 +35,7 @@ public class User {
         return isAdmin;
     }
 
+    // Setters
     public void setAdmin() {
         isAdmin = true;
     }

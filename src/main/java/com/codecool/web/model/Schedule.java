@@ -12,6 +12,7 @@ public class Schedule {
         this.isPublic = false;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -22,6 +23,11 @@ public class Schedule {
 
     public boolean isPublic() {
         return isPublic;
+    }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPublic() {
