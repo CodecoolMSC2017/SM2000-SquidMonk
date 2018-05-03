@@ -68,6 +68,17 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         }
     }
 
+    @Override
+    public void changeRole(int userId, boolean isAdmin) throws SQLException {
+        String sql = "UPDATE users SET is_admin = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isAdmin);
+            statement.setInt(2, userId);
+
+            executeInsert(statement);
+        }
+    }
+
     private User fetchUser(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");

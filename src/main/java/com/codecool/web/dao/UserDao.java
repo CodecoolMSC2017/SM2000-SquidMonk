@@ -12,4 +12,6 @@ public interface UserDao {
 
     User insertUser(String name, String email, String password) throws SQLException;
 
+    void changeRole(int userId, boolean isAdmin) throws SQLException;
+
 }
