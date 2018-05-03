@@ -2,6 +2,7 @@ package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
+import com.codecool.web.service.exception.ServiceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ public class UserDaoImplTest {
     }
 
     @Test
-    void findByEmail() throws SQLException {
+    void findByEmail() throws SQLException, ServiceException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             UserDao userDao = new UserDaoImpl(con);
             User user = userDao.findByEmail("admin@codecool.hu");
