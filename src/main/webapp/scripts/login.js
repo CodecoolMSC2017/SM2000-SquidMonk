@@ -1,5 +1,10 @@
 function onLoginResponse() {
-    console.log('onLoginResponse()');
+    if (this.status === 200) {
+        const resp = JSON.parse(this.responseText);
+        const name = resp.name;
+        showContents(['main-content']);
+        document.getElementById('main-content').textContent = "Welcome "+name;
+    }
 }
 
 function onNetworkError() {
@@ -17,7 +22,6 @@ function onLoginClick() {
     const params = new URLSearchParams();
     params.append('email', email);
     params.append('password', password);
-
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLoginResponse);
     xhr.addEventListener('error', onNetworkError);

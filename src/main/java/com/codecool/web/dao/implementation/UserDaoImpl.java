@@ -2,6 +2,7 @@ package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
+import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.*;
@@ -50,9 +51,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
         String sql = "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, false)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            String encryptedPassword = new PassEncrypt().encrypt(password);
             statement.setString(1, name);
             statement.setString(2, email);
             statement.setString(3, password);
+            statement.setString(3, encryptedPassword);
 
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
