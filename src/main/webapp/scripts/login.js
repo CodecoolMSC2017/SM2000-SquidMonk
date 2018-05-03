@@ -1,21 +1,23 @@
+let passwordInputEl;
+
 function onLoginResponse() {
     if (this.status === 200) {
-        const resp = JSON.parse(this.responseText);
-        const name = resp.name;
-        showContents(['main-content']);
-        document.getElementById('message-content').textContent = '';
-        document.getElementById('main-content').textContent = "Welcome "+name;
+        passwordInputEl.value = '';
+        const user = JSON.parse(this.responseText);
+        localStorage.setItem('user', user);
+        showContents(['main-content', 'logout-content']);
+        document.getElementById('main-content').textContent = "Welcome " + user.name;
     }
 }
 
 function onNetworkError() {
-    console.log('onNetworkError()');
+    console.log('network error');
 }
 
 function onLoginClick() {
     const loginFormEl = document.forms['login-form'];
     const emailInputEl = loginFormEl.querySelector('input[name="email"]');
-    const passwordInputEl = loginFormEl.querySelector('input[name="password"]');
+    passwordInputEl = loginFormEl.querySelector('input[name="password"]');
 
     const email = emailInputEl.value;
     const password = passwordInputEl.value;
@@ -23,6 +25,7 @@ function onLoginClick() {
     const params = new URLSearchParams();
     params.append('email', email);
     params.append('password', password);
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLoginResponse);
     xhr.addEventListener('error', onNetworkError);

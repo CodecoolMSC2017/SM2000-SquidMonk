@@ -1,10 +1,22 @@
 function onRegisterClick() {
-    document.getElementById('login-content').classList.add('hidden');
-    document.getElementById('register-content').classList.remove('hidden');
+    showContents(['register-content']);
     document.getElementById('back-to-login-button').addEventListener('click', (event) => {
         showContents(['login-content']);
     });
     document.getElementById('reg-button').addEventListener('click', onRegButtonClick);
+}
+
+function onRegisterResponse() {
+    if (this.status === 200) {
+        const resp = JSON.parse(this.responseText);
+        const text = resp.message;
+        showContents(['login-content', 'message-content']);
+        document.getElementById('message-content').textContent = text;
+    }
+}
+
+function onNetworkError() {
+    console.log('Network Error');
 }
 
 function onRegButtonClick() {
@@ -21,9 +33,8 @@ function onRegButtonClick() {
 
     if (password != passconf) {
         document.getElementById('message-content').textContent = 'Passwords do not match';
+        showContents(['message-content', 'register-content']);
         return;
-    } else {
-        document.getElementById('message-content').textContent = '';
     }
 
     const params = new URLSearchParams();
@@ -37,21 +48,4 @@ function onRegButtonClick() {
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'register');
     xhr.send(params);
-}
-
-function onRegisterResponse() {
-    if (this.status === 200) {
-        const resp = JSON.parse(this.responseText);
-        const text = resp.message;
-        showContents(['login-content', 'message-content']);
-        document.getElementById('message-content').textContent = text;
-    } else {
-        const resp = JSON.parse(this.responseText);
-        const text = resp.message;
-        document.getElementById('message-content').textContent = text;
-    }
-}
-
-function onNetworkError() {
-    console.log('onNetworkError()');
 }
