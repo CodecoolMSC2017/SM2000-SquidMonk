@@ -2,6 +2,7 @@ package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
+import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.*;
 
@@ -28,9 +29,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) throws SQLException {
+    public User findByEmail(String email) throws SQLException, ServiceException {
         if (email == null || email.equals("")) {
-            throw new IllegalArgumentException("Email can't be empty");
+            throw new ServiceException("Email can't be empty");
         }
         String sql = queryUser + "WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

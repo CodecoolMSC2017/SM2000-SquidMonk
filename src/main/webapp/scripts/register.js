@@ -39,7 +39,7 @@ function onRegButtonClick() {
 }
 
 function onLoginResponse() {
-    console.log('onLoginResponse()');
+    console.log(this.status);
 }
 
 function onNetworkError() {
