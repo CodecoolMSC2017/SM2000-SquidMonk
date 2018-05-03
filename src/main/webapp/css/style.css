@@ -1,0 +1,9 @@
+.form-table {
+    margin: 0 auto;
+}
+
+#message-content {
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+}
