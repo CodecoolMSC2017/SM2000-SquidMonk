@@ -10,54 +10,80 @@ function onRegisterClick() {
         loginDivEl.style.display = 'none';
         registerDivEl.style.display = 'block';
         registerFirstLoad = false;
-        const registerH1El = document.createElement('h1');
-        registerH1El.textContent = 'Register';
-
-        const nameInput = document.createElement('input');
-        nameInput.placeholder = 'Name';
-        nameInput.name = 'name';
-        nameInput.required = true;
-
-        const emailInput = document.createElement('input');
-        emailInput.placeholder = 'E-mail';
-        emailInput.name = 'email';
-        emailInput.required = true;
-
-        const passInput = document.createElement('input');
-        passInput.type = 'password';
-        passInput.name = 'password';
-        passInput.placeholder = 'Password';
-        passInput.required = true;
-
-        const passInputConf = document.createElement('input');
-        passInputConf.type = 'password';
-        passInputConf.name = 'passconf';
-        passInputConf.placeholder = 'Password Confirmation';
-        passInputConf.required = true;
-
-        const registerButtonEl = document.createElement('button');
-        registerButtonEl.textContent = 'Register';
-        registerButtonEl.addEventListener('click', onRegButtonClick);
-
-        const backButtonEl = document.createElement('button');
-        backButtonEl.textContent = 'Back';
-        backButtonEl.type = 'button';
-        backButtonEl.addEventListener('click', onLoad);
-
-        registerFormEl.appendChild(nameInput);
-        registerFormEl.appendChild(document.createElement('br'));
-        registerFormEl.appendChild(emailInput);
-        registerFormEl.appendChild(document.createElement('br'));
-        registerFormEl.appendChild(passInput);
-        registerFormEl.appendChild(document.createElement('br'));
-        registerFormEl.appendChild(passInputConf);
-        registerFormEl.appendChild(document.createElement('br'));
-        registerFormEl.appendChild(registerButtonEl);
-        registerFormEl.appendChild(backButtonEl);
-
-        registerDivEl.appendChild(registerH1El);
+        registerFormEl.appendChild(createRegisterTable());
         registerDivEl.appendChild(registerFormEl);
     }
+}
+
+function createNameTd() {
+    const nameTd = document.createElement('td');
+    nameTd.colSpan = '2';
+    const nameInput = document.createElement('input');
+    nameInput.placeholder = 'Name';
+    nameInput.name = 'name';
+    nameInput.required = true;
+    nameTd.appendChild(nameInput);
+    return nameTd;
+}
+
+function createRegButtonTd() {
+    const regButtonTd = document.createElement('td');
+    regButtonTd.style.width = '50%';
+    const registerButtonEl = document.createElement('button');
+    registerButtonEl.textContent = 'Register';
+    registerButtonEl.style.width = '100%';
+    registerButtonEl.addEventListener('click', onRegButtonClick);
+    regButtonTd.appendChild(registerButtonEl);
+    return regButtonTd;
+}
+
+function createBackButtonTd() {
+    const backButtonTd = document.createElement('td');
+    backButtonTd.style.width = '50%';
+    const backButtonEl = document.createElement('button');
+    backButtonEl.textContent = 'Back';
+    backButtonEl.style.width = '100%';
+    backButtonEl.type = 'button';
+    backButtonEl.addEventListener('click', onLoad);
+    backButtonTd.appendChild(backButtonEl);
+    return backButtonTd;
+}
+
+function createRegisterTable() {
+    const regTable = document.createElement('table');
+    regTable.className = "form-table";
+    const regTBody = document.createElement('tbody');
+
+    const regH1Tr = document.createElement('tr');
+    regH1Tr.appendChild(createLoginH1Th('Register'));
+
+    const nameTr = document.createElement('tr');
+    nameTr.appendChild(createNameTd());
+
+    const emailTr = document.createElement('tr');
+    emailTr.appendChild(createEmailTd());
+
+    const passwordTr = document.createElement('tr');
+    passwordTr.appendChild(createPasswordTd('password', 'Password'));
+
+    const passconfTr = document.createElement('tr');
+    passconfTr.appendChild(createPasswordTd('passconf', 'Confirm Password'));
+
+    const buttonTr = document.createElement('tr');
+    buttonTr.appendChild(createRegButtonTd());
+
+    buttonTr.appendChild(createBackButtonTd());
+
+    regTBody.appendChild(regH1Tr);
+    regTBody.appendChild(nameTr);
+    regTBody.appendChild(emailTr);
+    regTBody.appendChild(passwordTr);
+    regTBody.appendChild(passconfTr);
+    regTBody.appendChild(buttonTr);
+
+    regTable.appendChild(regTBody);
+
+    return regTable;
 }
 
 function onRegButtonClick() {

@@ -1,0 +1,17 @@
+.form-table {
+    margin: 0 auto;
+}
+
+.form-table td {
+    width: 50%;
+}
+
+.form-table button {
+    width: 100%;
+}
+
+#message-content {
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+}
