@@ -19,15 +19,13 @@ class TaskDaoImplTest {
 
     @BeforeEach
     void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
+
     }
 
     @Test
-    void findById() throws SQLException {
+    void findById() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            resetDb();
             Task task1 = new TaskDaoImpl(con).findById(1);
             Task task2 = new TaskDaoImpl(con).findById(2);
             Task task3 = new TaskDaoImpl(con).findById(10);
@@ -81,13 +79,12 @@ class TaskDaoImplTest {
     @Test
     void updateContent() {
     }
+
+    void resetDb() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
+        }
+    }
 }
 
-
-//try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-//           List<User> users = new UserDao(con).findAll();
-//           assertEquals("Student", users.get(0).getFirstName());
-//           assertEquals("Bence", users.get(8).getFirstName());
-//           assertTrue(users.get(4).isMentor());
-//           assertEquals("pal.monoczki@codecool.hu", users.get(5).getEmail());
-//       }

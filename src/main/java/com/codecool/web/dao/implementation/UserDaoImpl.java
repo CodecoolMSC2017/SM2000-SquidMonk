@@ -48,46 +48,30 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User insertUser(String name, String email, String password) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
 
-        String sql = "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, false)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             String encryptedPassword = new PassEncrypt().encrypt(password);
             statement.setString(1, name);
             statement.setString(2, email);
+            statement.setString(3, password);
             statement.setString(3, encryptedPassword);
-            statement.setBoolean(4, false);
 
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
 
-            return new User(id, name, email, encryptedPassword);
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
+            return new User(id, name, email, password);
         }
     }
 
     @Override
     public void changeRole(int userId, boolean isAdmin) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
 
         String sql = "UPDATE users SET is_admin = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, isAdmin);
             statement.setInt(2, userId);
-
             executeInsert(statement);
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 

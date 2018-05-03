@@ -17,10 +17,7 @@ class ColumnDaoImplTest {
 
     @BeforeEach
     void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
+
     }
 
     @Test
@@ -45,5 +42,12 @@ class ColumnDaoImplTest {
 
     @Test
     void updateColumnCount() {
+    }
+
+    void resetDb() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
+        }
     }
 }

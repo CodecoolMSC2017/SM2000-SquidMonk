@@ -36,6 +36,9 @@ abstract class AbstractDao {
 
     int fetchGeneratedId(PreparedStatement statement) throws SQLException {
         int id;
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
         try (ResultSet resultSet = statement.getGeneratedKeys()) {
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
@@ -45,6 +48,7 @@ abstract class AbstractDao {
             }
         }
         connection.commit();
+        connection.setAutoCommit(autocommit);
         return id;
     }
 }
