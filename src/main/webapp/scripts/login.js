@@ -13,11 +13,13 @@ function onLoad() {
 
         const loginEmailInput = document.createElement('input');
         loginEmailInput.name = 'email';
+        loginEmailInput.required = true;
         loginEmailInput.placeholder = 'E-mail';
 
         const loginPassInput = document.createElement('input');
         loginPassInput.name = 'password';
         loginPassInput.type = 'password';
+        loginPassInput.required = true;
         loginPassInput.placeholder = 'Password';
 
         const loginSubmit = document.createElement('button');
@@ -26,6 +28,7 @@ function onLoad() {
 
         const registerButton = document.createElement('button');
         registerButton.textContent = 'Register';
+        registerButton.type = 'button';
         registerButton.addEventListener('click', onRegisterClick);
 
         loginFormEl.appendChild(loginEmailInput);
