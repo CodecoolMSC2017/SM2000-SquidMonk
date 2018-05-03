@@ -70,12 +70,21 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public void changeRole(int userId, boolean isAdmin) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
         String sql = "UPDATE users SET is_admin = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, isAdmin);
             statement.setInt(2, userId);
 
             executeInsert(statement);
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
         }
     }
 

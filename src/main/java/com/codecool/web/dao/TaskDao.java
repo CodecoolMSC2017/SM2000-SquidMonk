@@ -11,4 +11,12 @@ public interface TaskDao {
 
     List<Task> findAllByUserId(int userId) throws SQLException;
 
+    void insertTask (int userId, String name, String content) throws SQLException;
+
+    void deleteTask (int taskId) throws SQLException;
+
+    void updateName (int taskId, String name) throws SQLException;
+
+    void updateContent (int taskId, String content) throws SQLException;
+
 }

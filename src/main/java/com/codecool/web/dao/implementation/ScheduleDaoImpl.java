@@ -13,6 +13,7 @@ import java.util.List;
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     private final String querySchedules = "SELECT id, name, is_public FROM schedules ";
+    private final String insertSchedule = "INSERT INTO schedules (user_id, name, count, is_public) VALUES (?, ?, 0, ?) ";
 
     public ScheduleDaoImpl(Connection connection) {
         super(connection);
@@ -46,6 +47,70 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
         }
         return schedules;
     }
+
+    @Override
+    public void insertSchedule(int userId, String name, boolean isPublic) throws SQLException {
+        String sql = insertSchedule;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setString(2, name);
+            statement.setBoolean(3, isPublic);
+            executeInsert(statement);
+        }
+    }
+
+    @Override
+    public void updateVisibility(int scheduleId, boolean isPublic) throws SQLException {
+        String sql = "UPDATE schedules SET is_public=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isPublic);
+            statement.setInt(2, scheduleId);
+            executeInsert(statement);
+        }
+    }
+
+    @Override
+    public void updateName(int scheduleId, String name) throws SQLException {
+        String sql = "UPDATE schedules SET name=? WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, scheduleId);
+            executeInsert(statement);
+        }
+    }
+
+    @Override
+    public void deleteSchedule(int scheduleId) throws SQLException {
+        String sql = "DELETE FROM schedules WHERE id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, scheduleId);
+            executeInsert(statement);
+        }
+    }
+
+    @Override
+    public void updateScheduleCount(int scheduleId) throws SQLException {
+        int count = getCount(scheduleId);
+        String sql = "UPDATE schedules SET count = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, count + 1);
+            executeInsert(statement);
+        }
+    }
+
+    private int getCount(int scheduleId) throws SQLException {
+        String sql = "SELECT count FROM schedules WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, scheduleId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("count");
+                }
+            }
+        }
+        return -1;
+    }
+
 
     private Schedule fetchSchedule(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");

@@ -3,10 +3,7 @@ package com.codecool.web.dao.implementation;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.model.Task;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +42,68 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             }
         }
         return tasks;
+    }
+
+    @Override
+    public void insertTask(int userId, String name, String content) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "INSERT INTO tasks (user_id, name, content) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setString(2, name);
+            statement.setString(3, content);
+
+            executeInsert(statement);
+
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
+    @Override
+    public void deleteTask(int taskId) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "DELETE FROM tasks WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, taskId);
+
+            executeInsert(statement);
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
+    @Override
+    public void updateName(int taskId, String name) throws SQLException {
+        String sql = "UPDATE tasks SET name = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, taskId);
+
+            executeInsert(statement);
+        }
+    }
+
+    @Override
+    public void updateContent(int taskId, String content) throws SQLException {
+        String sql = "UPDATE task SET content = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, content);
+            statement.setInt(2, taskId);
+
+            executeInsert(statement);
+        }
     }
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {

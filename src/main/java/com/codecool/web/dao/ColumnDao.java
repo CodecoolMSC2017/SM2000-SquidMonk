@@ -11,4 +11,12 @@ public interface ColumnDao {
 
     List<Column> findAllByScheduleId(int scheduleId) throws SQLException;
 
+    void insertColumn(int scheduleId, String name, ScheduleDao scheduleDao) throws SQLException;
+
+    void updateName(int columnId, String name) throws SQLException;
+
+    void deleteColumn(int columnId) throws SQLException;
+
+    void updateColumnCount(int columnId) throws SQLException;
+
 }

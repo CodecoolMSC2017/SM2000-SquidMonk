@@ -16,7 +16,7 @@ CREATE TABLE schedules (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER,
+    count INTEGER NOT NULL,
     is_public BOOLEAN,
     FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT column_overflow CHECK (count < 8)
@@ -26,7 +26,7 @@ CREATE TABLE columns (
     id SERIAL PRIMARY KEY,
     schedule_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER,
+    count INTEGER NOT NULL,
     FOREIGN KEY (schedule_id) REFERENCES schedules(id),
     CONSTRAINT task_overflow CHECK (count < 25)
 );
