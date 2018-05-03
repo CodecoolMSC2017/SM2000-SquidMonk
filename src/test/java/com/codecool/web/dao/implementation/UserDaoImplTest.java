@@ -65,8 +65,8 @@ public class UserDaoImplTest {
             user = userDao.findByEmail("kiskutya@farka.hu");
             assertNull(user);
 
-            assertThrows(IllegalArgumentException.class, () -> userDao.findByEmail(""));
-            assertThrows(IllegalArgumentException.class, () -> userDao.findByEmail(null));
+            assertThrows(ServiceException.class, () -> userDao.findByEmail(""));
+            assertThrows(ServiceException.class, () -> userDao.findByEmail(null));
         }
     }
 
