@@ -14,10 +14,23 @@ abstract class AbstractDao {
     }
 
     void executeInsert(PreparedStatement statement) throws SQLException {
-        int insertCount = statement.executeUpdate();
-        if (insertCount != 1) {
+        int insertCount;
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        try {
+            insertCount = statement.executeUpdate();
+
+            if (insertCount != 1) {
+                throw new SQLException("Expected 1 row to be inserted");
+            } else {
+                connection.commit();
+            }
+        } catch (SQLException e) {
             connection.rollback();
-            throw new SQLException("Expected 1 row to be inserted");
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
         }
     }
 

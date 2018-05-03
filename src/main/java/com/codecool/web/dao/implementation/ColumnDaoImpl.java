@@ -60,14 +60,7 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
             statement.setInt(1, scheduleId);
             statement.setString(2, name);
             statement.setInt(3, 0);
-
             executeInsert(statement);
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 
@@ -80,14 +73,7 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, name);
             statement.setInt(2, columnId);
-
             executeInsert(statement);
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 
@@ -99,14 +85,7 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
         String sql = "DELETE FROM columns WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, columnId);
-
             executeInsert(statement);
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(autocommit);
         }
     }
 

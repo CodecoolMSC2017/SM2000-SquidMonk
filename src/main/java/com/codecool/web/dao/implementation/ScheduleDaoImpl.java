@@ -90,27 +90,12 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     @Override
     public void updateScheduleCount(int scheduleId) throws SQLException {
-        int count = getCount(scheduleId);
-        String sql = "UPDATE schedules SET count = ?";
+        String sql = "UPDATE schedules SET count = count + 1 WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, count + 1);
+            statement.setInt(1, scheduleId);
             executeInsert(statement);
         }
     }
-
-    private int getCount(int scheduleId) throws SQLException {
-        String sql = "SELECT count FROM schedules WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, scheduleId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt("count");
-                }
-            }
-        }
-        return -1;
-    }
-
 
     private Schedule fetchSchedule(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
