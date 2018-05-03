@@ -49,7 +49,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         boolean autocommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
 
-        String sql = "INSERT INTO tasks (user_id, name, content) VALUES (?, ?)";
+        String sql = "INSERT INTO tasks (user_id, name, content) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setString(2, name);
