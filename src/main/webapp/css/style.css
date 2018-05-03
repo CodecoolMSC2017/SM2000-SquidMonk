@@ -1,3 +1,7 @@
+.hidden {
+    display: none;
+}
+
 .form-table {
     margin: 0 auto;
 }
@@ -11,15 +15,13 @@
 }
 
 #message-content {
-    display: table;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.hidden {
-    display: none;
+    text-align: center;
 }
 
 #main-content {
+    text-align: center;
+}
+
+#logout-content {
     text-align: center;
 }

@@ -5,6 +5,7 @@
     <script src="scripts/index.js"></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/register.js"></script>
+    <script src="scripts/logout.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -27,7 +28,7 @@
     </form>
 </div>
 
-<div id="register-content" class="content">
+<div id="register-content" class="hidden content">
     <form id="register-form" onsubmit="return false">
         <table class="form-table">
             <tr><th colspan="2">Register</th></tr>
@@ -51,10 +52,14 @@
     </form>
 </div>
 
-<div id="main-content" class="content">
+<div id="main-content" class="hidden content">
 </div>
 
-<div id="message-content" class="content">
+<div id="message-content" class="hidden content">
+</div>
+
+<div id="logout-content" class="hidden content">
+    <button id="logout-button">Logout</button>
 </div>
 
 </body>
