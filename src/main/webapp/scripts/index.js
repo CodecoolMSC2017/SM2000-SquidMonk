@@ -1,19 +1,7 @@
-
 function onLoad() {
-    
-
-    loginDivEl = document.getElementById("login-content");
-    loginFormEl = document.forms['login-form'];
-
-    if (!loginFirstLoad) {
-        document.getElementById('message-content').textContent = '';
-        loginDivEl.style.display = 'block';
-        registerDivEl.style.display = 'none';
-    } else {
-        loginFirstLoad = false;
-        loginFormEl.appendChild(setupLoginTable());
-        loginDivEl.appendChild(loginFormEl);
-    }
+    document.getElementById('login-content').classList.remove('hidden');
+    document.getElementById('register-content').classList.add('hidden');
+    document.getElementById('register-button').addEventListener('click', onRegisterClick);
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
