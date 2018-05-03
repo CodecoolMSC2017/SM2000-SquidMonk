@@ -29,11 +29,11 @@ public final class RegisterServlet extends AbstractServlet {
 
             User user = new JsRegisterService(userDao).registerUser(name, email, password);
 
-            sendMessage(resp, HttpServletResponse.SC_OK, null);
+            sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
         } catch (ServiceException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
         } catch (SQLException ex) {
-            handleSqlError(resp, ex);
+            sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Email already exists");
         }
     }
 }
