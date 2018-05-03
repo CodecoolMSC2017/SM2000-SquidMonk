@@ -1,6 +1,7 @@
 package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.ColumnDao;
+import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.model.Column;
 
 import java.sql.Connection;
@@ -46,6 +47,93 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
         }
         return columns;
     }
+
+    @Override
+    public void insertColumn(int scheduleId, String name, ScheduleDao scheduleDao) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        scheduleDao.updateScheduleCount(scheduleId);
+
+        String sql = "INSERT INTO columns (schedule_id, name, count) VALUES (?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, scheduleId);
+            statement.setString(2, name);
+            statement.setInt(3, 0);
+
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
+    @Override
+    public void updateName(int columnId, String name) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "UPDATE columns SET name = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, columnId);
+
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
+    @Override
+    public void deleteColumn(int columnId) throws SQLException {
+        boolean autocommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+
+        String sql = "DELETE FROM columns WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, columnId);
+
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(autocommit);
+        }
+    }
+
+
+    @Override
+    public void updateColumnCount(int columnId) throws SQLException {
+        int count = getCount(columnId);
+        String sql = "UPDATE columns SET count = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, count + 1);
+            executeInsert(statement);
+        }
+    }
+
+    private int getCount(int columnId) throws SQLException {
+        String sql = "SELECT count FROM columns WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, columnId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("count");
+                }
+            }
+        }
+        return -1;
+    }
+
 
     private Column fetchColumn(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");

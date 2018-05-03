@@ -79,6 +79,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             statement.setInt(2, userId);
 
             executeInsert(statement);
+            connection.commit();
         } catch (SQLException e) {
             connection.rollback();
             throw e;
