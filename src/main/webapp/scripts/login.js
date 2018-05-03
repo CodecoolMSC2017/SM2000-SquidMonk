@@ -3,6 +3,7 @@ function onLoginResponse() {
         const resp = JSON.parse(this.responseText);
         const name = resp.name;
         showContents(['main-content']);
+        document.getElementById('message-content').textContent = '';
         document.getElementById('main-content').textContent = "Welcome "+name;
     }
 }
