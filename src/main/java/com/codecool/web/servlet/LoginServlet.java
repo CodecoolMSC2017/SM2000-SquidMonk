@@ -23,7 +23,7 @@ public final class LoginServlet extends AbstractServlet {
             UserDao userDao = new UserDaoImpl(connection);
             LoginService loginService = new JsLoginService(userDao);
 
-            String username = req.getParameter("username");
+            String username = req.getParameter("email");
             String password = req.getParameter("password");
 
             User user = loginService.loginUser(username, password);
