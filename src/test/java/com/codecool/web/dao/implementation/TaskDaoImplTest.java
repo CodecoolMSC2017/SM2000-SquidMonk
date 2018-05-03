@@ -69,7 +69,17 @@ class TaskDaoImplTest {
     }
 
     @Test
-    void deleteTask() {
+    void deleteTask() throws SQLException {
+        /*try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 1;
+
+            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            Task task = taskDao.findById(id);
+            assertFalse(task.equals(null));
+            taskDao.deleteTask(id);
+            Task taskDelete = taskDao.findById(id);
+            assertTrue(taskDelete.equals(null));
+        }*/
     }
 
     @Test
