@@ -8,11 +8,31 @@
 <body>
     <div id="login-content">
         <form id="login-form" onsubmit="return false">
+            <table class="form-table">
+                <tr><th colspan="2">Login</th></tr>
+                <tr><td colspan="2"><input name="email" placeholder="E-mail" required /></td></tr>
+                <tr><td colspan="2"><input name="password" type="password" placeholder="password" required /></td></tr>
+                <tr>
+                    <td><button>Login</button></td>
+                    <td><button type="button">Register</button></td>
+                </tr>
+            </table>
         </form>
     </div>
 
     <div id="register-content">
         <form id="register-form" onsubmit="return false">
+            <table class="form-table">
+                <tr><th colspan="2">Register</th></tr>
+                <tr><td colspan="2"><input name="name" placeholder="Name" required /></td></tr>
+                <tr><td colspan="2"><input name="email" placeholder="E-mail" required /></td></tr>
+                <tr><td colspan="2"><input name="password" placeholder="Password" type="password" required /></td></tr>
+                <tr><td colspan="2"><input name="passconf" placeholder="Confirm Password" type="password" required /></td></tr>
+                <tr>
+                    <td><button>Register</button></td>
+                    <td><button type="button">Back</button></td>
+                </tr>
+            </table>
         </form>
     </div>
 
