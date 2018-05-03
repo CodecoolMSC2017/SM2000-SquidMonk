@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TskColSchedConnectionDaoTest {
+class TskColSchedConnectorDaoTest {
 
     String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
 
@@ -23,7 +23,7 @@ class TskColSchedConnectionDaoTest {
     void queryTaskPresent() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectionDao controlTable = new TskColSchedConnectionDao(con);
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
             assertFalse(controlTable.queryTaskPresent(300));
         }
     }
