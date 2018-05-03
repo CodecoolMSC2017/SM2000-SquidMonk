@@ -100,7 +100,7 @@ function onRegButtonClick() {
     if (password != passconf) {
         document.getElementById('message-content').textContent = 'Passwords do not match';
     } else {
-        document.getElementById('message-content').textContent = 'Registration successful';
+        document.getElementById('message-content').textContent = '';
     }
 }
 
