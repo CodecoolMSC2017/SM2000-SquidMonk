@@ -10,6 +10,7 @@ public class Column {
         this.name = name;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -18,6 +19,7 @@ public class Column {
         return name;
     }
 
+    // Setters
     public void setName(String name) {
         this.name = name;
     }
