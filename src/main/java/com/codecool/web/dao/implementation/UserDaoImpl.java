@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
 
-    private String queryUser = "SELECT id, name, email, password, is_admin FROM users ";
+    private final String queryUser = "SELECT id, name, email, password, is_admin FROM users ";
 
     public UserDaoImpl(Connection connection) {
         super(connection);

@@ -9,6 +9,6 @@ public interface ScheduleDao {
 
     Schedule findById(int id) throws SQLException;
 
-    List<Schedule> findAllByEmail(String email) throws SQLException;
+    List<Schedule> findAllByUserId(int userId) throws SQLException;
 
 }

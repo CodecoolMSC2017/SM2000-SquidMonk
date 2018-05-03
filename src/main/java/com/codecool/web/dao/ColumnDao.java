@@ -9,6 +9,6 @@ public interface ColumnDao {
 
     Column findById(int id) throws SQLException;
 
-    List<Column> findAllByEmail(String email) throws SQLException;
+    List<Column> findAllByScheduleId(int scheduleId) throws SQLException;
 
 }
