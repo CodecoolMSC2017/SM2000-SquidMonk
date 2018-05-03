@@ -5,7 +5,7 @@
           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <resource-ref>
+    <!-- <resource-ref>
         <res-ref-name>jdbc/sm2000</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
@@ -21,7 +21,7 @@
 
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
-    </filter-mapping>
+    </filter-mapping> -->
 
 
 </web-app>
