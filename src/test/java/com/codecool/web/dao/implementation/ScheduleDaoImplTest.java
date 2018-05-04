@@ -1,5 +1,7 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.model.Schedule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -8,6 +10,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,11 +24,31 @@ class ScheduleDaoImplTest {
     }
 
     @Test
-    void findById() {
+    void findById() throws SQLException, ClassNotFoundException {
+        resetDb();
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+
+            Schedule schedule = scheduleDao.findById(1);
+            assertEquals("Empty User sched", schedule.getName());
+
+            schedule = scheduleDao.findById(2);
+            assertTrue(schedule.isPublic());
+        }
     }
 
     @Test
-    void findAllByUserId() {
+    void findAllByUserId() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+
+            List<Schedule> scheduleList = scheduleDao.findAllByUserId(1);
+            assertEquals(0, scheduleList.size());
+
+            scheduleList = scheduleDao.findAllByUserId(2);
+            assertEquals(1, scheduleList.size());
+            assertEquals("Empty User sched", scheduleList.get(0).getName());
+        }
     }
 
     @Test
