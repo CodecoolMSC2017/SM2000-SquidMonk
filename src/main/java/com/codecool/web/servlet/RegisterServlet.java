@@ -27,7 +27,12 @@ public final class RegisterServlet extends AbstractServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
+
             User user = new JsRegisterService(userDao).registerUser(name, email, password);
+
+            if (checkEmptyParameters(name, email, password)) {
+                sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Empty fields");
+            }
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
         } catch (ServiceException ex) {
@@ -35,5 +40,14 @@ public final class RegisterServlet extends AbstractServlet {
         } catch (SQLException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Email already exists");
         }
+    }
+
+    private boolean checkEmptyParameters(String... parameters) {
+        for (String parameter : parameters) {
+            if (parameter == null || parameter.equals("")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

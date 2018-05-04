@@ -1,12 +1,16 @@
 let passwordInputEl;
 
 function onLoginResponse() {
-    if (this.status === 200) {
-        passwordInputEl.value = '';
-        const user = JSON.parse(this.responseText);
-        localStorage.setItem('user', user);
+    passwordInputEl.value = '';
+    const json = JSON.parse(this.responseText);
+    if (this.status === OK) {
+        localStorage.setItem('user', json);
         showContents(['main-content', 'logout-content']);
-        document.getElementById('main-content').textContent = "Welcome " + user.name;
+        document.getElementById('main-content').textContent = "Welcome " + json.name;
+    } else {
+        const messageEl = document.getElementById('message-content');
+        messageEl.innerHTML = json.message;
+        showContents(['login-content', 'message-content']);
     }
 }
 

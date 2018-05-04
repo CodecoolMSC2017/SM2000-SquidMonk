@@ -7,11 +7,10 @@ function onRegisterClick() {
 }
 
 function onRegisterResponse() {
-    if (this.status === 200) {
-        const resp = JSON.parse(this.responseText);
-        const text = resp.message;
+    const json = JSON.parse(this.responseText);
+    document.getElementById('message-content').textContent = json.message;
+    if (this.status === OK) {
         showContents(['login-content', 'message-content']);
-        document.getElementById('message-content').textContent = text;
     }
 }
 
