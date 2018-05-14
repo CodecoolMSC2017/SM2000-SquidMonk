@@ -57,6 +57,9 @@ class TskColSchedConnectorDao extends AbstractDao {
         }
     }
 
+    /**
+     * To be used when a task is moved to a new schedule
+     */
     void updateTaskSchedule(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id=?, schedule_id=?, task_start=?, task_end=? WHERE task_id=?";
 
@@ -70,6 +73,9 @@ class TskColSchedConnectorDao extends AbstractDao {
         }
     }
 
+    /**
+     * To be used when only the start/end time of a task changes
+     */
     void updateTaskTime(int taskId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET task_start=?, task_end=? WHERE task_id=?";
 
@@ -81,6 +87,9 @@ class TskColSchedConnectorDao extends AbstractDao {
         }
     }
 
+    /**
+     * To be used when the task stays in it's schedule, but moved to a different column
+     */
     void updateTaskColumn(int taskId, int colId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id=?, task_start=?, task_end=? WHERE task_id=?";
 
