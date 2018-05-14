@@ -27,7 +27,7 @@ class TskColSchedConnectorDao extends AbstractDao {
         return false;
     }
 
-    Task queryTaskConnetions(Task task) throws SQLException {
+    Task queryTaskConnectionData(Task task) throws SQLException {
         String sql = "SELECT task_id, col_id, schedule_id, task_start, task_end FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, task.getId());
