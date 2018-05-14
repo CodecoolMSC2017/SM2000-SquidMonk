@@ -50,9 +50,6 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
 
     @Override
     public void insertColumn(int scheduleId, String name, ScheduleDao scheduleDao) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-
         scheduleDao.updateScheduleCount(scheduleId);
 
         String sql = "INSERT INTO columns (schedule_id, name, count) VALUES (?, ?, 0)";
@@ -65,9 +62,6 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
 
     @Override
     public void updateName(int columnId, String name) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-
         String sql = "UPDATE columns SET name = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, name);
@@ -78,9 +72,6 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
 
     @Override
     public void deleteColumn(int columnId) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-
         String sql = "DELETE FROM columns WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, columnId);
