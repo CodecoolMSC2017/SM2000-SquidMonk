@@ -77,9 +77,37 @@ END;
 '
 LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION increment_schedules_count()
+RETURNS TRIGGER AS '
+BEGIN
+    UPDATE schedules SET count = count + 1
+    WHERE schedules.id = NEW.schedule_id;
+    RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION increment_columns_count()
+RETURNS TRIGGER AS '
+BEGIN
+    UPDATE columns SET count = count + 1
+    WHERE columns.id = NEW.col_id;
+    RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
 CREATE TRIGGER col_tsk_insert
     BEFORE INSERT ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
+
+CREATE TRIGGER update_schedules_count
+    AFTER INSERT ON columns FOR EACH ROW
+    EXECUTE PROCEDURE increment_schedules_count();
+
+CREATE TRIGGER update_columns_count
+    AFTER INSERT ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE increment_columns_count();
 
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
