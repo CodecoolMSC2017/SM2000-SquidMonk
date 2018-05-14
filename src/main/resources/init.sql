@@ -16,19 +16,15 @@ CREATE TABLE schedules (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER DEFAULT 0,
     is_public BOOLEAN DEFAULT false,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT column_overflow CHECK (count < 8)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE columns (
     id SERIAL PRIMARY KEY,
     schedule_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER DEFAULT 0,
-    FOREIGN KEY (schedule_id) REFERENCES schedules(id),
-    CONSTRAINT task_overflow CHECK (count < 25)
+    FOREIGN KEY (schedule_id) REFERENCES schedules(id)
 );
 
 CREATE TABLE tasks (
@@ -71,97 +67,121 @@ BEGIN
     IF schedule_count = 0 AND column_count = 0 THEN
 		RETURN NEW;
 	ELSE
-  		RAISE EXCEPTION ''Trigger: task overflow'';
+  		RAISE EXCEPTION ''Task overflow'';
 	END IF;
 END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION do_schedules_count_update_new()
+CREATE OR REPLACE FUNCTION check_schedules_capacity()
     RETURNS TRIGGER AS '
 DECLARE
-    new_count integer;
+    count integer;
 BEGIN
     SELECT COUNT(columns.id) FROM columns
     WHERE columns.schedule_id = NEW.schedule_id
-    INTO new_count;
+    INTO count;
 
-    UPDATE schedules SET count = new_count
-    WHERE schedules.id = NEW.schedule_id;
-    RETURN NEW;
+    IF count > 6 THEN
+        RAISE EXCEPTION ''Capacity of this schedule is reached'';
+    ELSE
+        RETURN NEW;
+    END IF;
 END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION do_schedules_count_update_old()
+CREATE OR REPLACE FUNCTION check_columns_capacity()
     RETURNS TRIGGER AS '
 DECLARE
-    new_count integer;
-BEGIN
-    SELECT COUNT(columns.id) FROM columns
-    WHERE columns.schedule_id = OLD.schedule_id
-    INTO new_count;
-
-    UPDATE schedules SET count = new_count
-    WHERE schedules.id = OLD.schedule_id;
-    RETURN OLD;
-END;
-'
-LANGUAGE 'plpgsql';
-
-CREATE OR REPLACE FUNCTION do_columns_count_update_new()
-    RETURNS TRIGGER AS '
-DECLARE
-    new_count integer;
+    count integer;
 BEGIN
     SELECT COUNT(col_tsk.col_id) FROM col_tsk
     WHERE col_tsk.col_id = NEW.col_id
-    INTO new_count;
+    INTO count;
 
-    UPDATE columns SET count = new_count
-    WHERE columns.id = NEW.col_id;
-    RETURN NEW;
+    IF count > 23 THEN
+        RAISE EXCEPTION ''Capacity of this column is reached'';
+    ELSE
+        RETURN NEW;
+    END IF;
 END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION do_columns_count_update_old()
+CREATE OR REPLACE FUNCTION delete_task_connections()
     RETURNS TRIGGER AS '
-DECLARE
-    new_count integer;
 BEGIN
-    SELECT COUNT(col_tsk.col_id) FROM col_tsk
-    WHERE col_tsk.col_id = OLD.col_id
-    INTO new_count;
-
-    UPDATE columns SET count = new_count
-    WHERE columns.id = OLD.col_id;
+    DELETE FROM col_tsk WHERE col_tsk.task_id = OLD.id;
     RETURN OLD;
 END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE TRIGGER col_tsk_insert
-    BEFORE INSERT ON col_tsk FOR EACH ROW
+CREATE OR REPLACE FUNCTION delete_column_connections()
+    RETURNS TRIGGER AS '
+BEGIN
+    DELETE FROM col_tsk WHERE col_tsk.col_id = OLD.id;
+    RETURN OLD;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION delete_schedule_connections()
+    RETURNS TRIGGER AS '
+BEGIN
+    DELETE FROM col_tsk WHERE schedule_id = OLD.id;
+    DELETE FROM columns WHERE schedule_id = OLD.id;
+    RETURN OLD;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION delete_user_connections()
+    RETURNS TRIGGER AS '
+BEGIN
+    DELETE FROM schedules WHERE user_id = OLD.id;
+    DELETE FROM tasks WHERE user_id = OLD.id;
+    RETURN OLD;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER task_overflow_check
+    BEFORE INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
 
-CREATE TRIGGER increment_schedules_count
-    AFTER INSERT OR UPDATE ON columns FOR EACH ROW
-    EXECUTE PROCEDURE do_schedules_count_update_new();
+CREATE TRIGGER column_insert_capacity_check
+    BEFORE INSERT ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_columns_capacity();
 
-CREATE TRIGGER increment_columns_count
-    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE do_columns_count_update_new();
+CREATE TRIGGER column_update_capacity_check
+    AFTER UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_columns_capacity();
 
-CREATE TRIGGER decrement_schedules_count
-    AFTER DELETE OR UPDATE ON columns FOR EACH ROW
-    EXECUTE PROCEDURE do_schedules_count_update_old();
+CREATE TRIGGER schedules_insert_capacity_check
+    BEFORE INSERT OR UPDATE ON columns FOR EACH ROW
+    EXECUTE PROCEDURE check_schedules_capacity();
 
-CREATE TRIGGER decrement_columns_count
-    AFTER DELETE OR UPDATE ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE do_columns_count_update_old();
+CREATE TRIGGER schedules_update_capacity_check
+    AFTER UPDATE OR UPDATE ON columns FOR EACH ROW
+    EXECUTE PROCEDURE check_schedules_capacity();
 
+CREATE TRIGGER task_delete
+    BEFORE DELETE ON tasks FOR EACH ROW
+    EXECUTE PROCEDURE delete_task_connections();
 
+CREATE TRIGGER column_delete
+    BEFORE DELETE ON columns FOR EACH ROW
+    EXECUTE PROCEDURE delete_column_connections();
+
+CREATE TRIGGER schedule_delete
+    BEFORE DELETE ON schedules FOR EACH ROW
+    EXECUTE PROCEDURE delete_schedule_connections();
+
+CREATE TRIGGER user_delete
+    BEFORE DELETE ON users FOR EACH ROW
+    EXECUTE PROCEDURE delete_user_connections();
 
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
