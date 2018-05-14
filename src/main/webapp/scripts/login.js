@@ -6,7 +6,7 @@ function onLoginResponse() {
     const json = JSON.parse(this.responseText);
     if (this.status === OK) {
         localStorage.setItem('user', JSON.stringify(json));
-        showContents(['navbar', 'main-content', 'logout-content']);
+        showContents(['topnav-content', 'main-content', 'logout-content']);
         mainContentEl = document.getElementById('main-content');
         mainContentEl.textContent = "Welcome " + json.name;
         mainContentEl.appendChild(setupMainContentEl());
