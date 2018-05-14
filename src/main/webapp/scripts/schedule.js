@@ -10,6 +10,6 @@ function onScheduleClick() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', '/protected/schedules/user/?' + params.toString());
+    xhr.open('GET', '/protected/schedules/user/' + params.toString());
     xhr.send();
 }
