@@ -52,6 +52,35 @@ CREATE TABLE col_tsk (
     CONSTRAINT incorrect_start_time CHECK (task_end > task_start)
 );
 
+CREATE OR REPLACE FUNCTION check_task_occurrences()
+RETURNS TRIGGER AS '
+DECLARE
+    schedule_count integer;
+    task_count integer;
+BEGIN
+    SELECT COUNT(col_tsk.task_id) FROM col_tsk
+    WHERE col_tsk.task_id = NEW.task_id
+    AND col_tsk.schedule_id = NEW.schedule_id
+    INTO schedule_count;
+
+    SELECT COUNT(col_tsk.task_id) FROM col_tsk
+    WHERE col_tsk.task_id = NEW.task_id
+    AND col_tsk.col_id = NEW.col_id
+    INTO task_count;
+
+    IF schedule_count = 0 AND task_count = 0 THEN
+		RETURN NEW;
+	ELSE
+  		RAISE EXCEPTION ''Trigger: task overflow'';
+	END IF;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER col_tsk_insert
+    BEFORE INSERT ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_task_occurrences();
+
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
     ('User', 'user@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', false), --2

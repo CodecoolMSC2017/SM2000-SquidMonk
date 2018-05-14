@@ -70,24 +70,51 @@ class TaskDaoImplTest {
 
     @Test
     void deleteTask() throws SQLException {
-        /*try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            int id = 1;
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 27;
 
             TaskDaoImpl taskDao = new TaskDaoImpl(con);
             Task task = taskDao.findById(id);
-            assertFalse(task.equals(null));
+            assertEquals("Bence Task 24", task.getName());
+
+            TskColSchedConnectorDao connectorDao = new TskColSchedConnectorDao(con);
+            connectorDao.deleteTask(id);
             taskDao.deleteTask(id);
-            Task taskDelete = taskDao.findById(id);
-            assertTrue(taskDelete.equals(null));
-        }*/
+            assertNull(taskDao.findById(id));
+        }
     }
 
     @Test
-    void updateName() {
+    void updateName() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 20;
+            String name = "Bence Task update";
+
+            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            Task task = taskDao.findById(id);
+            assertEquals("Bence Task 17", task.getName());
+
+            taskDao.updateName(id, name);
+            Task taskUpdateName = taskDao.findById(id);
+            assertEquals("Bence Task update", taskUpdateName.getName());
+
+        }
     }
 
     @Test
-    void updateContent() {
+    void updateContent() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 21;
+            String content = "ContentUpdate";
+
+            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            Task task = taskDao.findById(id);
+            assertEquals("Content", task.getContent());
+
+            taskDao.updateContent(id, content);
+            Task taskUpdateContent = taskDao.findById(id);
+            assertEquals("ContentUpdate", taskUpdateContent.getContent());
+        }
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
