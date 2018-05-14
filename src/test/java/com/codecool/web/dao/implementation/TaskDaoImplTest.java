@@ -70,16 +70,18 @@ class TaskDaoImplTest {
 
     @Test
     void deleteTask() throws SQLException {
-        /*try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            int id = 1;
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 27;
 
             TaskDaoImpl taskDao = new TaskDaoImpl(con);
             Task task = taskDao.findById(id);
-            assertFalse(task.equals(null));
+            assertEquals("Bence Task 24", task.getName());
+
+            TskColSchedConnectorDao connectorDao = new TskColSchedConnectorDao(con);
+            connectorDao.deleteTask(id);
             taskDao.deleteTask(id);
-            Task taskDelete = taskDao.findById(id);
-            assertTrue(taskDelete.equals(null));
-        }*/
+            assertNull(taskDao.findById(id));
+        }
     }
 
     @Test
