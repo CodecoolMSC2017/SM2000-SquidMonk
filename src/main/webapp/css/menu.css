@@ -5,6 +5,9 @@ body {
 
 #topnav-content {
   overflow: hidden;
+  position: fixed;
+  top: 0px;
+  width: 100%;
   background-color: #333;
 }
 

@@ -9,7 +9,7 @@ function onLoginResponse() {
         showContents(['topnav-content', 'main-content', 'logout-content']);
         mainContentEl = document.getElementById('main-content');
         mainContentEl.textContent = "Welcome " + json.name;
-        mainContentEl.appendChild(setupMainContentEl());
+        receiveSchedules();
     } else {
         const messageEl = document.getElementById('message-content');
         messageEl.innerHTML = json.message;
@@ -17,10 +17,23 @@ function onLoginResponse() {
     }
 }
 
-function setupMainContentEl() {
-    const taskUl = document.createElement('ul');
+function receiveSchedules() {
     const user = JSON.parse(localStorage.getItem('user'));
 
+    const params = new URLSearchParams();
+    params.append('userId', user.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', setupMainContentEl);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/schedules/user/' + user.id);
+    xhr.send(params);
+}
+
+function setupMainContentEl() {
+    const taskUl = document.createElement('ul');
+    const schedules = this.responseText;
+    console.log(schedules);
     return taskUl;
 }
 

@@ -60,21 +60,28 @@ class ColumnDaoImplTest {
             List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(1);
             assertEquals(14, columns.get(0).getId());
             assertEquals("InsertColumn", columns.get(0).getName());
+        }
+    }
 
+    @Test
+    void updateName() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 4;
+            String name = "ColumnNameTest";
+
+            ColumnDaoImpl columnDao = new ColumnDaoImpl(con);
+            Column column = columnDao.findById(id);
+            assertEquals("Csba Column 1", column.getName());
+
+            columnDao.updateName(id, name);
+            Column columnUpdateName = columnDao.findById(id);
+            assertEquals("ColumnNameTest", columnUpdateName.getName());
 
         }
     }
 
     @Test
-    void updateName() {
-    }
-
-    @Test
-    void deleteColumn() {
-    }
-
-    @Test
-    void updateColumnCount() {
+    void deleteColumn() throws SQLException {
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
