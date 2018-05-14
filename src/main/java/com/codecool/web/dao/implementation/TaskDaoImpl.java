@@ -46,9 +46,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     @Override
     public void insertTask(int userId, String name, String content) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-
         String sql = "INSERT INTO tasks (user_id, name, content) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
@@ -60,9 +57,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     @Override
     public void deleteTask(int taskId) throws SQLException {
-        boolean autocommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-
         String sql = "DELETE FROM tasks WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
