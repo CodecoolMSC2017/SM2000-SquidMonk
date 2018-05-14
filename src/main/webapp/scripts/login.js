@@ -31,10 +31,36 @@ function receiveSchedules() {
 }
 
 function setupMainContentEl() {
+    const schedules = JSON.parse(this.responseText);
+
     const taskUl = document.createElement('ul');
-    const schedules = this.responseText;
-    console.log(schedules);
-    return taskUl;
+
+    for (let i = 0; i < schedules.length; i++) {
+        const schedule = schedules[i];
+        const liEl = document.createElement('li');
+        liEl.id = schedule.id;
+        liEl.textContent = schedule.name;
+        liEl.addEventListener('mouseover', onSchedMouseOver);
+        liEl.addEventListener('mouseout', onSchedMouseOut);
+        liEl.addEventListener('click', onSchedMouseClick);
+        taskUl.appendChild(liEl);
+    }
+
+    mainContentEl.appendChild(taskUl);
+}
+
+function onSchedMouseOver() {
+    this.style.textShadow = '0 0 5px #999999';
+    this.style.cursor = 'pointer';
+}
+
+function onSchedMouseOut() {
+    this.removeAttribute('style');
+}
+
+function onSchedMouseClick() {
+    const currId = this.id;
+    console.log(currId);
 }
 
 function onNetworkError() {
