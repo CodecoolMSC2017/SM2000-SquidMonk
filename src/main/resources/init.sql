@@ -9,7 +9,7 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    is_admin BOOLEAN NOT NULL
+    is_admin BOOLEAN DEFAULT false
 );
 
 CREATE TABLE schedules (
@@ -160,6 +160,8 @@ CREATE TRIGGER decrement_schedules_count
 CREATE TRIGGER decrement_columns_count
     AFTER DELETE OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE do_columns_count_update_old();
+
+
 
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
