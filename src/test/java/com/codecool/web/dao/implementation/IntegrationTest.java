@@ -19,7 +19,7 @@ public class IntegrationTest {
     }
 
     @Test
-    void findById() {
+    void deleteSchedule() {
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
