@@ -1,17 +1,27 @@
 let passwordInputEl;
+let mainContentEl;
 
 function onLoginResponse() {
     passwordInputEl.value = '';
     const json = JSON.parse(this.responseText);
     if (this.status === OK) {
-        localStorage.setItem('user', json);
-        showContents(['main-content', 'logout-content']);
-        document.getElementById('main-content').textContent = "Welcome " + json.name;
+        localStorage.setItem('user', JSON.stringify(json));
+        showContents(['navbar', 'main-content', 'logout-content']);
+        mainContentEl = document.getElementById('main-content');
+        mainContentEl.textContent = "Welcome " + json.name;
+        mainContentEl.appendChild(setupMainContentEl());
     } else {
         const messageEl = document.getElementById('message-content');
         messageEl.innerHTML = json.message;
         showContents(['login-content', 'message-content']);
     }
+}
+
+function setupMainContentEl() {
+    const taskUl = document.createElement('ul');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    return taskUl;
 }
 
 function onNetworkError() {
