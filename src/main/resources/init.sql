@@ -59,6 +59,7 @@ INSERT INTO users (name, email, password, is_admin) VALUES
     ('Csizmadia Bálint', 'csba@codecool.hu', 'nbAINbUmfpZW3BhmIz/yng==', false), --4
     ('Ambrus Bence', 'bence@codecool.hu', 'RGljm6dBjK9OsSYMNhpyMg==', false), --5
     ('Faragó Bence', 'fbence@codecool.hu', 'RGljm6dBjK9OsSYMNhpyMg==', false); --6
+    ('Hegedűs Csanád', 'csanad@codecool.hu', 'IfLiWlf8RbnxP3PbcxDlCA==', false); --7
 
 INSERT INTO schedules (user_id, name, count, is_public) VALUES
     (2, 'Empty User sched', 0, true), --1
@@ -66,6 +67,7 @@ INSERT INTO schedules (user_id, name, count, is_public) VALUES
     (4, 'Csba sched #1', 0, false), --3
     (4, 'Csba sched #2', 7, true), --4
     (5, 'Bence sched', 1, false); --5
+    (7, 'Csanád sched', 1, false); --6
 
 INSERT INTO columns (schedule_id, name, count) VALUES
     (2, 'Alexa Column 1', 0), --1
@@ -79,6 +81,7 @@ INSERT INTO columns (schedule_id, name, count) VALUES
     (4, 'Csba Column 6', 0), --9
     (4, 'Csba Column 7', 0), --10
     (5, 'Bence Column 1', 24); --11
+    (7, 'Csanád Column 1', 0); --12
 
 INSERT INTO tasks (user_id, name, content) VALUES
     (4, 'Csba Task 1', 'Content'), --1
@@ -109,6 +112,7 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (5, 'Bence Task 23', 'Content'), --26
     (5, 'Bence Task 24', 'Content'), --27
     (6, 'FBence Task 1', ''); --28
+    (6, 'Csanád Task 1', 'Content'); --29
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
