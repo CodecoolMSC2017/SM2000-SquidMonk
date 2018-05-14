@@ -63,7 +63,7 @@ class ScheduleDaoImplTest {
 
             List<Schedule> schedules = new ScheduleDaoImpl(con).findAllByUserId(3);
             assertEquals(2, schedules.size());
-            assertEquals(8, schedules.get(1).getId());
+            assertEquals(15, schedules.get(1).getId());
             assertEquals(name, schedules.get(1).getName());
             assertTrue(schedules.get(1).isPublic());
         }
