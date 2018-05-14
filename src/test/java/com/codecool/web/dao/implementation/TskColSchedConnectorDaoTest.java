@@ -80,15 +80,45 @@ class TskColSchedConnectorDaoTest {
     }
 
     @Test
-    void updateTaskTime() {
+    void updateTaskTime() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+
+            controlTable.updateTaskTime(30, 4, 5);
+
+            Task task = new Task(30, "Csanád Task 2", "Content");
+            task = controlTable.queryTaskConnectionData(task);
+
+            assertEquals(4, task.getStart());
+            assertEquals(5, task.getEnd());
+        }
     }
 
     @Test
-    void updateTaskColumn() {
+    void updateTaskColumn() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+
+            controlTable.updateTaskColumn(30, 12, 4, 5);
+
+            Task task = new Task(30, "Csanád Task 2", "Content");
+            task = controlTable.queryTaskConnectionData(task);
+
+            assertEquals(12, task.getCol_id());
+            assertEquals(4, task.getStart());
+            assertEquals(5, task.getEnd());
+        }
     }
 
     @Test
-    void deleteTask() {
+    void deleteTask() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+
+            controlTable.deleteTask(30);
+
+            assertFalse(controlTable.queryTaskPresent(30));
+        }
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
