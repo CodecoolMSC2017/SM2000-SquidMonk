@@ -49,7 +49,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User insertUser(String name, String email, String password) throws SQLException {
 
-        String sql = "INSERT INTO users (name, email, password, is_admin) VALUES (?, ?, ?, false)";
+        String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             String encryptedPassword = new PassEncrypt().encrypt(password);
             statement.setString(1, name);
