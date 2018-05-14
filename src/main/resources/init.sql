@@ -53,7 +53,7 @@ CREATE TABLE col_tsk (
 );
 
 CREATE OR REPLACE FUNCTION check_task_occurrences()
-RETURNS TRIGGER as $BODY$
+RETURNS TRIGGER AS '
 DECLARE
     schedule_count integer;
     task_count integer;
@@ -71,10 +71,10 @@ BEGIN
     IF schedule_count = 0 AND task_count = 0 THEN
 		RETURN NEW;
 	ELSE
-  		RAISE EXCEPTION 'Trigger: task overflow';
+  		RAISE EXCEPTION ''Trigger: task overflow'';
 	END IF;
 END;
-$BODY$
+'
 LANGUAGE 'plpgsql';
 
 CREATE TRIGGER col_tsk_insert
