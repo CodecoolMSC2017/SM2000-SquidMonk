@@ -16,8 +16,8 @@ CREATE TABLE schedules (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER NOT NULL,
-    is_public BOOLEAN,
+    count INTEGER DEFAULT 0,
+    is_public BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT column_overflow CHECK (count < 8)
 );
@@ -26,7 +26,7 @@ CREATE TABLE columns (
     id SERIAL PRIMARY KEY,
     schedule_id INTEGER,
     name TEXT NOT NULL,
-    count INTEGER NOT NULL,
+    count INTEGER DEFAULT 0,
     FOREIGN KEY (schedule_id) REFERENCES schedules(id),
     CONSTRAINT task_overflow CHECK (count < 25)
 );
@@ -118,29 +118,29 @@ INSERT INTO users (name, email, password, is_admin) VALUES
     ('Faragó Bence', 'fbence@codecool.hu', 'RGljm6dBjK9OsSYMNhpyMg==', false), --6
     ('Hegedűs Csanád', 'csanad@codecool.hu', 'IfLiWlf8RbnxP3PbcxDlCA==', false); --7
 
-INSERT INTO schedules (user_id, name, count, is_public) VALUES
-    (2, 'Empty User sched', 0, true), --1
-    (3, 'Alexa sched #1', 0, true), --2
-    (4, 'Csba sched #1', 0, false), --3
-    (4, 'Csba sched #2', 0, true), --4
-    (5, 'Bence sched', 0, false), --5
-    (7, 'Csanád sched #1', 0, false), --6
-    (7, 'Csanád sched #2', 0, false); --7
+INSERT INTO schedules (user_id, name, is_public) VALUES
+    (2, 'Empty User sched', true), --1
+    (3, 'Alexa sched #1', true), --2
+    (4, 'Csba sched #1', false), --3
+    (4, 'Csba sched #2', true), --4
+    (5, 'Bence sched', false), --5
+    (7, 'Csanád sched #1', false), --6
+    (7, 'Csanád sched #2', false); --7
 
-INSERT INTO columns (schedule_id, name, count) VALUES
-    (2, 'Alexa Column 1', 0), --1
-    (2, 'Alexa Column 2', 0), --2
-    (2, 'Alexa Column 3', 0), --3
-    (4, 'Csba Column 1', 0), --4
-    (4, 'Csba Column 2', 0), --5
-    (4, 'Csba Column 3', 0), --6
-    (4, 'Csba Column 4', 0), --7
-    (4, 'Csba Column 5', 0), --8
-    (4, 'Csba Column 6', 0), --9
-    (4, 'Csba Column 7', 0), --10
-    (5, 'Bence Column 1', 0), --11
-    (6, 'Csanád Column 1', 0), --12
-    (7, 'Csanád Column 2', 0); --13
+INSERT INTO columns (schedule_id, name) VALUES
+    (2, 'Alexa Column 1'), --1
+    (2, 'Alexa Column 2'), --2
+    (2, 'Alexa Column 3'), --3
+    (4, 'Csba Column 1'), --4
+    (4, 'Csba Column 2'), --5
+    (4, 'Csba Column 3'), --6
+    (4, 'Csba Column 4'), --7
+    (4, 'Csba Column 5'), --8
+    (4, 'Csba Column 6'), --9
+    (4, 'Csba Column 7'), --10
+    (5, 'Bence Column 1'), --11
+    (6, 'Csanád Column 1'), --12
+    (7, 'Csanád Column 2'); --13
 
 INSERT INTO tasks (user_id, name, content) VALUES
     (4, 'Csba Task 1', 'Content'), --1

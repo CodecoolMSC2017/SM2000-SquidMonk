@@ -13,7 +13,6 @@ import java.util.List;
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     private final String querySchedules = "SELECT id, name, is_public FROM schedules ";
-    private final String insertSchedule = "INSERT INTO schedules (user_id, name, count, is_public) VALUES (?, ?, 0, ?) ";
 
     public ScheduleDaoImpl(Connection connection) {
         super(connection);
@@ -50,7 +49,7 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     @Override
     public void insertSchedule(int userId, String name, boolean isPublic) throws SQLException {
-        String sql = insertSchedule;
+        String sql = "INSERT INTO schedules (user_id, name, is_public) VALUES (?, ?, ?) ";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setString(2, name);
@@ -71,7 +70,7 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
     @Override
     public void updateName(int scheduleId, String name) throws SQLException {
-        String sql = "UPDATE schedules SET name=? WHERE id=?";
+        String sql = "UPDATE schedules SET name = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, name);
             statement.setInt(2, scheduleId);
@@ -82,15 +81,6 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
     @Override
     public void deleteSchedule(int scheduleId) throws SQLException {
         String sql = "DELETE FROM schedules WHERE id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, scheduleId);
-            executeInsert(statement);
-        }
-    }
-
-    @Override
-    public void updateScheduleCount(int scheduleId) throws SQLException {
-        String sql = "UPDATE schedules SET count = count + 1 WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, scheduleId);
             executeInsert(statement);

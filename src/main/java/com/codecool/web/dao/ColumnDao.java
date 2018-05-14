@@ -17,6 +17,4 @@ public interface ColumnDao {
 
     void deleteColumn(int columnId) throws SQLException;
 
-    void updateColumnCount(int columnId) throws SQLException;
-
 }
