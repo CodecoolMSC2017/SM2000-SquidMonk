@@ -83,11 +83,36 @@ class TaskDaoImplTest {
     }
 
     @Test
-    void updateName() {
+    void updateName() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 20;
+            String name = "Bence Task update";
+
+            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            Task task = taskDao.findById(id);
+            assertEquals("Bence Task 17", task.getName());
+
+            taskDao.updateName(id, name);
+            Task taskUpdateName = taskDao.findById(id);
+            assertEquals("Bence Task update", taskUpdateName.getName());
+
+        }
     }
 
     @Test
-    void updateContent() {
+    void updateContent() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 21;
+            String content = "ContentUpdate";
+
+            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            Task task = taskDao.findById(id);
+            assertEquals("Content", task.getContent());
+
+            taskDao.updateContent(id, content);
+            Task taskUpdateContent = taskDao.findById(id);
+            assertEquals("ContentUpdate", taskUpdateContent.getContent());
+        }
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
