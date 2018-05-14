@@ -53,10 +53,10 @@ CREATE TABLE col_tsk (
 );
 
 CREATE OR REPLACE FUNCTION check_task_occurrences()
-RETURNS TRIGGER AS '
+    RETURNS TRIGGER AS '
 DECLARE
     schedule_count integer;
-    task_count integer;
+    column_count integer;
 BEGIN
     SELECT COUNT(col_tsk.task_id) FROM col_tsk
     WHERE col_tsk.task_id = NEW.task_id
@@ -66,9 +66,9 @@ BEGIN
     SELECT COUNT(col_tsk.task_id) FROM col_tsk
     WHERE col_tsk.task_id = NEW.task_id
     AND col_tsk.col_id = NEW.col_id
-    INTO task_count;
+    INTO column_count;
 
-    IF schedule_count = 0 AND task_count = 0 THEN
+    IF schedule_count = 0 AND column_count = 0 THEN
 		RETURN NEW;
 	ELSE
   		RAISE EXCEPTION ''Trigger: task overflow'';
@@ -77,22 +77,66 @@ END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION increment_schedules_count()
-RETURNS TRIGGER AS '
+CREATE OR REPLACE FUNCTION do_schedules_count_update_new()
+    RETURNS TRIGGER AS '
+DECLARE
+    new_count integer;
 BEGIN
-    UPDATE schedules SET count = count + 1
+    SELECT COUNT(columns.id) FROM columns
+    WHERE columns.schedule_id = NEW.schedule_id
+    INTO new_count;
+
+    UPDATE schedules SET count = new_count
     WHERE schedules.id = NEW.schedule_id;
     RETURN NEW;
 END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION increment_columns_count()
-RETURNS TRIGGER AS '
+CREATE OR REPLACE FUNCTION do_schedules_count_update_old()
+    RETURNS TRIGGER AS '
+DECLARE
+    new_count integer;
 BEGIN
-    UPDATE columns SET count = count + 1
+    SELECT COUNT(columns.id) FROM columns
+    WHERE columns.schedule_id = OLD.schedule_id
+    INTO new_count;
+
+    UPDATE schedules SET count = new_count
+    WHERE schedules.id = OLD.schedule_id;
+    RETURN OLD;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION do_columns_count_update_new()
+    RETURNS TRIGGER AS '
+DECLARE
+    new_count integer;
+BEGIN
+    SELECT COUNT(col_tsk.col_id) FROM col_tsk
+    WHERE col_tsk.col_id = NEW.col_id
+    INTO new_count;
+
+    UPDATE columns SET count = new_count
     WHERE columns.id = NEW.col_id;
     RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION do_columns_count_update_old()
+    RETURNS TRIGGER AS '
+DECLARE
+    new_count integer;
+BEGIN
+    SELECT COUNT(col_tsk.col_id) FROM col_tsk
+    WHERE col_tsk.col_id = OLD.col_id
+    INTO new_count;
+
+    UPDATE columns SET count = new_count
+    WHERE columns.id = OLD.col_id;
+    RETURN OLD;
 END;
 '
 LANGUAGE 'plpgsql';
@@ -101,13 +145,21 @@ CREATE TRIGGER col_tsk_insert
     BEFORE INSERT ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
 
-CREATE TRIGGER update_schedules_count
-    AFTER INSERT ON columns FOR EACH ROW
-    EXECUTE PROCEDURE increment_schedules_count();
+CREATE TRIGGER increment_schedules_count
+    AFTER INSERT OR UPDATE ON columns FOR EACH ROW
+    EXECUTE PROCEDURE do_schedules_count_update_new();
 
-CREATE TRIGGER update_columns_count
-    AFTER INSERT ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE increment_columns_count();
+CREATE TRIGGER increment_columns_count
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE do_columns_count_update_new();
+
+CREATE TRIGGER decrement_schedules_count
+    AFTER DELETE OR UPDATE ON columns FOR EACH ROW
+    EXECUTE PROCEDURE do_schedules_count_update_old();
+
+CREATE TRIGGER decrement_columns_count
+    AFTER DELETE OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE do_columns_count_update_old();
 
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
