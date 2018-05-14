@@ -1,13 +1,15 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.model.Column;
+import com.codecool.web.model.Schedule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,27 +23,65 @@ class ColumnDaoImplTest {
     }
 
     @Test
-    void findById() {
+    void findById() throws SQLException, ClassNotFoundException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            resetDb();
+            Column column1 = new ColumnDaoImpl(con).findById(1);
+            Column column2 = new ColumnDaoImpl(con).findById(2);
+            Column column3 = new ColumnDaoImpl(con).findById(7);
+
+            assertEquals("Alexa Column 1", column1.getName());
+            assertEquals("Alexa Column 2", column2.getName());
+            assertEquals("Csba Column 4", column3.getName());
+        }
     }
 
     @Test
-    void findAllByScheduleId() {
+    void findAllByScheduleId() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(2);
+
+            assertEquals(3, columns.size());
+            assertEquals("Alexa Column 1", columns.get(0).getName());
+            assertEquals("Alexa Column 2", columns.get(1).getName());
+            assertEquals("Alexa Column 3", columns.get(2).getName());
+        }
     }
 
     @Test
-    void insertColumn() {
+    void insertColumn() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            ColumnDaoImpl columnDao = new ColumnDaoImpl(con);
+            int scheduleId = 1;
+            String name = "InsertColumn";
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+
+            columnDao.insertColumn(scheduleId, name, scheduleDao);
+            List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(1);
+            assertEquals(14, columns.get(0).getId());
+            assertEquals("InsertColumn", columns.get(0).getName());
+        }
     }
 
     @Test
-    void updateName() {
+    void updateName() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            int id = 4;
+            String name = "ColumnNameTest";
+
+            ColumnDaoImpl columnDao = new ColumnDaoImpl(con);
+            Column column = columnDao.findById(id);
+            assertEquals("Csba Column 1", column.getName());
+
+            columnDao.updateName(id, name);
+            Column columnUpdateName = columnDao.findById(id);
+            assertEquals("ColumnNameTest", columnUpdateName.getName());
+
+        }
     }
 
     @Test
-    void deleteColumn() {
-    }
-
-    @Test
-    void updateColumnCount() {
+    void deleteColumn() throws SQLException {
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {

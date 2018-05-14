@@ -18,40 +18,16 @@
     text-align: center;
 }
 
+/*
 #main-content {
     text-align: center;
 }
+*/
 
 #logout-content {
     text-align: center;
 }
 
-#navbar {
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-
-#navbar .nav-button {
-    float: left;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-#navbar #logout-button {
-    float: right;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
 #main-content {
-    margin-top: 6px;
+    margin-top: 50px;
 }

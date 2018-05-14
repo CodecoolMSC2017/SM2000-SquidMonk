@@ -168,7 +168,8 @@ INSERT INTO users (name, email, password, is_admin) VALUES
     ('Csizmadia Bálint', 'csba@codecool.hu', 'nbAINbUmfpZW3BhmIz/yng==', false), --4
     ('Ambrus Bence', 'bence@codecool.hu', 'RGljm6dBjK9OsSYMNhpyMg==', false), --5
     ('Faragó Bence', 'fbence@codecool.hu', 'RGljm6dBjK9OsSYMNhpyMg==', false), --6
-    ('Hegedűs Csanád', 'csanad@codecool.hu', 'IfLiWlf8RbnxP3PbcxDlCA==', false); --7
+    ('Hegedűs Csanád', 'csanad@codecool.hu', 'IfLiWlf8RbnxP3PbcxDlCA==', false), --7
+    ('Teszt User', 'admin', 'qFy5HoRWvVMbZvcQfUi1Cw==', true); --8
 
 INSERT INTO schedules (user_id, name, is_public) VALUES
     (2, 'Empty User sched', true), --1
@@ -177,7 +178,14 @@ INSERT INTO schedules (user_id, name, is_public) VALUES
     (4, 'Csba sched #2', true), --4
     (5, 'Bence sched', false), --5
     (7, 'Csanád sched #1', false), --6
-    (7, 'Csanád sched #2', false); --7
+    (7, 'Csanád sched #2', false), --7
+    (8, 'Teszt sched #1', true), --8
+    (8, 'Teszt sched #2', false), --9
+    (8, 'Teszt sched #3', true), --10
+    (8, 'Teszt sched #4', false), --11
+    (8, 'Teszt sched #5', true), --12
+    (8, 'Teszt sched #6', false), --13
+    (8, 'Teszt sched #7', true); --14
 
 INSERT INTO columns (schedule_id, name) VALUES
     (2, 'Alexa Column 1'), --1
