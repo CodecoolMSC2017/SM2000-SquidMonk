@@ -55,11 +55,10 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
 
         scheduleDao.updateScheduleCount(scheduleId);
 
-        String sql = "INSERT INTO columns (schedule_id, name, count) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO columns (schedule_id, name, count) VALUES (?, ?, 0)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, scheduleId);
             statement.setString(2, name);
-            statement.setInt(3, 0);
             executeInsert(statement);
         }
     }
