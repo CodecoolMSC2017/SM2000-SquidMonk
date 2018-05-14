@@ -58,7 +58,7 @@ class ColumnDaoImplTest {
 
             columnDao.insertColumn(scheduleId, name, scheduleDao);
             List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(1);
-            assertEquals(12, columns.get(0).getId());
+            assertEquals(14, columns.get(0).getId());
             assertEquals("InsertColumn", columns.get(0).getName());
 
 
