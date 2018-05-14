@@ -1,5 +1,6 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.ScheduleDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -8,6 +9,8 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class IntegrationTest {
 
@@ -19,7 +22,11 @@ public class IntegrationTest {
     }
 
     @Test
-    void deleteSchedule() {
+    void deleteSchedule() throws SQLException {
+        /*try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+        }*/
     }
 
     void resetDb() throws ClassNotFoundException, SQLException {
