@@ -54,7 +54,7 @@ class TaskDaoImplTest {
     void insertTask() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
 
-            int id = 29;
+            int id = 30;
             String name = "Csba Task 4";
             String content = "Content";
 
