@@ -74,6 +74,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         }
     }
 
+    @Override
+    public void deleteUser(int userId) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            executeInsert(statement);
+        }
+    }
+
     private User fetchUser(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
