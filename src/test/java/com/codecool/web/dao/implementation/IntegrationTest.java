@@ -7,6 +7,7 @@ import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
@@ -144,9 +145,9 @@ public class IntegrationTest {
             taskDao.insertTask(6, "Csanád task 6", "Not much here"); // id:47
 
             controlTable.insertTask(29, 12, 6, 10, 12);
-            assertThrows(SQLException.class, () -> controlTable.insertTask(44, 12, 6, 10, 12));
-            assertThrows(SQLException.class, () -> controlTable.insertTask(45, 12, 6, 11, 11));
-            assertThrows(SQLException.class, () -> controlTable.insertTask(46, 12, 6, 11, 12));
+            assertThrows(PSQLException.class, () -> controlTable.insertTask(44, 12, 6, 10, 12));
+            assertThrows(PSQLException.class, () -> controlTable.insertTask(45, 12, 6, 11, 11));
+            assertThrows(PSQLException.class, () -> controlTable.insertTask(46, 12, 6, 11, 12));
         }
     }*/
 
