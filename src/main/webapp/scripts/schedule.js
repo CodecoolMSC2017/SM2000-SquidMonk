@@ -1,17 +1,18 @@
 function onScheduleReceived() {
     const mainDiv = document.getElementById('main-content');
+    removeAllChildren(mainDiv);
     const schedule = JSON.parse(this.responseText);
 
     
 }
 
 function onScheduleClick() {
-    const value = this.getAttribute('value');
+    const value = this.getAttribute('id');
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/schedule/' + user.id);
+    xhr.open('GET', 'protected/schedule/' + value);
     xhr.send();
 }
 

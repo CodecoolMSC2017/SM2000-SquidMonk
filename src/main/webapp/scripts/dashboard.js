@@ -153,7 +153,7 @@ function createScheduleRow(schedule) {
     entryTr.appendChild(entryNumTd);
     entryTr.appendChild(entryPublicTd);
 
-    entryTr.addEventListener('click', onSchedMouseClick);
+    entryTr.addEventListener('click', onScheduleClick);
 
     return entryTr;
 }
