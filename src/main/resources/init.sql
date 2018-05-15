@@ -169,6 +169,21 @@ END;
 '
 LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION check_column_schedule_id_match()
+    RETURNS TRIGGER AS '
+DECLARE
+    col columns%rowtype;
+BEGIN
+    SELECT * FROM columns WHERE columns.id = NEW.col_id INTO col;
+
+    IF col.schedule_id <> NEW.schedule_id THEN
+        RAISE EXCEPTION ''Schedule-column mismatch'';
+    END IF;
+    RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
 CREATE TRIGGER task_overflow_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
@@ -176,6 +191,14 @@ CREATE TRIGGER task_overflow_check
 CREATE TRIGGER column_integrity_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_columns_integrity();
+
+CREATE TRIGGER task_insert_into_own_schedule_check
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_task_insert_into_own_schedule();
+
+CREATE TRIGGER column_schedule_id_match_check
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_column_schedule_id_match();
 
 CREATE TRIGGER schedules_capacity_check
     AFTER INSERT OR UPDATE ON columns FOR EACH ROW
@@ -196,10 +219,6 @@ CREATE TRIGGER schedule_delete
 CREATE TRIGGER user_delete
     BEFORE DELETE ON users FOR EACH ROW
     EXECUTE PROCEDURE delete_user_connections();
-
-CREATE TRIGGER task_insert_into_own_schedule_check
-    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE check_task_insert_into_own_schedule();
 
 INSERT INTO users (name, email, password, is_admin) VALUES
     ('Admin', 'admin@codecool.hu', 'qFy5HoRWvVMbZvcQfUi1Cw==', true), --1
