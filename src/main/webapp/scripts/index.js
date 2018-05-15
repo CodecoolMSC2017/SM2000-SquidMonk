@@ -14,6 +14,9 @@ function showContents(ids) {
             contentEl.classList.add('hidden');
         }
     }
+    const topnav = document.getElementById('topnav-content');
+    const spacer = document.getElementById('topnav-spacer');
+    spacer.classList = topnav.classList;
 }
 
 function removeAllChildren(el) {
