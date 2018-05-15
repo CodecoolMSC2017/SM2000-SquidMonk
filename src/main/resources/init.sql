@@ -82,7 +82,7 @@ BEGIN
     WHERE columns.schedule_id = NEW.schedule_id
     INTO count;
 
-    IF count > 6 THEN
+    IF count > 7 THEN
         RAISE EXCEPTION ''Capacity of this schedule is reached'';
     ELSE
         RETURN NEW;
@@ -100,7 +100,7 @@ BEGIN
     WHERE col_tsk.col_id = NEW.col_id
     INTO count;
 
-    IF count > 23 THEN
+    IF count > 24 THEN
         RAISE EXCEPTION ''Capacity of this column is reached'';
     ELSE
         RETURN NEW;
@@ -152,19 +152,11 @@ CREATE TRIGGER task_overflow_check
     EXECUTE PROCEDURE check_task_occurrences();
 
 CREATE TRIGGER column_insert_capacity_check
-    BEFORE INSERT ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE check_columns_capacity();
-
-CREATE TRIGGER column_update_capacity_check
-    AFTER UPDATE ON col_tsk FOR EACH ROW
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_columns_capacity();
 
 CREATE TRIGGER schedules_insert_capacity_check
-    BEFORE INSERT OR UPDATE ON columns FOR EACH ROW
-    EXECUTE PROCEDURE check_schedules_capacity();
-
-CREATE TRIGGER schedules_update_capacity_check
-    AFTER UPDATE OR UPDATE ON columns FOR EACH ROW
+    AFTER INSERT OR UPDATE ON columns FOR EACH ROW
     EXECUTE PROCEDURE check_schedules_capacity();
 
 CREATE TRIGGER task_delete
