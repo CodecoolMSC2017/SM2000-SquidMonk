@@ -13,7 +13,7 @@ function onLoginResponse() {
         mainContentEl.textContent = '';
         const divEl = document.createElement('div');
         divEl.id = 'welcome-text';
-        divEl.textContent = "Welcome " + json.name;
+        divEl.textContent = "Welcome, " + json.name + "!";
         mainContentEl.appendChild(divEl);
         receiveSchedules();
         receiveTasks();
