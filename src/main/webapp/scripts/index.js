@@ -26,7 +26,6 @@ function onLoad() {
     document.getElementById('register-button').addEventListener('click', onRegisterClick);
     document.getElementById('login-button').addEventListener('click', onLoginClick);
     document.getElementById('logout-button').addEventListener('click', onLogoutClick);
-    document.getElementById('menu-schedule').addEventListener('click', onMenuScheduleClick);
     document.getElementById('menu-dashboard').addEventListener('click', onMenuDashboardClick);
 }
 
