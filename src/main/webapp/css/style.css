@@ -18,16 +18,116 @@
     text-align: center;
 }
 
-/*
-#main-content {
-    text-align: center;
-}
-*/
-
 #logout-content {
     text-align: center;
 }
 
 #main-content {
-    margin-top: 50px;
+    margin-top: 40px;
+}
+
+#welcome-text {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    background-color: #333;
+    height: 30px;
+}
+
+.sched-list {
+	display: inline-block;
+	position: relative;
+	width: 300px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	padding: 0;
+	text-align: center;
+	text-indent: 0px;
+	color: #FFFFFF;
+	text-shadow: #5B5B5B 0px -1px 0px;
+	font: 14px/18px "Myriad Pro";
+	margin: 20px;
+	-webkit-box-shadow: 2px 2px 3px rgba(0,0,0,.4);
+	-moz-box-shadow: 2px 2px 3px rgba(0,0,0,.4);
+	box-shadow: 2px 2px 3px rgba(0,0,0,.4);
+}
+.sched-list * {
+	color: #fff !important;
+}
+.sched-list p {
+	display: block;
+	padding: 14px 10px;
+	font-size: 32px;
+	background-color: rgb(82, 82, 82);
+	width: 90%;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+.sched-list ul {
+	list-style: none;
+	margin: 0;
+	padding: 4px 8px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+
+.sched-list li {
+	border-bottom: solid 1px rgba(20,20,20,.4);
+	border-top: solid 1px rgba(80,80,80,.4);
+	padding: 2px 0 0;
+	line-height: 1.6em;
+}
+
+.sched-list li:first-child {
+	border-top: none;
+	margin-top: 0;
+}
+
+.sched-list li:last-child {
+	border-bottom: none;
+	margin-bottom: 6px;
+}
+
+.sched-list a {
+	margin: 4px 0;
+	display: block;
+	text-decoration: none;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #111;
+
+	background: -webkit-linear-gradient(top, #565656 22.5%, #4A4A4A 100.0%);
+	background: -moz-linear-gradient(top, #565656 22.5%, #4A4A4A 100.0%);
+	background: linear-gradient(top, #565656 22.5%, #4A4A4A 100.0%);
+
+	-webkit-box-shadow: 0px -0px 2px #222, inset 0px -2px 3px #616161;
+	-moz-box-shadow: 0px -0px 2px #222, inset 0px -2px 3px #616161;
+	box-shadow: 0px -0px 2px #222, inset 0px -2px 3px #616161;
+	text-indent: 0px;
+	color: #FFFFFF;
+	text-shadow: #3C3C3C 0px -1px 0px;
+	line-height: 2em;
+
+}
+
+.sched-list a:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.2, #4E4E4E), color-stop(1.0, #4A4A4A));
+
+	background: -webkit-linear-gradient(top, #4E4E4E 18.6%, #4A4A4A 100.0%);
+	background: -moz-linear-gradient(top, #4E4E4E 18.6%, #4A4A4A 100.0%);
+	background: linear-gradient(top, #4E4E4E 18.6%, #4A4A4A 100.0%);
+}
+
+.sched-list a:active {
+	background: -webkit-linear-gradient(top, #3A3A3D 22.5%, #4A4A4A 100.0%);
+	background: -moz-linear-gradient(top, #3A3A3D 22.5%, #4A4A4A 100.0%);
+	background: linear-gradient(top, #3A3A3D 22.5%, #4A4A4A 100.0%);
 }

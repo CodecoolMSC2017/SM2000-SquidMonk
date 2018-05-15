@@ -250,7 +250,20 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (5, 'Bence Task 24', 'Content'), --27
     (6, 'FBence Task 1', ''), --28
     (7, 'Csanád Task 1', 'Content'), --29
-    (7, 'Csanád Task 2', 'Content'); --30
+    (7, 'Csanád Task 2', 'Content'), --30
+    (8, 'Teszt Task #1', 'Content'), --31
+    (8, 'Teszt Task #2', 'Content'), --32
+    (8, 'Teszt Task #3', 'Content'), --33
+    (8, 'Teszt Task #4', 'Content'), --34
+    (8, 'Teszt Task #5', 'Content'), --35
+    (8, 'Teszt Task #6', 'Content'), --36
+    (8, 'Teszt Task #7', 'Content'), --37
+    (8, 'Teszt Task #8', 'Content'), --38
+    (8, 'Teszt Task #9', 'Content'), --39
+    (8, 'Teszt Task #10', 'Content'), --40
+    (8, 'Teszt Task #11', 'Content'), --41
+    (8, 'Teszt Task #12', 'Content'), --42
+    (8, 'Teszt Task #13', 'Content'); --43
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
