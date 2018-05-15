@@ -64,7 +64,7 @@ BEGIN
     AND col_tsk.col_id = NEW.col_id
     INTO column_count;
 
-    IF schedule_count = 0 AND column_count = 0 THEN
+    IF schedule_count = 1 AND column_count = 1 THEN
 		RETURN NEW;
 	ELSE
   		RAISE EXCEPTION ''Task overflow'';
@@ -148,7 +148,7 @@ END;
 LANGUAGE 'plpgsql';
 
 CREATE TRIGGER task_overflow_check
-    BEFORE INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
 
 CREATE TRIGGER column_insert_capacity_check
