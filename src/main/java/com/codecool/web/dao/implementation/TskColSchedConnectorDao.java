@@ -111,8 +111,8 @@ class TskColSchedConnectorDao extends AbstractDao {
     }
 
     private Task fillTask(Task task, int colId, int scheduleId, int taskStart, int taskEnd) {
-        task.setCol_id(colId);
-        task.setSched_id(scheduleId);
+        task.setColId(colId);
+        task.setSchedId(scheduleId);
         task.setStart(taskStart);
         task.setEnd(taskEnd);
 
