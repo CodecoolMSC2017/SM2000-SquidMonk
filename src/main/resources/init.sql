@@ -101,10 +101,13 @@ BEGIN
     FOR r IN SELECT * FROM col_tsk
     WHERE col_tsk.col_id = NEW.col_id
     LOOP
-        IF NEW.task_start < r.task_end AND NEW.task_start > r.task_start THEN
+        IF NEW.task_id = r.task_id AND NEW.col_id = r.col_id AND NEW.schedule_id = r.schedule_id THEN
+            CONTINUE;
+        END IF;
+        IF NEW.task_start < r.task_end AND NEW.task_start >= r.task_start THEN
             RAISE EXCEPTION ''Task start time intersects another task'';
         END IF;
-        IF NEW.task_end < r.task_end AND NEW.task_end > r.task_start THEN
+        IF NEW.task_end <= r.task_end AND NEW.task_end > r.task_start THEN
             RAISE EXCEPTION ''Task end time intersects another task'';
         END IF;
     END LOOP;
