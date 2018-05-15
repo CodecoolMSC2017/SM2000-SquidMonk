@@ -99,12 +99,12 @@ class TskColSchedConnectorDaoTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
 
-            controlTable.updateTaskColumn(30, 12, 4, 5);
+            controlTable.updateTaskColumn(2, 6, 4, 5);
 
-            Task task = new Task(30, 7, "Csanád Task 2", "Content");
+            Task task = new Task(2, 4, "Csba Task 2", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
-            assertEquals(12, task.getColId());
+            assertEquals(6, task.getColId());
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
         }
