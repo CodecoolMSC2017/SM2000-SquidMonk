@@ -22,9 +22,11 @@ public class ScheduleServlet extends AbstractServlet {
 
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
+
             Schedule schedule = scheduleDao.findById(Integer.parseInt(scheduleId));
             resp.setStatus(HttpServletResponse.SC_OK);
             sendMessage(resp, HttpServletResponse.SC_OK, schedule);
+
         } catch (SQLException e) {
             handleSqlError(resp, e);
         }
