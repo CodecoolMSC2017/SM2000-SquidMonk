@@ -18,14 +18,13 @@ class TaskDaoImplTest {
     String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
 
     @BeforeEach
-    void setUp() throws ClassNotFoundException, SQLException {
+    void setUp() throws SQLException {
 
     }
 
     @Test
     void findById() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            resetDb();
             Task task1 = new TaskDaoImpl(con).findById(1);
             Task task2 = new TaskDaoImpl(con).findById(2);
             Task task3 = new TaskDaoImpl(con).findById(10);
@@ -40,7 +39,8 @@ class TaskDaoImplTest {
     }
 
     @Test
-    void findAllByUserId() throws SQLException {
+    void findAllByUserId() throws SQLException, ClassNotFoundException {
+        resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             List<Task> tasks = new TaskDaoImpl(con).findAllByUserId(4);
 

@@ -3,6 +3,7 @@ package com.codecool.web.dao.implementation;
 import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
+import com.codecool.web.dao.UserDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -60,6 +61,48 @@ public class IntegrationTest {
             assertFalse(controlTable.queryTaskPresent(7));
             assertFalse(controlTable.queryTaskPresent(8));
             assertEquals(5, taskDao.findById(4).getUserId());
+        }
+    }
+
+    @Test
+    void deleteTaskFromColumn() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskDao taskDao = new TaskDaoImpl(con);
+
+            controlTable.deleteTask(1);
+            assertEquals(4, taskDao.findById(1).getUserId());
+        }
+    }
+
+    @Test
+    void deleteUser() throws SQLException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+            ColumnDao columnDao = new ColumnDaoImpl(con);
+            TaskDao taskDao = new TaskDaoImpl(con);
+            UserDao userDao = new UserDaoImpl(con);
+
+            userDao.deleteUser(8);
+            assertNull(userDao.findById(8));
+            assertNull(scheduleDao.findById(8));
+            assertNull(scheduleDao.findById(11));
+            assertNull(scheduleDao.findById(14));
+
+            userDao.deleteUser(4);
+            assertNull(userDao.findById(4));
+            assertNull(scheduleDao.findById(3));
+            assertNull(scheduleDao.findById(4));
+            assertNull(columnDao.findById(4));
+            assertNull(columnDao.findById(6));
+            assertNull(columnDao.findById(8));
+            assertNull(taskDao.findById(1));
+            assertNull(taskDao.findById(2));
+            assertNull(taskDao.findById(3));
+            assertFalse(controlTable.queryTaskPresent(1));
+            assertFalse(controlTable.queryTaskPresent(2));
+            assertFalse(controlTable.queryTaskPresent(3));
         }
     }
 
