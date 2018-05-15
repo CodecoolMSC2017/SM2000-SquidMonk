@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/protected/schedules/user/*")
-public class UserScheduleServlet extends AbstractServlet {
+public class ScheduleUserServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
