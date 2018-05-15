@@ -18,7 +18,7 @@ public class ScheduleServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
-        String scheduleId = Character.toString(uri.charAt(uri.length() - 1));
+        String scheduleId = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
 
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
