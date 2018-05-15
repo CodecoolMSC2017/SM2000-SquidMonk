@@ -1,8 +1,10 @@
 let passwordInputEl;
 let mainContentEl;
+let emailInputEl;
 
 function onLoginResponse() {
     passwordInputEl.value = '';
+    emailInputEl.value = '';
     const json = JSON.parse(this.responseText);
     if (this.status === OK) {
         localStorage.setItem('user', JSON.stringify(json));
@@ -69,7 +71,7 @@ function onNetworkError() {
 
 function onLoginClick() {
     const loginFormEl = document.forms['login-form'];
-    const emailInputEl = loginFormEl.querySelector('input[name="email"]');
+    emailInputEl = loginFormEl.querySelector('input[name="email"]');
     passwordInputEl = loginFormEl.querySelector('input[name="password"]');
 
     const email = emailInputEl.value;
