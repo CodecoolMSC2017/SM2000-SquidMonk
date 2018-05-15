@@ -28,8 +28,6 @@ function onSchedulesReceived() {
         const tdEl = document.createElement('td');
         tdEl.textContent = schedule.name;
         tdEl.setAttribute('value', schedule.id);
-        tdEl.addEventListener('mouseover', onSchedMouseOver);
-        tdEl.addEventListener('mouseout', onSchedMouseOut);
         tdEl.addEventListener('click', onScheduleClick);
 
         rowEl.appendChild(tdEl);

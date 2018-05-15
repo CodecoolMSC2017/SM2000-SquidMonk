@@ -1,5 +1,6 @@
 package com.codecool.web.dao;
 
+import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.model.Task;
 
 import java.sql.SQLException;
@@ -19,4 +20,5 @@ public interface TaskDao {
 
     void updateContent (int taskId, String content) throws SQLException;
 
+    List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException;
 }

@@ -1,6 +1,7 @@
 package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.model.Schedule;
 
 import java.sql.Connection;
@@ -85,6 +86,30 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
             statement.setInt(1, scheduleId);
             executeInsert(statement);
         }
+    }
+
+    public List<DashboardScheduleDto> findUserDashboardSchedules(int userId) throws SQLException {
+        List<DashboardScheduleDto> dbSchedDtoList = new ArrayList<>();
+        String sql = "SELECT schedules.id, schedules.name, schedules.is_public, COUNT(task_id)\n" +
+                "FROM schedules LEFT JOIN col_tsk ON schedules.id = col_tsk.schedule_id\n" +
+                "WHERE schedules.user_id = ? GROUP BY schedules.id";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    dbSchedDtoList.add(fetchDashboardDto(resultSet));
+                }
+            }
+        }
+        return dbSchedDtoList;
+    }
+
+    private DashboardScheduleDto fetchDashboardDto(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        boolean isPublic = resultSet.getBoolean("is_public");
+        int numOfTasks = resultSet.getInt("count");
+        return new DashboardScheduleDto(id, numOfTasks, name, isPublic);
     }
 
     private Schedule fetchSchedule(ResultSet resultSet) throws SQLException {

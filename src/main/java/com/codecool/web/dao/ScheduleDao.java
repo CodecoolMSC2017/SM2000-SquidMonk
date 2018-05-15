@@ -1,5 +1,6 @@
 package com.codecool.web.dao;
 
+import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.model.Schedule;
 
 import java.sql.SQLException;
@@ -18,4 +19,6 @@ public interface ScheduleDao {
     void updateName(int scheduleId, String name) throws SQLException;
 
     void deleteSchedule(int scheduleId) throws SQLException;
+
+    List<DashboardScheduleDto> findUserDashboardSchedules(int userId) throws SQLException;
 }

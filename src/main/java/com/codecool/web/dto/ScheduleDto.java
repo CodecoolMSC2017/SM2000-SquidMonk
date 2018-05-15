@@ -5,5 +5,5 @@ import java.util.List;
 public class ScheduleDto {
 
     private int scheduleId;
-    List<Integer> columnIds;
+    private List<Integer> columnIds;
 }

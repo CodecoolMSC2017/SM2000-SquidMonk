@@ -2,6 +2,7 @@ package com.codecool.web.servlet;
 
 import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
+import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.model.Schedule;
 
 import javax.servlet.ServletException;
@@ -21,7 +22,7 @@ public class ScheduleUserServlet extends AbstractServlet {
         String userId = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
-            List<Schedule> scheduleList = scheduleDao.findAllByUserId(Integer.parseInt(userId));
+            List<DashboardScheduleDto> scheduleList = scheduleDao.findUserDashboardSchedules(Integer.parseInt(userId));
             resp.setStatus(HttpServletResponse.SC_OK);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleList);
         } catch (SQLException e) {

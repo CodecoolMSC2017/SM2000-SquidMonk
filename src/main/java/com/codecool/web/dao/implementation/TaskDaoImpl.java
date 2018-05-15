@@ -1,6 +1,7 @@
 package com.codecool.web.dao.implementation;
 
 import com.codecool.web.dao.TaskDao;
+import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.model.Task;
 
 import java.sql.*;
@@ -85,6 +86,28 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
             executeInsert(statement);
         }
+    }
+
+    public List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException {
+        List<DashboardTaskDto> tasks = new ArrayList<>();
+        String sql = "SELECT tasks.name, tasks.content, col_tsk.schedule_id from tasks\n" +
+                "LEFT JOIN col_tsk ON tasks.id = col_tsk.task_id WHERE user_id = ? ORDER BY tasks.id ASC";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    tasks.add(fetchDashboardTaskDto(resultSet));
+                }
+            }
+        }
+        return tasks;
+    }
+
+    private DashboardTaskDto fetchDashboardTaskDto(ResultSet resultSet) throws SQLException {
+        String name = resultSet.getString("name");
+        String content = resultSet.getString("content");
+        int scheduleId = resultSet.getInt("schedule_id");
+        return new DashboardTaskDto(name, content, scheduleId);
     }
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {
