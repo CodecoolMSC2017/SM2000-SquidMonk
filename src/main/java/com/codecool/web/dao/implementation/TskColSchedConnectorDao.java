@@ -6,14 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-class TskColSchedConnectorDao extends AbstractDao {
+public class TskColSchedConnectorDao extends AbstractDao {
 
-    TskColSchedConnectorDao(Connection connection) {
+    public TskColSchedConnectorDao(Connection connection) {
         super(connection);
     }
 
-    boolean queryTaskPresent(int taskId) throws SQLException {
+    public boolean queryTaskPresent(int taskId) throws SQLException {
         String sql = "SELECT task_id FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);
@@ -27,7 +29,7 @@ class TskColSchedConnectorDao extends AbstractDao {
         return false;
     }
 
-    Task queryTaskConnectionData(Task task) throws SQLException {
+    public Task queryTaskConnectionData(Task task) throws SQLException {
         String sql = "SELECT task_id, col_id, schedule_id, task_start, task_end FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, task.getId());
@@ -45,7 +47,22 @@ class TskColSchedConnectorDao extends AbstractDao {
         return null;
     }
 
-    void insertTask(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
+    public List<Integer> queryTaskIdsByScheduleId(int schedId) throws SQLException {
+        String sql = "SELECT task_id FROM col_tsk WHERE sched_id = ?";
+        List<Integer> taskIds = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, schedId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int taskId = resultSet.getInt("task_id");
+                    taskIds.add(taskId);
+                }
+                return taskIds;
+            }
+        }
+    }
+
+    public void insertTask(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES (?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);
@@ -60,7 +77,7 @@ class TskColSchedConnectorDao extends AbstractDao {
     /**
      * To be used when a task is moved to a new schedule
      */
-    void updateTaskSchedule(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
+    public void updateTaskSchedule(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id=?, schedule_id=?, task_start=?, task_end=? WHERE task_id=?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -76,7 +93,7 @@ class TskColSchedConnectorDao extends AbstractDao {
     /**
      * To be used when only the start/end time of a task changes
      */
-    void updateTaskTime(int taskId, int taskStart, int taskEnd) throws SQLException {
+    public void updateTaskTime(int taskId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET task_start=?, task_end=? WHERE task_id=?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -90,7 +107,7 @@ class TskColSchedConnectorDao extends AbstractDao {
     /**
      * To be used when the task stays in it's schedule, but moved to a different column
      */
-    void updateTaskColumn(int taskId, int colId, int taskStart, int taskEnd) throws SQLException {
+    public void updateTaskColumn(int taskId, int colId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id=?, task_start=?, task_end=? WHERE task_id=?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -102,7 +119,7 @@ class TskColSchedConnectorDao extends AbstractDao {
         }
     }
 
-    void deleteTask(int taskId) throws SQLException {
+    public void deleteTask(int taskId) throws SQLException {
         String sql = "DELETE FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);
