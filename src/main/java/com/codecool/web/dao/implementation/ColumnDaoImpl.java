@@ -49,7 +49,7 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
     }
 
     @Override
-    public void insertColumn(int scheduleId, String name, ScheduleDao scheduleDao) throws SQLException {
+    public void insertColumn(int scheduleId, String name) throws SQLException {
         String sql = "INSERT INTO columns (schedule_id, name) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, scheduleId);
