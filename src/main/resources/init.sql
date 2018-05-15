@@ -45,7 +45,9 @@ CREATE TABLE col_tsk (
     FOREIGN KEY (col_id) REFERENCES columns(id),
     FOREIGN KEY (task_id) REFERENCES tasks(id),
     FOREIGN KEY (schedule_id) REFERENCES schedules(id),
-    CONSTRAINT incorrect_start_time CHECK (task_end > task_start)
+    CONSTRAINT start_time_greater_than_end_time CHECK (task_end > task_start),
+    CONSTRAINT valid_start_time CHECK (task_start >= 0 AND task_start <= 23),
+    CONSTRAINT valid_end_time CHECK (task_end >= 1 AND task_end <= 24)
 );
 
 CREATE OR REPLACE FUNCTION check_task_occurrences()
@@ -94,17 +96,19 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION check_columns_capacity()
     RETURNS TRIGGER AS '
 DECLARE
-    count integer;
+    r col_tsk%rowtype;
 BEGIN
-    SELECT COUNT(col_tsk.col_id) FROM col_tsk
+    FOR r IN SELECT * FROM col_tsk
     WHERE col_tsk.col_id = NEW.col_id
-    INTO count;
-
-    IF count > 24 THEN
-        RAISE EXCEPTION ''Capacity of this column is reached'';
-    ELSE
-        RETURN NEW;
-    END IF;
+    LOOP
+        IF NEW.task_start < r.task_end AND NEW.task_start > r.task_start THEN
+            RAISE EXCEPTION ''Task start time intersects another task'';
+        END IF;
+        IF NEW.task_end < r.task_end AND NEW.task_end > r.task_start THEN
+            RAISE EXCEPTION ''Task end time intersects another task'';
+        END IF;
+    END LOOP;
+    RETURN NEW;
 END;
 '
 LANGUAGE 'plpgsql';
@@ -151,11 +155,11 @@ CREATE TRIGGER task_overflow_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
 
-CREATE TRIGGER column_insert_capacity_check
+CREATE TRIGGER column_capacity_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_columns_capacity();
 
-CREATE TRIGGER schedules_insert_capacity_check
+CREATE TRIGGER schedules_capacity_check
     AFTER INSERT OR UPDATE ON columns FOR EACH ROW
     EXECUTE PROCEDURE check_schedules_capacity();
 
