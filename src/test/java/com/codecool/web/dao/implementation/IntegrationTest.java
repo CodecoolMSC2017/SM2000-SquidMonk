@@ -112,12 +112,12 @@ public class IntegrationTest {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
             TaskDao taskDao = new TaskDaoImpl(con);
 
-            taskDao.insertTask(6, "Csanád task 3", "Not much here"); // id:44
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
             Task newTask = taskDao.findById(44);
             Task oldTask = taskDao.findById(29);
 
-            controlTable.insertTask(44, 12, 6, 12, 14);
-            controlTable.insertTask(29, 12, 6, 10, 12);
+            controlTable.insertTask(44, 12, 7, 12, 14);
+            controlTable.insertTask(29, 12, 7, 10, 12);
 
             newTask = controlTable.queryTaskConnectionData(newTask);
             oldTask = controlTable.queryTaskConnectionData(oldTask);
