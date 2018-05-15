@@ -4,6 +4,7 @@ import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.UserDao;
+import com.codecool.web.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -13,9 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegrationTest {
 
@@ -103,6 +102,63 @@ public class IntegrationTest {
             assertFalse(controlTable.queryTaskPresent(1));
             assertFalse(controlTable.queryTaskPresent(2));
             assertFalse(controlTable.queryTaskPresent(3));
+        }
+    }
+
+    @Test
+    void addTaskEqualStartTimeAsEndTime() throws SQLException, ClassNotFoundException {
+        resetDb();
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskDao taskDao = new TaskDaoImpl(con);
+
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
+            Task newTask = taskDao.findById(44);
+            Task oldTask = taskDao.findById(29);
+
+            controlTable.insertTask(44, 12, 6, 12, 14);
+            controlTable.insertTask(29, 12, 6, 10, 12);
+
+            newTask = controlTable.queryTaskConnectionData(newTask);
+            oldTask = controlTable.queryTaskConnectionData(oldTask);
+
+            assertTrue(controlTable.queryTaskPresent(44));
+            assertTrue(controlTable.queryTaskPresent(29));
+            assertEquals(12, newTask.getColId());
+            assertEquals(12, oldTask.getColId());
+            assertEquals(12, newTask.getStart());
+            assertEquals(12, oldTask.getEnd());
+        }
+    }
+
+    @Test
+    void addIntersectingTasks() throws SQLException, ClassNotFoundException {
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskDao taskDao = new TaskDaoImpl(con);
+
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
+            taskDao.insertTask(7, "Csanád task 4", "Not much here"); // id:45
+            taskDao.insertTask(7, "Csanád task 5", "Not much here"); // id:46
+            taskDao.insertTask(7, "Csanád task 6", "Not much here"); // id:47
+
+            controlTable.insertTask(29, 12, 6, 10, 12);
+            assertThrows(SQLException.class, () -> controlTable.insertTask(44, 12, 6, 10, 12));
+            assertThrows(SQLException.class, () -> controlTable.insertTask(45, 12, 6, 11, 11));
+            assertThrows(SQLException.class, () -> controlTable.insertTask(46, 12, 6, 11, 12));
+        }
+    }
+
+    @Test
+    void addDifferentUserTaskToAnotherUsersTask() throws SQLException, ClassNotFoundException {
+        resetDb();
+        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskDao taskDao = new TaskDaoImpl(con);
+
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
+
+            assertThrows(SQLException.class, () -> controlTable.insertTask(44, 8, 4, 2, 4));
         }
     }
 

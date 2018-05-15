@@ -45,7 +45,7 @@ CREATE TABLE col_tsk (
     FOREIGN KEY (col_id) REFERENCES columns(id),
     FOREIGN KEY (task_id) REFERENCES tasks(id),
     FOREIGN KEY (schedule_id) REFERENCES schedules(id),
-    CONSTRAINT start_time_greater_than_end_time CHECK (task_end > task_start),
+    CONSTRAINT end_time_greater_than_start_time CHECK (task_end > task_start),
     CONSTRAINT valid_start_time CHECK (task_start >= 0 AND task_start <= 23),
     CONSTRAINT valid_end_time CHECK (task_end >= 1 AND task_end <= 24)
 );
@@ -93,7 +93,7 @@ END;
 '
 LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION check_columns_capacity()
+CREATE OR REPLACE FUNCTION check_columns_integrity()
     RETURNS TRIGGER AS '
 DECLARE
     r col_tsk%rowtype;
@@ -101,10 +101,11 @@ BEGIN
     FOR r IN SELECT * FROM col_tsk
     WHERE col_tsk.col_id = NEW.col_id
     LOOP
-        IF NEW.task_start < r.task_end AND NEW.task_start > r.task_start THEN
+        IF NEW.task_id = r.task_id AND NEW.col_id = r.col_id AND NEW.schedule_id = r.schedule_id THEN
+            CONTINUE;
+        ELSIF NEW.task_start < r.task_end AND NEW.task_start >= r.task_start THEN
             RAISE EXCEPTION ''Task start time intersects another task'';
-        END IF;
-        IF NEW.task_end < r.task_end AND NEW.task_end > r.task_start THEN
+        ELSIF NEW.task_end <= r.task_end AND NEW.task_end > r.task_start THEN
             RAISE EXCEPTION ''Task end time intersects another task'';
         END IF;
     END LOOP;
@@ -151,13 +152,53 @@ END;
 '
 LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION check_task_insert_into_own_schedule()
+    RETURNS TRIGGER AS '
+DECLARE
+    schedule schedules%rowtype;
+    task tasks%rowtype;
+BEGIN
+    SELECT * FROM schedules WHERE schedules.id = NEW.schedule_id INTO schedule;
+    SELECT * FROM tasks WHERE tasks.id = NEW.task_id INTO task;
+
+    IF schedule.user_id <> task.user_id THEN
+        RAISE EXCEPTION ''Task can only be assigned to own schedule'';
+    END IF;
+    RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION check_column_schedule_id_match()
+    RETURNS TRIGGER AS '
+DECLARE
+    col columns%rowtype;
+BEGIN
+    SELECT * FROM columns WHERE columns.id = NEW.col_id INTO col;
+
+    IF col.schedule_id <> NEW.schedule_id THEN
+        RAISE EXCEPTION ''Schedule-column mismatch'';
+    END IF;
+    RETURN NEW;
+END;
+'
+LANGUAGE 'plpgsql';
+
 CREATE TRIGGER task_overflow_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
     EXECUTE PROCEDURE check_task_occurrences();
 
-CREATE TRIGGER column_capacity_check
+CREATE TRIGGER column_integrity_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE check_columns_capacity();
+    EXECUTE PROCEDURE check_columns_integrity();
+
+CREATE TRIGGER task_insert_into_own_schedule_check
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_task_insert_into_own_schedule();
+
+CREATE TRIGGER column_schedule_id_match_check
+    AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
+    EXECUTE PROCEDURE check_column_schedule_id_match();
 
 CREATE TRIGGER schedules_capacity_check
     AFTER INSERT OR UPDATE ON columns FOR EACH ROW
