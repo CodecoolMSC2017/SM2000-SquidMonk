@@ -56,9 +56,17 @@ class ColumnDaoImplTest {
             String name = "InsertColumn";
 
             columnDao.insertColumn(scheduleId, name);
-            List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(1);
-            assertEquals(14, columns.get(0).getId());
-            assertEquals("InsertColumn", columns.get(0).getName());
+            Column column = columnDao.findById(14);
+            assertEquals(14, column.getId());
+            assertEquals(name, column.getName());
+
+            columnDao.insertColumn(1, "new 2");
+            columnDao.insertColumn(1, "new 3");
+            columnDao.insertColumn(1, "new 4");
+            columnDao.insertColumn(1, "new 5");
+            columnDao.insertColumn(1, "new 6");
+            columnDao.insertColumn(1, "new 7");
+            assertThrows(SQLException.class, () -> columnDao.insertColumn(1, "new 8"));
         }
     }
 
@@ -74,7 +82,7 @@ class ColumnDaoImplTest {
 
             columnDao.updateName(id, name);
             Column columnUpdateName = columnDao.findById(id);
-            assertEquals("ColumnNameTest", columnUpdateName.getName());
+            assertEquals(name, columnUpdateName.getName());
 
         }
     }
