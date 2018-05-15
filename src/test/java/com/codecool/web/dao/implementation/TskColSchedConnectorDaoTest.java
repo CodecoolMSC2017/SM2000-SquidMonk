@@ -35,11 +35,11 @@ class TskColSchedConnectorDaoTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
 
-            Task task = new Task(1, "Csba Task 1", "Content");
+            Task task = new Task(1, 4, "Csba Task 1", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
-            assertEquals(4, task.getCol_id());
-            assertEquals(4, task.getSched_id());
+            assertEquals(4, task.getColId());
+            assertEquals(4, task.getSchedId());
             assertEquals(10, task.getStart());
             assertEquals(14, task.getEnd());
         }
@@ -52,11 +52,11 @@ class TskColSchedConnectorDaoTest {
 
             controlTable.insertTask(29, 12, 6, 6, 12);
 
-            Task task = new Task(29, "Csanád Task 1", "Content");
+            Task task = new Task(29, 7, "Csanád Task 1", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
-            assertEquals(12, task.getCol_id());
-            assertEquals(6, task.getSched_id());
+            assertEquals(12, task.getColId());
+            assertEquals(6, task.getSchedId());
             assertEquals(6, task.getStart());
             assertEquals(12, task.getEnd());
         }
@@ -69,11 +69,11 @@ class TskColSchedConnectorDaoTest {
 
             controlTable.updateTaskSchedule(30, 12, 6, 4, 5);
 
-            Task task = new Task(30, "Csanád Task 2", "Content");
+            Task task = new Task(30, 7, "Csanád Task 2", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
-            assertEquals(12, task.getCol_id());
-            assertEquals(6, task.getSched_id());
+            assertEquals(12, task.getColId());
+            assertEquals(6, task.getSchedId());
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
         }
@@ -86,7 +86,7 @@ class TskColSchedConnectorDaoTest {
 
             controlTable.updateTaskTime(30, 4, 5);
 
-            Task task = new Task(30, "Csanád Task 2", "Content");
+            Task task = new Task(30, 7, "Csanád Task 2", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
             assertEquals(4, task.getStart());
@@ -101,10 +101,10 @@ class TskColSchedConnectorDaoTest {
 
             controlTable.updateTaskColumn(30, 12, 4, 5);
 
-            Task task = new Task(30, "Csanád Task 2", "Content");
+            Task task = new Task(30, 7, "Csanád Task 2", "Content");
             task = controlTable.queryTaskConnectionData(task);
 
-            assertEquals(12, task.getCol_id());
+            assertEquals(12, task.getColId());
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
         }

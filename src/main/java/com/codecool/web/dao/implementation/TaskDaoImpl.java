@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
-    private final String queryTasks = "SELECT id, name, content FROM tasks ";
+    private final String queryTasks = "SELECT id, user_id, name, content FROM tasks ";
 
     public TaskDaoImpl(Connection connection) {
         super(connection);
@@ -89,9 +89,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
+        int userId = resultSet.getInt("user_id");
         String name = resultSet.getString("name");
         String content = resultSet.getString("content");
 
-        return new Task(id, name, content);
+        return new Task(id, userId, name, content);
     }
 }

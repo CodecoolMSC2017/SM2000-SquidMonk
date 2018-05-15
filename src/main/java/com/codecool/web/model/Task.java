@@ -2,13 +2,14 @@ package com.codecool.web.model;
 
 public class Task {
 
-    private final int id;
-    private int col_id, sched_id;
+    private final int id, userId;
+    private int colId, schedId;
     private String name, content;
     private int start, end;
 
-    public Task(int id, String name, String content) {
+    public Task(int id, int userId, String name, String content) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.content = content;
     }
@@ -34,12 +35,16 @@ public class Task {
         return end;
     }
 
-    public int getCol_id() {
-        return col_id;
+    public int getColId() {
+        return colId;
     }
 
-    public int getSched_id() {
-        return sched_id;
+    public int getSchedId() {
+        return schedId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     // Setters
@@ -59,11 +64,11 @@ public class Task {
         this.end = end;
     }
 
-    public void setCol_id(int col_id) {
-        this.col_id = col_id;
+    public void setColId(int col_id) {
+        this.colId = col_id;
     }
 
-    public void setSched_id(int sched_id) {
-        this.sched_id = sched_id;
+    public void setSchedId(int sched_id) {
+        this.schedId = sched_id;
     }
 }
