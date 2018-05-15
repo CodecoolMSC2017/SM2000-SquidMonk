@@ -90,8 +90,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     public List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException {
         List<DashboardTaskDto> tasks = new ArrayList<>();
-        String sql = "SELECT tasks.name, tasks.content, col_tsk.schedule_id from tasks\n" +
-                "LEFT JOIN col_tsk ON tasks.id = col_tsk.task_id WHERE user_id = ? ORDER BY tasks.id ASC";
+        String sql = "SELECT id, name, content, schedule_id FROM tasks " +
+                "LEFT JOIN col_tsk ON id = task_id WHERE user_id = ? ORDER BY id ASC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -104,10 +104,11 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     private DashboardTaskDto fetchDashboardTaskDto(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
         String content = resultSet.getString("content");
         int scheduleId = resultSet.getInt("schedule_id");
-        return new DashboardTaskDto(name, content, scheduleId);
+        return new DashboardTaskDto(id, name, content, scheduleId);
     }
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {
