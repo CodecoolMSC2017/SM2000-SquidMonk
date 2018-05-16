@@ -48,7 +48,7 @@ public class TskColSchedConnectorDao extends AbstractDao {
     }
 
     public List<Integer> queryTaskIdsByScheduleId(int schedId) throws SQLException {
-        String sql = "SELECT task_id FROM col_tsk WHERE sched_id = ?";
+        String sql = "SELECT task_id FROM col_tsk WHERE schedule_id = ?";
         List<Integer> taskIds = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, schedId);
