@@ -2,6 +2,7 @@ package com.codecool.web.servlet;
 
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
+import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.jsService.JsTaskService;
 
@@ -17,6 +18,23 @@ import java.sql.SQLException;
 public class TaskServlet extends AbstractServlet {
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            TaskDao taskDao = new TaskDaoImpl(connection);
+            TaskService taskService = new JsTaskService(taskDao);
+
+            int taskId = getTaskId(req.getRequestURI());
+            Task task = taskService.getById(taskId);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, task);
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (NumberFormatException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
+        }
+    }
+
+    @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new TaskDaoImpl(connection);
@@ -27,6 +45,7 @@ public class TaskServlet extends AbstractServlet {
             int taskId = getTaskId(req.getRequestURI());
 
             taskService.updateTask(taskId, newName, newContent);
+            resp.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {
@@ -43,6 +62,7 @@ public class TaskServlet extends AbstractServlet {
             int taskId = getTaskId(req.getRequestURI());
 
             taskService.deleteTask(taskId);
+            resp.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {

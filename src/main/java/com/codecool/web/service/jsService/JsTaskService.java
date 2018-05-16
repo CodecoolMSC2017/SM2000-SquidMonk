@@ -43,4 +43,9 @@ public class JsTaskService implements TaskService {
     public void deleteTask(int taskId) throws SQLException {
         taskDao.deleteTask(taskId);
     }
+
+    @Override
+    public Task getById(int taskId) throws SQLException {
+        return taskDao.findById(taskId);
+    }
 }

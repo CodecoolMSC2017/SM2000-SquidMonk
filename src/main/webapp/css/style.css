@@ -22,10 +22,6 @@
     text-align: center;
 }
 
-#main-content {
-    margin-top: 40px;
-}
-
 #welcome-text {
     text-align: center;
     font-size: 24px;
@@ -40,6 +36,7 @@
 body {
     font-family: "Roboto", helvetica, arial, sans-serif;
     text-rendering: optimizeLegibility;
+    margin: 0;
 }
 
 div.table-title {
@@ -112,7 +109,9 @@ div.table-title {
 .dash-table tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
-  border-top: 1px solid #22262e;
+  cursor: pointer;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
 }
 
 .dash-table tr:first-child {
