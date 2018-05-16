@@ -6,6 +6,7 @@ import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.ScheduleUserService;
+import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsScheduleService;
 import com.codecool.web.service.jsService.JsScheduleUserService;
 
@@ -51,6 +52,8 @@ public class ScheduleUserServlet extends AbstractServlet {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid user id");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 

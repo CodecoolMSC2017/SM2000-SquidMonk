@@ -91,7 +91,8 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
         List<DashboardScheduleDto> dbSchedDtoList = new ArrayList<>();
         String sql = "SELECT schedules.id, schedules.name, schedules.is_public, COUNT(task_id)\n" +
                 "FROM schedules LEFT JOIN col_tsk ON schedules.id = col_tsk.schedule_id\n" +
-                "WHERE schedules.user_id = ? GROUP BY schedules.id";
+                "WHERE schedules.user_id = ? GROUP BY schedules.id " +
+                "ORDER BY schedules.id DESC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
