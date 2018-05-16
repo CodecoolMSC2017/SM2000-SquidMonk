@@ -109,6 +109,8 @@ div.table-title {
   background:#4E5066;
   color:#FFFFFF;
   border-top: 1px solid #22262e;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
 }
 
 .dash-table tr:first-child {
