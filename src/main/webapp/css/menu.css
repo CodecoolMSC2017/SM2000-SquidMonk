@@ -60,3 +60,9 @@ body {
     text-align: left;
   }
 }
+
+#topnav-spacer {
+  height: 28px;
+  border: 0px;
+  background-color: #333
+}

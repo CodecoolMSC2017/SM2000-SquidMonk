@@ -161,6 +161,9 @@ function createScheduleRow(schedule) {
 function createTaskRow(task) {
     const entryTr = document.createElement('tr');
 
+    entryTr.setAttribute('data-task-id', task.id);
+    entryTr.addEventListener('click', getTask);
+
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = task.name;
 
