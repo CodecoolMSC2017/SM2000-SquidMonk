@@ -15,15 +15,13 @@ function onLoginResponse() {
         divEl.id = 'welcome-text';
         divEl.textContent = "Welcome, " + json.name + "!";
         mainContentEl.appendChild(divEl);
-        receiveSchedules();
-        receiveTasks();
+        showDashboard();
     } else {
         const messageEl = document.getElementById('message-content');
         messageEl.innerHTML = json.message;
         showContents(['login-content', 'message-content']);
     }
 }
-
 
 function onSchedMouseClick() {
     const currId = this.id;

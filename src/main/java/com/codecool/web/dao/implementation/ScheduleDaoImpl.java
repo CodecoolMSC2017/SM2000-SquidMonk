@@ -49,12 +49,11 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
     }
 
     @Override
-    public void insertSchedule(int userId, String name, boolean isPublic) throws SQLException {
-        String sql = "INSERT INTO schedules (user_id, name, is_public) VALUES (?, ?, ?) ";
+    public void insertSchedule(int userId, String name) throws SQLException {
+        String sql = "INSERT INTO schedules (user_id, name) VALUES (?, ?) ";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setString(2, name);
-            statement.setBoolean(3, isPublic);
             executeInsert(statement);
         }
     }

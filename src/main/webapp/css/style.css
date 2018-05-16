@@ -36,6 +36,7 @@
 body {
     font-family: "Roboto", helvetica, arial, sans-serif;
     text-rendering: optimizeLegibility;
+    margin: 0;
 }
 
 div.table-title {
@@ -108,6 +109,7 @@ div.table-title {
 .dash-table tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
+  cursor: pointer;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
 }

@@ -1,16 +1,13 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dao.ColumnDao;
-import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
-import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleDto;
-import com.codecool.web.model.Schedule;
 import com.codecool.web.service.ScheduleService;
-import com.codecool.web.service.jsService.jsScheduleService;
+import com.codecool.web.service.jsService.JsScheduleService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +29,7 @@ public class ScheduleServlet extends AbstractServlet {
             ColumnDao columnDao = new ColumnDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
-            ScheduleService scheduleService = new jsScheduleService(columnDao, taskDao, controlTable);
+            ScheduleService scheduleService = new JsScheduleService(columnDao, taskDao, controlTable);
 
             ScheduleDto scheduleDto = new ScheduleDto(schedId, scheduleService.getColumnsByScheduleId(schedId), scheduleService.getTasksByScheduleId(schedId));
             resp.setStatus(HttpServletResponse.SC_OK);

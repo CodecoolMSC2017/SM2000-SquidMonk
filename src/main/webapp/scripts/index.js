@@ -29,7 +29,7 @@ function onLoad() {
     document.getElementById('register-button').addEventListener('click', onRegisterClick);
     document.getElementById('login-button').addEventListener('click', onLoginClick);
     document.getElementById('logout-button').addEventListener('click', onLogoutClick);
-    document.getElementById('menu-dashboard').addEventListener('click', onMenuDashboardClick);
+    document.getElementById('menu-dashboard').addEventListener('click', showDashboard);
     document.getElementById('menu-profile').addEventListener('click', onMenuProfileClick);
 }
 
