@@ -352,3 +352,15 @@ div.table-title {
 .prof-table td:first-child {
     width: 25%;
 }
+
+.prof-table tr:nth-child(odd) td:last-child {
+  background:#EBEBEB;
+}
+
+.prof-table tr:nth-child(odd) td:nth-child(even) {
+  background:#EBEBEB;
+}
+
+.prof-table tr:nth-child(odd):hover td:last-child {
+  background:#4E5066;
+}
