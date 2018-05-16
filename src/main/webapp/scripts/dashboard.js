@@ -13,14 +13,14 @@ function onCreateScheduleResponse() {
     }
 }
 
-<<<<<<< HEAD
 function onCreateTaskResponse() {
     if (this.status == OK) {
         requestTasks();
     } else if (this.status == BAD_REQUEST) {
         console.log('bad request');
     }
-=======
+}
+
 function onBadRequestClick() {
     const createButtonRow = document.getElementById('schedule-create-button-row');
     createButtonRow.innerHTML = '';
@@ -31,7 +31,6 @@ function onBadRequestClick() {
     createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
 
     createButtonRow.appendChild(createButton);
->>>>>>> df2796216c469a73f9c7a21ccfe88b193b3a36db
 }
 
 function onCreateScheduleSubmitButtonClicked() {
