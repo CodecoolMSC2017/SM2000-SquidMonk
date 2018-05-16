@@ -1,9 +1,62 @@
 
-function onCreateScheduleResponse() {
-    if (this.status == BAD_REQUEST) {
+function onScheduleBadRequestClick() {
+    const createButtonRow = document.getElementById('schedule-create-button-row');
+    createButtonRow.removeEventListener('click', onScheduleBadRequestClick);
+    createButtonRow.innerHTML = '';
+    const createButton = document.createElement('td');
 
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new schedule';
+    createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
+
+    createButtonRow.appendChild(createButton);
+}
+
+function onTaskBadRequestClick() {
+    const createButtonRow = document.getElementById('task-create-button-row');
+    createButtonRow.removeEventListener('click', onTaskBadRequestClick);
+    createButtonRow.innerHTML = '';
+    const createButton = document.createElement('td');
+
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new Task';
+    createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
+
+    createButtonRow.appendChild(createButton);
+}
+
+function onCreateScheduleResponse() {
+    if (this.status == OK) {
+        requestSchedules();
+    } else if (this.status == BAD_REQUEST) {
+        const createButtonRow = document.getElementById('schedule-create-button-row');
+        createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
+        const newTdEl = document.createElement('td');
+        newTdEl.colSpan = '3';
+        newTdEl.textContent = message.message + ' Click here to dismiss';
+        createButtonRow.appendChild(newTdEl);
+        createButtonRow.addEventListener('click', onScheduleBadRequestClick);
     }
-    showDashboard();
+}
+
+function onCreateTaskResponse() {
+    if (this.status == OK) {
+        requestTasks();
+    } else if (this.status == BAD_REQUEST) {
+        const createButtonRow = document.getElementById('task-create-button-row');
+        createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
+        const newTdEl = document.createElement('td');
+        newTdEl.colSpan = '3';
+        newTdEl.textContent = message.message + ' Click here to dismiss';
+        createButtonRow.appendChild(newTdEl);
+        createButtonRow.addEventListener('click', onTaskBadRequestClick);
+    }
 }
 
 function onCreateScheduleSubmitButtonClicked() {
@@ -18,6 +71,18 @@ function onCreateScheduleSubmitButtonClicked() {
     xhr.send(params);
 }
 
+function onCreateTaskSubmitButtonClicked() {
+    const inputEl = document.getElementById('create-task-name-input');
+
+    const params = new URLSearchParams();
+    params.append('name', inputEl.value);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onCreateTaskResponse);
+    xhr.open('POST', 'protected/tasks/user');
+    xhr.send(params);
+}
+
 function onCreateScheduleButtonClicked() {
     this.removeEventListener('click', onCreateScheduleButtonClicked);
 
@@ -27,10 +92,12 @@ function onCreateScheduleButtonClicked() {
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-schedule-name-input';
-    inputEl.setAttribute('placeholder', 'Name');
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of the schedule');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
     buttonEl.textContent = 'Create';
     buttonEl.addEventListener('click', onCreateScheduleSubmitButtonClicked);
 
@@ -40,7 +107,26 @@ function onCreateScheduleButtonClicked() {
 }
 
 function onCreateTaskButtonClicked() {
-    const tdEl = this.children[0];
+    this.removeEventListener('click', onCreateTaskButtonClicked);
+
+    const td1El = this.children[0];
+    td1El.textContent = '';
+    td1El.colSpan = '2';
+    
+    const inputEl = document.createElement('input');
+    inputEl.id = 'create-task-name-input';
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of new task');
+    td1El.appendChild(inputEl);
+
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
+    buttonEl.textContent = 'Create';
+    buttonEl.addEventListener('click', onCreateTaskSubmitButtonClicked);
+
+    const td2El = document.createElement('td');
+    td2El.appendChild(buttonEl);
+    this.appendChild(td2El);
 }
 
 function createTableHead(title) {
@@ -156,6 +242,7 @@ function onSchedulesReceived() {
 
     const createButtonRow = document.createElement('tr');
     createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
+    createButtonRow.id = 'schedule-create-button-row';
     createButtonRow.appendChild(createButton);
 
     const scheduleTable = document.createElement('table');
@@ -192,6 +279,7 @@ function onTasksReceived() {
 
     const createButtonRow = document.createElement('tr');
     createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
+    createButtonRow.id = 'task-create-button-row';
     createButtonRow.appendChild(createButton);
 
     const taskTable = document.createElement('table');
@@ -243,35 +331,18 @@ function requestTasks() {
 function setupWelcomeDiv() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    let welcomeDiv = document.getElementById('welcome-text');
-
-    if (welcomeDiv == null) {
-        welcomeDiv = document.createElement('div');
-        welcomeDiv.id = 'welcome-text';
-
-        const mainDivEl = document.getElementById('main-content');
-        mainDivEl.appendChild(welcomeDiv);
-    }
+    const welcomeDiv = document.createElement('div');
+    welcomeDiv.id = 'welcome-text';
     welcomeDiv.textContent = "Welcome, " + user.name + "!";
-}
-
-function clearMainDivForDashboard() {
-    setupWelcomeDiv();
-
-    const ids = ['welcome-text', 'dashboard-task-table', 'dashboard-schedule-table'];
 
     const mainDivEl = document.getElementById('main-content');
-    for (let i = mainDivEl.children.length - 1; i >= 0; i--) {
-        const child = mainDivEl.children[i];
-
-        if (!ids.includes(child.id)) {
-            child.remove();
-        }
-    }
+    mainDivEl.appendChild(welcomeDiv);
 }
 
 function showDashboard() {
-    clearMainDivForDashboard();
+    removeAllChildren(document.getElementById('main-content'));
+
+    setupWelcomeDiv();
 
     requestSchedules();
     requestTasks();

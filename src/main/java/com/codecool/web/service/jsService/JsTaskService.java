@@ -24,7 +24,7 @@ public class JsTaskService implements TaskService {
     @Override
     public void insertTask(int userId, String name, String content) throws SQLException, ServiceException {
         if (name == null || name.equals("")) {
-            throw new ServiceException("Name can't be empty");
+            throw new ServiceException("Task name can not be empty!");
         }
         taskDao.insertTask(userId, name, content);
     }
