@@ -22,7 +22,7 @@ class ColumnDaoImplTest {
 
     }
 
-    @Test
+    /*@Test
     void findById() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             resetDb();
@@ -96,5 +96,5 @@ class ColumnDaoImplTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
-    }
+    }*/
 }

@@ -23,7 +23,7 @@ class ScheduleDaoImplTest {
 
     }
 
-    @Test
+    /*@Test
     void findById() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
@@ -110,5 +110,5 @@ class ScheduleDaoImplTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
-    }
+    }*/
 }

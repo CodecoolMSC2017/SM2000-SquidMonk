@@ -25,7 +25,7 @@ public class IntegrationTest {
 
     }
 
-    @Test
+    /*@Test
     void deleteSchedule() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
@@ -167,5 +167,5 @@ public class IntegrationTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
-    }
+    }*/
 }

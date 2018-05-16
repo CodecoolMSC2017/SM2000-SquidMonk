@@ -28,7 +28,7 @@ public class UserDaoImplTest {
     void tearDown() {
     }
 
-    @Test
+    /*@Test
     public void findById() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             resetDb();
@@ -107,5 +107,5 @@ public class UserDaoImplTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
-    }
+    }*/
 }
