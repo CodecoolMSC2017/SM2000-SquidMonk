@@ -158,3 +158,14 @@ div.table-title {
 .dash-table th.schedule {
     width: 6%;
 }
+
+/* Schedule table style */
+.schedule-table {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emptyelement {
+  width: 5%;
+}
