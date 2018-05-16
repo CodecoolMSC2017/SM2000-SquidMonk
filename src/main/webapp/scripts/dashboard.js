@@ -1,4 +1,30 @@
 
+function onScheduleBadRequestClick() {
+    const createButtonRow = document.getElementById('schedule-create-button-row');
+    createButtonRow.removeEventListener('click', onScheduleBadRequestClick);
+    createButtonRow.innerHTML = '';
+    const createButton = document.createElement('td');
+
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new schedule';
+    createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
+
+    createButtonRow.appendChild(createButton);
+}
+
+function onTaskBadRequestClick() {
+    const createButtonRow = document.getElementById('task-create-button-row');
+    createButtonRow.removeEventListener('click', onTaskBadRequestClick);
+    createButtonRow.innerHTML = '';
+    const createButton = document.createElement('td');
+
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new Task';
+    createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
+
+    createButtonRow.appendChild(createButton);
+}
+
 function onCreateScheduleResponse() {
     if (this.status == OK) {
         requestSchedules();
@@ -9,7 +35,7 @@ function onCreateScheduleResponse() {
         newTdEl.colSpan = '3';
         newTdEl.textContent = 'Schedule name can not be empty!';
         createButtonRow.appendChild(newTdEl);
-        createButtonRow.addEventListener('click', onBadRequestClick);
+        createButtonRow.addEventListener('click', onScheduleBadRequestClick);
     }
 }
 
@@ -17,20 +43,14 @@ function onCreateTaskResponse() {
     if (this.status == OK) {
         requestTasks();
     } else if (this.status == BAD_REQUEST) {
-        console.log('bad request');
+        const createButtonRow = document.getElementById('task-create-button-row');
+        createButtonRow.innerHTML = '';
+        const newTdEl = document.createElement('td');
+        newTdEl.colSpan = '3';
+        newTdEl.textContent = 'Task name can not be empty!';
+        createButtonRow.appendChild(newTdEl);
+        createButtonRow.addEventListener('click', onTaskBadRequestClick);
     }
-}
-
-function onBadRequestClick() {
-    const createButtonRow = document.getElementById('schedule-create-button-row');
-    createButtonRow.innerHTML = '';
-    const createButton = document.createElement('td');
-
-    createButton.colSpan = '3';
-    createButton.textContent = 'Create new schedule';
-    createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
-
-    createButtonRow.appendChild(createButton);
 }
 
 function onCreateScheduleSubmitButtonClicked() {
