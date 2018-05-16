@@ -56,16 +56,15 @@ class ScheduleDaoImplTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             int userId = 3;
             String name = "Alexa sched insert test";
-            boolean isPublic = true;
 
             ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(con);
-            scheduleDao.insertSchedule(userId, name, isPublic);
+            scheduleDao.insertSchedule(userId, name);
 
             List<Schedule> schedules = new ScheduleDaoImpl(con).findAllByUserId(3);
             assertEquals(2, schedules.size());
             assertEquals(15, schedules.get(1).getId());
             assertEquals(name, schedules.get(1).getName());
-            assertTrue(schedules.get(1).isPublic());
+            assertFalse(schedules.get(1).isPublic());
         }
     }
 
