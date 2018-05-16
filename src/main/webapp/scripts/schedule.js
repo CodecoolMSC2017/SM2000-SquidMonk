@@ -34,7 +34,7 @@ function createTimeslotRows(mainDiv, tableEl, schedule) {
         for (let n = 0; n < schedule.columns.length; n++) {
             const column = schedule.columns[n];
             const tdEl = document.createElement('td');
-            tdEl.textContent = "No task for this slot";
+            tdEl.textContent = "";
 
             /* Check if there are tasks for this column's current timeslot */
             for (let j = 0; j < schedule.tasks.length; j++) {
@@ -48,6 +48,10 @@ function createTimeslotRows(mainDiv, tableEl, schedule) {
                         tdEl.textContent = task.name;
                     }
                 }
+            }
+
+            if (tdEl.textContent === "") {
+                tdEl.setAttribute('class', 'no-task');
             }
 
             trEl.appendChild(tdEl);

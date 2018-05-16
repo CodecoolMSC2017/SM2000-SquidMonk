@@ -1,9 +1,10 @@
 
 function onCreateScheduleResponse() {
-    if (this.status == BAD_REQUEST) {
-
+    if (this.status == OK) {
+        requestSchedules();
+    } else if (this.status == BAD_REQUEST) {
+        console.log('bad request');
     }
-    showDashboard();
 }
 
 function onCreateScheduleSubmitButtonClicked() {
@@ -243,35 +244,18 @@ function requestTasks() {
 function setupWelcomeDiv() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    let welcomeDiv = document.getElementById('welcome-text');
-
-    if (welcomeDiv == null) {
-        welcomeDiv = document.createElement('div');
-        welcomeDiv.id = 'welcome-text';
-
-        const mainDivEl = document.getElementById('main-content');
-        mainDivEl.appendChild(welcomeDiv);
-    }
+    const welcomeDiv = document.createElement('div');
+    welcomeDiv.id = 'welcome-text';
     welcomeDiv.textContent = "Welcome, " + user.name + "!";
-}
-
-function clearMainDivForDashboard() {
-    setupWelcomeDiv();
-
-    const ids = ['welcome-text', 'dashboard-task-table', 'dashboard-schedule-table'];
 
     const mainDivEl = document.getElementById('main-content');
-    for (let i = mainDivEl.children.length - 1; i >= 0; i--) {
-        const child = mainDivEl.children[i];
-
-        if (!ids.includes(child.id)) {
-            child.remove();
-        }
-    }
+    mainDivEl.appendChild(welcomeDiv);
 }
 
 function showDashboard() {
-    clearMainDivForDashboard();
+    removeAllChildren(document.getElementById('main-content'));
+
+    setupWelcomeDiv();
 
     requestSchedules();
     requestTasks();
