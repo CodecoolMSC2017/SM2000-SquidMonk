@@ -1,10 +1,39 @@
 
+function onCreateScheduleSubmitButtonClicked() {
+    const inputEl = document.getElementById('create-schedule-name-input');
+
+    const params = new URLSearchParams();
+    params.append('name', inputEl.value);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', showDashboard);
+    xhr.open('POST', 'protected/schedules/user');
+    xhr.send(params);
+}
+
 function onCreateScheduleButtonClicked() {
-    console.log('add schedule');
+    this.removeEventListener('click', onCreateScheduleButtonClicked);
+
+    const td1El = this.children[0];
+    td1El.textContent = '';
+    td1El.colSpan = '2';
+    
+    const inputEl = document.createElement('input');
+    inputEl.id = 'create-schedule-name-input';
+    inputEl.setAttribute('placeholder', 'name');
+    td1El.appendChild(inputEl);
+
+    const buttonEl = document.createElement('button');
+    buttonEl.textContent = 'Create';
+    buttonEl.addEventListener('click', onCreateScheduleSubmitButtonClicked);
+
+    const td2El = document.createElement('td');
+    td2El.appendChild(buttonEl);
+    this.appendChild(td2El);
 }
 
 function onCreateTaskButtonClicked() {
-    console.log('add task');
+    const tdEl = this.children[0];
 }
 
 function createTableHead(title) {
@@ -116,9 +145,9 @@ function onSchedulesReceived() {
     const createButton = document.createElement('td');
     createButton.colSpan = '3';
     createButton.textContent = 'Create new schedule';
-    createButton.addEventListener('click', onCreateScheduleButtonClicked);
 
     const createButtonRow = document.createElement('tr');
+    createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
     createButtonRow.appendChild(createButton);
 
     const scheduleTable = document.createElement('table');
@@ -145,9 +174,9 @@ function onTasksReceived() {
     const createButton = document.createElement('td');
     createButton.colSpan = '3';
     createButton.textContent = 'Create new task';
-    createButton.addEventListener('click', onCreateTaskButtonClicked);
 
     const createButtonRow = document.createElement('tr');
+    createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
     createButtonRow.appendChild(createButton);
 
     const taskTable = document.createElement('table');

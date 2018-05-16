@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class jsScheduleService implements ScheduleService {
+public class JsScheduleService implements ScheduleService {
 
     private ColumnDao columnDao;
     private TskColSchedConnectorDao controlTable;
     private TaskDao taskDao;
 
-    public jsScheduleService(ColumnDao columnDao, TaskDao taskDao, TskColSchedConnectorDao controlTable) {
+    public JsScheduleService(ColumnDao columnDao, TaskDao taskDao, TskColSchedConnectorDao controlTable) {
         this.columnDao = columnDao;
         this.taskDao = taskDao;
         this.controlTable = controlTable;

@@ -210,3 +210,33 @@ div.table-title {
 .dash-table th.schedule {
     width: 6%;
 }
+
+/* Schedule table style */
+.schedule-table {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emptyelement {
+  width: 5%;
+}
+
+.hv-centered-div {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 800px;
+  height: 200px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.hv-centered-text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}

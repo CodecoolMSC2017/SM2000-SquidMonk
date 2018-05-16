@@ -20,7 +20,7 @@ class TskColSchedConnectorDaoTest {
     void setUp() {
     }
 
-    @Test
+    /*@Test
     void queryTaskPresent() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
@@ -126,5 +126,5 @@ class TskColSchedConnectorDaoTest {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
             ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
-    }
+    }*/
 }

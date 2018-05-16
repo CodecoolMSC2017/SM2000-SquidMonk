@@ -4,10 +4,12 @@ import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 
 import java.util.List;
+import java.util.Map;
 
 public class ScheduleDto {
 
     private int scheduleId;
+    private Map<Column, Task> columnTaskMap;
     private List<Column> columns;
     private List<Task> tasks;
 
