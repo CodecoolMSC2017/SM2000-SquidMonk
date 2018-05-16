@@ -1,4 +1,12 @@
 
+function onCreateScheduleButtonClicked() {
+    console.log('add schedule');
+}
+
+function onCreateTaskButtonClicked() {
+    console.log('add task');
+}
+
 function createTableHead(title) {
     const tableHeadTr = document.createElement('tr');
     const tableHeadTh = document.createElement('th');
@@ -105,9 +113,18 @@ function onSchedulesReceived() {
     scheduleDiv.className = 'dash-table';
     scheduleDiv.style.float = 'left';
 
+    const createButton = document.createElement('td');
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new schedule';
+    createButton.addEventListener('click', onCreateScheduleButtonClicked);
+
+    const createButtonRow = document.createElement('tr');
+    createButtonRow.appendChild(createButton);
+
     const scheduleTable = document.createElement('table');
     scheduleTable.className = 'dashboard-table';
     scheduleTable.appendChild(createTableHead('My Schedules'));
+    scheduleTable.appendChild(createButtonRow);
     scheduleTable.appendChild(createScheduleTableHead());
 
     for (let i = 0; i < schedules.length; i++) {
@@ -125,9 +142,18 @@ function onTasksReceived() {
     taskDiv.className = 'dash-table';
     taskDiv.style.float = 'right';
 
+    const createButton = document.createElement('td');
+    createButton.colSpan = '3';
+    createButton.textContent = 'Create new task';
+    createButton.addEventListener('click', onCreateTaskButtonClicked);
+
+    const createButtonRow = document.createElement('tr');
+    createButtonRow.appendChild(createButton);
+
     const taskTable = document.createElement('table');
     taskTable.className = 'dashboard-table';
     taskTable.appendChild(createTableHead('My Tasks'));
+    taskTable.appendChild(createButtonRow);
     taskTable.appendChild(createTaskTableHead());
 
     for (let i = 0; i < tasks.length; i++) {

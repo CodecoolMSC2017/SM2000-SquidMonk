@@ -109,6 +109,7 @@ div.table-title {
 .dash-table tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
+  cursor: pointer;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
 }
