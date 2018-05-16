@@ -42,11 +42,10 @@ public class TaskUserServlet extends AbstractServlet {
             TaskService taskService = new JsTaskService(taskDao);
 
             String name = req.getParameter("name");
-            String content = req.getParameter("content");
             User user = (User) req.getSession().getAttribute("user");
             int userId = user.getId();
 
-            taskService.insertTask(userId, name, content);
+            taskService.insertTask(userId, name, "");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {

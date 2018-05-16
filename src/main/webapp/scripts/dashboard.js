@@ -7,6 +7,14 @@ function onCreateScheduleResponse() {
     }
 }
 
+function onCreateTaskResponse() {
+    if (this.status == OK) {
+        requestTasks();
+    } else if (this.status == BAD_REQUEST) {
+        console.log('bad request');
+    }
+}
+
 function onCreateScheduleSubmitButtonClicked() {
     const inputEl = document.getElementById('create-schedule-name-input');
 
@@ -16,6 +24,18 @@ function onCreateScheduleSubmitButtonClicked() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onCreateScheduleResponse);
     xhr.open('POST', 'protected/schedules/user');
+    xhr.send(params);
+}
+
+function onCreateTaskSubmitButtonClicked() {
+    const inputEl = document.getElementById('create-task-name-input');
+
+    const params = new URLSearchParams();
+    params.append('name', inputEl.value);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onCreateTaskResponse);
+    xhr.open('POST', 'protected/tasks/user');
     xhr.send(params);
 }
 
@@ -41,7 +61,24 @@ function onCreateScheduleButtonClicked() {
 }
 
 function onCreateTaskButtonClicked() {
-    const tdEl = this.children[0];
+    this.removeEventListener('click', onCreateTaskButtonClicked);
+
+    const td1El = this.children[0];
+    td1El.textContent = '';
+    td1El.colSpan = '2';
+    
+    const inputEl = document.createElement('input');
+    inputEl.id = 'create-task-name-input';
+    inputEl.setAttribute('placeholder', 'Name');
+    td1El.appendChild(inputEl);
+
+    const buttonEl = document.createElement('button');
+    buttonEl.textContent = 'Create';
+    buttonEl.addEventListener('click', onCreateTaskSubmitButtonClicked);
+
+    const td2El = document.createElement('td');
+    td2El.appendChild(buttonEl);
+    this.appendChild(td2El);
 }
 
 function createTableHead(title) {
