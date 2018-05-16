@@ -31,9 +31,12 @@ function onCreateScheduleResponse() {
     } else if (this.status == BAD_REQUEST) {
         const createButtonRow = document.getElementById('schedule-create-button-row');
         createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = 'Schedule name can not be empty!';
+        newTdEl.textContent = message.message + ' Click here to dismiss';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onScheduleBadRequestClick);
     }
@@ -45,9 +48,12 @@ function onCreateTaskResponse() {
     } else if (this.status == BAD_REQUEST) {
         const createButtonRow = document.getElementById('task-create-button-row');
         createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = 'Task name can not be empty!';
+        newTdEl.textContent = message.message + ' Click here to dismiss';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onTaskBadRequestClick);
     }
@@ -86,10 +92,12 @@ function onCreateScheduleButtonClicked() {
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-schedule-name-input';
-    inputEl.setAttribute('placeholder', 'Name');
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of the schedule');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
     buttonEl.textContent = 'Create';
     buttonEl.addEventListener('click', onCreateScheduleSubmitButtonClicked);
 
@@ -107,10 +115,12 @@ function onCreateTaskButtonClicked() {
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-task-name-input';
-    inputEl.setAttribute('placeholder', 'Name');
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of new task');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
     buttonEl.textContent = 'Create';
     buttonEl.addEventListener('click', onCreateTaskSubmitButtonClicked);
 

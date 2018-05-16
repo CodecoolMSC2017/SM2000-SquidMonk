@@ -24,7 +24,7 @@ public class JsScheduleUserService implements ScheduleUserService {
     @Override
     public void addSchedule(int userId, String name) throws SQLException, ServiceException {
         if (name == null || name.equals("")) {
-            throw new ServiceException("Name can't be empty");
+            throw new ServiceException("Schedule name can not be empty!");
         }
         scheduleDao.insertSchedule(userId, name);
     }
