@@ -39,9 +39,7 @@
     color: white;
 }
 
-.form-table input[type=email],
-.form-table input[type=password],
-.form-table input[type=text] {
+.form-table input {
     width: 76.2%;
     background-color: white;
     color: black;
@@ -57,11 +55,13 @@
     cursor: auto;
 }
 
-.form-table input[type=email]:focus,
-.form-table input[type=password]:focus,
-.form-table input[type=text]:focus {
+.form-table input:focus {
     background-color: #555555;
     color: white;
+}
+
+.form-table input:focus::-webkit-input-placeholder {
+    color: #555555;
 }
 
 #message-content {
