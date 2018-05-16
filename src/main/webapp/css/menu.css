@@ -23,6 +23,8 @@
 #topnav-content a:hover {
   background-color: #ddd;
   color: black;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
 }
 
 #active {
