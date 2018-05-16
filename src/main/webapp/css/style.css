@@ -168,6 +168,20 @@ div.table-title {
   margin-right: auto;
 }
 
+.schedule-table th {
+  font-size: 1.2em;
+}
+
+/*.schedule-table th, td {
+
+}*/
+
+.no-task {
+  background-color: green;
+  height: 30px;
+  width: 150px;
+}
+
 .emptyelement {
   width: 5%;
 }
