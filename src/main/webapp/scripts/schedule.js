@@ -8,13 +8,14 @@ function createHeaderRow(mainDiv, schedule) {
         
         const thEl = document.createElement('th');
         thEl.textContent = column.name;
-        /*thEl.setAttribute('id', 'column-id:' + column.id);*/
-
-        const emptyThEl = document.createElement('th');
-        emptyThEl.setAttribute('class', 'emptyelement');
 
         trEl.appendChild(thEl);
-        trEl.appendChild(emptyThEl);
+
+        if (i < (schedule.columns.length - 1)) {
+            const emptyThEl = document.createElement('th');
+            emptyThEl.setAttribute('class', 'emptyelement');
+            trEl.appendChild(emptyThEl);
+        }
     }
 
     tableEl.appendChild(trEl);
@@ -49,15 +50,37 @@ function createTimeslotRows(mainDiv, tableEl, schedule) {
                 }
             }
 
-            const emptyTdEl = document.createElement('td');
-            emptyTdEl.setAttribute('class', 'emptyelement');
-
             trEl.appendChild(tdEl);
-            trEl.appendChild(emptyTdEl);
+
+            if (n < (schedule.columns.length - 1)) {
+                const emptyTdEl = document.createElement('td');
+                emptyTdEl.setAttribute('class', 'emptyelement');
+
+                trEl.appendChild(emptyTdEl);
+            }
         }
 
         tableEl.appendChild(trEl);
     }
+}
+
+function noColumnMessage(mainDiv){
+    const messageDiv = document.createElement('div');
+    messageDiv.setAttribute('class', 'hv-centered-div');
+
+    const hEl = document.createElement('h1');
+    hEl.setAttribute('class', 'hv-centered-text');
+    hEl.textContent = "You don't have any schedules defined!";
+
+    const buttonEl = document.createElement('button');
+    buttonEl.textContent = "Add some!";
+
+    const brEl = document.createElement('br');
+
+    messageDiv.appendChild(hEl);
+    messageDiv.appendChild(brEl);
+    messageDiv.appendChild(buttonEl);
+    mainDiv.appendChild(messageDiv);
 }
 
 function onScheduleReceived() {
@@ -66,23 +89,8 @@ function onScheduleReceived() {
     const schedule = JSON.parse(this.responseText);
 
     if (schedule.columns.length == 0) {
-
-        const messageDiv = document.createElement('div');
-        messageDiv.setAttribute('class', 'hv-centered-div');
-
-        const hEl = document.createElement('h1');
-        hEl.setAttribute('class', 'hv-centered-text');
-        hEl.textContent = "You don't have any schedules defined!";
-
-        const buttonEl = document.createElement('button');
-        buttonEl.textContent = "Add some!";
-
-        const brEl = document.createElement('br');
-
-        messageDiv.appendChild(hEl);
-        messageDiv.appendChild(brEl);
-        messageDiv.appendChild(buttonEl);
-        mainDiv.appendChild(messageDiv);
+        /* If no columns show this */
+        noColumnMessage(mainDiv);
 
     } else {
         /* Create first header row */
