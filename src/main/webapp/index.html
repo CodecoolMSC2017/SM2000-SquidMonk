@@ -27,13 +27,17 @@
 <div id="login-content" class="content">
     <form id="login-form" onsubmit="return false">
         <table class="form-table">
-            <tr><th colspan="2">Login</th></tr>
-            <tr><td colspan="2">
-                <input name="email" placeholder="E-mail" required />
-            </td></tr>
-            <tr><td colspan="2">
-                <input name="password" type="password" placeholder="Password" required />
-            </td></tr>
+            <tr><th colspan="2"><h1>Login</h1></th></tr>
+            <tr>
+                <td colspan="2">
+                    <input name="email" type="text" placeholder="E-mail" required />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input name="password" type="password" placeholder="Password" required />
+                </td>
+            </tr>
             <tr>
                 <td><button id="login-button">Login</button></td>
                 <td><button id="register-button" type="button">Register</button></td>
@@ -45,12 +49,12 @@
 <div id="register-content" class="hidden content">
     <form id="register-form" onsubmit="return false">
         <table class="form-table">
-            <tr><th colspan="2">Register</th></tr>
+            <tr><th colspan="2"><h1>Register</h1></th></tr>
             <tr><td colspan="2">
-                <input name="name" placeholder="Name" required />
+                <input type="text" name="name" placeholder="Name" required />
             </td></tr>
             <tr><td colspan="2">
-                <input name="email" placeholder="E-mail" required />
+                <input type="text" name="email" placeholder="E-mail" required />
             </td></tr>
             <tr><td colspan="2">
                 <input name="password" placeholder="Password" type="password" required />

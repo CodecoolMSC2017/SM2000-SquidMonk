@@ -3,6 +3,7 @@ package com.codecool.web.servlet;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dto.DashboardTaskDto;
+import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsTaskService;
@@ -42,7 +43,8 @@ public class TaskUserServlet extends AbstractServlet {
 
             String name = req.getParameter("name");
             String content = req.getParameter("content");
-            int userId = getUserId(req.getRequestURI());
+            User user = (User) req.getSession().getAttribute("user");
+            int userId = user.getId();
 
             taskService.insertTask(userId, name, content);
         } catch (SQLException e) {

@@ -1,4 +1,11 @@
 
+function onCreateScheduleResponse() {
+    if (this.status == BAD_REQUEST) {
+
+    }
+    showDashboard();
+}
+
 function onCreateScheduleSubmitButtonClicked() {
     const inputEl = document.getElementById('create-schedule-name-input');
 
@@ -6,7 +13,7 @@ function onCreateScheduleSubmitButtonClicked() {
     params.append('name', inputEl.value);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', showDashboard);
+    xhr.addEventListener('load', onCreateScheduleResponse);
     xhr.open('POST', 'protected/schedules/user');
     xhr.send(params);
 }
@@ -20,7 +27,7 @@ function onCreateScheduleButtonClicked() {
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-schedule-name-input';
-    inputEl.setAttribute('placeholder', 'name');
+    inputEl.setAttribute('placeholder', 'Name');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
@@ -141,6 +148,7 @@ function onSchedulesReceived() {
     const scheduleDiv = document.createElement('div');
     scheduleDiv.className = 'dash-table';
     scheduleDiv.style.float = 'left';
+    scheduleDiv.id = 'dashboard-schedule-table';
 
     const createButton = document.createElement('td');
     createButton.colSpan = '3';
@@ -160,7 +168,13 @@ function onSchedulesReceived() {
         const schedule = schedules[i];
         scheduleTable.appendChild(createScheduleRow(schedule));
     }
-    scheduleDiv.appendChild(scheduleTable)
+    scheduleDiv.appendChild(scheduleTable);
+
+    const oldTable = document.getElementById('dashboard-schedule-table');
+    if (oldTable != null) {
+        oldTable.remove();
+    }
+
     mainContentEl.appendChild(scheduleDiv);
 }
 
@@ -170,6 +184,7 @@ function onTasksReceived() {
     const taskDiv = document.createElement('div');
     taskDiv.className = 'dash-table';
     taskDiv.style.float = 'right';
+    taskDiv.id = 'dashboard-task-table';
 
     const createButton = document.createElement('td');
     createButton.colSpan = '3';
@@ -190,6 +205,12 @@ function onTasksReceived() {
         taskTable.appendChild(createTaskRow(task));
     }
     taskDiv.appendChild(taskTable);
+
+    const oldTable = document.getElementById('dashboard-task-table');
+    if (oldTable != null) {
+        oldTable.remove();
+    }
+
     mainContentEl.appendChild(taskDiv);
 }
 
@@ -219,19 +240,41 @@ function requestTasks() {
     xhr.send(params);
 }
 
-function showDashboard() {
-    mainContentEl = document.getElementById('main-content');
-    mainContentEl.textContent = '';
-
+function setupWelcomeDiv() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const divEl = document.createElement('div');
-    divEl.id = 'welcome-text';
-    divEl.textContent = "Welcome, " + user.name + "!";
+    let welcomeDiv = document.getElementById('welcome-text');
 
-    mainContentEl.appendChild(divEl);
+    if (welcomeDiv == null) {
+        welcomeDiv = document.createElement('div');
+        welcomeDiv.id = 'welcome-text';
+
+        const mainDivEl = document.getElementById('main-content');
+        mainDivEl.appendChild(welcomeDiv);
+    }
+    welcomeDiv.textContent = "Welcome, " + user.name + "!";
+}
+
+function clearMainDivForDashboard() {
+    setupWelcomeDiv();
+
+    const ids = ['welcome-text', 'dashboard-task-table', 'dashboard-schedule-table'];
+
+    const mainDivEl = document.getElementById('main-content');
+    for (let i = mainDivEl.children.length - 1; i >= 0; i--) {
+        const child = mainDivEl.children[i];
+
+        if (!ids.includes(child.id)) {
+            child.remove();
+        }
+    }
+}
+
+function showDashboard() {
+    clearMainDivForDashboard();
 
     requestSchedules();
     requestTasks();
-    showContents(['topnav-content', 'main-content', 'logout-content']);
+
+    showContents(['topnav-content', 'main-content']);
 }

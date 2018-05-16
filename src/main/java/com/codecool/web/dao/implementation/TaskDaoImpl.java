@@ -91,7 +91,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     public List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException {
         List<DashboardTaskDto> tasks = new ArrayList<>();
         String sql = "SELECT id, name, content, schedule_id FROM tasks " +
-                "LEFT JOIN col_tsk ON id = task_id WHERE user_id = ? ORDER BY id ASC";
+                "LEFT JOIN col_tsk ON id = task_id WHERE user_id = ? ORDER BY id DESC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
