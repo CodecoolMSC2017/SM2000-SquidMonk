@@ -65,11 +65,32 @@ function onScheduleReceived() {
     removeAllChildren(mainDiv);
     const schedule = JSON.parse(this.responseText);
 
-    /* Create first header row */
-    const tableEl = createHeaderRow(mainDiv, schedule);
+    if (schedule.columns.length == 0) {
 
-    /* Create timeslot rows with tasks */
-    createTimeslotRows(mainDiv, tableEl, schedule)
+        const messageDiv = document.createElement('div');
+        messageDiv.setAttribute('class', 'hv-centered-div');
+
+        const hEl = document.createElement('h1');
+        hEl.setAttribute('class', 'hv-centered-text');
+        hEl.textContent = "You don't have any schedules defined!";
+
+        const buttonEl = document.createElement('button');
+        buttonEl.textContent = "Add some!";
+
+        const brEl = document.createElement('br');
+
+        messageDiv.appendChild(hEl);
+        messageDiv.appendChild(brEl);
+        messageDiv.appendChild(buttonEl);
+        mainDiv.appendChild(messageDiv);
+
+    } else {
+        /* Create first header row */
+        const tableEl = createHeaderRow(mainDiv, schedule);
+
+        /* Create timeslot rows with tasks */
+        createTimeslotRows(mainDiv, tableEl, schedule);
+    }
 }
 
 function onScheduleClick() {

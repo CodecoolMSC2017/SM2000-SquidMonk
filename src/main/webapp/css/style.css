@@ -171,3 +171,22 @@ div.table-title {
 .emptyelement {
   width: 5%;
 }
+
+.hv-centered-div {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 800px;
+  height: 200px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.hv-centered-text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
