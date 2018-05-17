@@ -21,6 +21,10 @@ function onDeleteButtonClicked() {
 function onEditResponse() {
     if (this.status == OK) {
         getTask();
+    } else {
+        const message = JSON.parse(this.responseText);
+        const container = document.getElementById('task-edit-input-container');
+        newMessage(container, 'message', message.message);
     }
 }
 
@@ -39,6 +43,10 @@ function onEditTaskSubmitButtonClicked() {
 }
 
 function onEditButtonClicked() {
+    const oldPEl = document.getElementById('task-edit-input-container');
+    if (oldPEl != null) {
+        oldPEl.remove();
+    }
     const nameInputEl = document.createElement('input');
     nameInputEl.value = currentTask.name;
     nameInputEl.id = 'task-edit-name-input';
@@ -48,10 +56,11 @@ function onEditButtonClicked() {
     contentInputEl.id = 'task-edit-content-input';
 
     const submitButton = document.createElement('button');
-    submitButton.textContent = 'Ok';
+    submitButton.textContent = 'Save';
     submitButton.addEventListener('click', onEditTaskSubmitButtonClicked);
 
     const pEl = document.createElement('p');
+    pEl.id = 'task-edit-input-container';
     pEl.appendChild(nameInputEl);
     pEl.appendChild(contentInputEl);
     pEl.appendChild(submitButton);
@@ -104,7 +113,11 @@ function displayTask(task) {
     taskNameEl.textContent = task.name;
 
     const taskContentEl = document.createElement('p');
-    taskContentEl.textContent = 'Description: ' + task.content;
+    if (task.content === '') {
+        taskContentEl.textContent = 'No description';
+    } else {
+        taskContentEl.textContent = 'Description: ' + task.content;
+    }
 
     const scheduleButton = document.createElement('button');
     scheduleButton.textContent = 'Schedule task';

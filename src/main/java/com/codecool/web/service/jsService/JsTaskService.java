@@ -39,10 +39,11 @@ public class JsTaskService implements TaskService {
     }
 
     @Override
-    public void updateTask(int taskId, String newName, String newContent) throws SQLException {
-        if (newName != null) {
-            taskDao.updateName(taskId, newName);
+    public void updateTask(int taskId, String newName, String newContent) throws SQLException, ServiceException {
+        if (newName == null || newName.equals("")) {
+            throw new ServiceException("Task name can not be empty!");
         }
+        taskDao.updateName(taskId, newName);
         if (newContent != null) {
             taskDao.updateContent(taskId, newContent);
         }
