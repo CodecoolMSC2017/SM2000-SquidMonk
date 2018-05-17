@@ -128,20 +128,18 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
     }
 
     @Override
-    public Map<Integer, String> findAvailableByTaskId(int taskId) throws SQLException {
-        Map<Integer, String> schedules = new HashMap<>();
-        String sql = "SELECT id, name FROM col_tsk " +
-                "LEFT JOIN schedules ON id = schedule_id " +
-                "WHERE task_id = ? ";
+    public List<Integer> getSchedulesOfTask(int userId, int taskId) throws SQLException {
+        // schedule id : task ids
+        List<Integer> schedules = new ArrayList<>();
+        String sql = "SELECT id, task_id FROM schedules " +
+                "JOIN col_tsk ON id = schedule_id " +
+                "WHERE user_id = ? AND task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, taskId);
+            statement.setInt(1, userId);
+            statement.setInt(2, taskId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                String name;
-                Integer id;
                 while (resultSet.next()) {
-                    id = resultSet.getInt("id");
-                    name = resultSet.getString("name");
-                    schedules.put(id, name);
+                    schedules.add(resultSet.getInt("id"));
                 }
             }
         }
