@@ -4,6 +4,11 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
+function clearMainContent() {
+    const mainDivEl = document.getElementById('main-content');
+    mainDivEl.textContent = '';
+}
+
 function showContents(ids) {
     const contentEls = document.getElementsByClassName('content');
     for (let i = 0; i < contentEls.length; i++) {

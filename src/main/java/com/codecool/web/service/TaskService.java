@@ -1,6 +1,7 @@
 package com.codecool.web.service;
 
 import com.codecool.web.dto.DashboardTaskDto;
+import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.exception.ServiceException;
 
@@ -20,4 +21,6 @@ public interface TaskService {
     Task getById(int taskId) throws SQLException;
 
     List<DashboardTaskDto> getDtos(int userId) throws SQLException;
+
+    TaskDto getDtoById(int taskId) throws SQLException;
 }

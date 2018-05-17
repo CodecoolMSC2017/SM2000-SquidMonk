@@ -346,7 +346,7 @@ function setupWelcomeDiv() {
 }
 
 function showDashboard() {
-    removeAllChildren(document.getElementById('main-content'));
+    clearMainContent();
 
     setupWelcomeDiv();
 

@@ -5,6 +5,7 @@ import com.codecool.web.model.Schedule;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface ScheduleDao {
 
@@ -21,4 +22,6 @@ public interface ScheduleDao {
     void deleteSchedule(int scheduleId) throws SQLException;
 
     List<DashboardScheduleDto> findUserDashboardSchedules(int userId) throws SQLException;
+
+    Map<Integer, String> findAllByTaskId(int taskId) throws SQLException;
 }
