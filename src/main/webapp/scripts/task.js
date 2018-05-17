@@ -9,6 +9,10 @@ function onDeleteResponse() {
 
 function createTaskAvailableScheduleTable(task) {
     const tableEl = document.createElement('table');
+    tableEl.className = 'dash-table';
+    tableEl.align = 'center';
+    tableEl.style.marginTop = '20px';
+    tableEl.style.width = '45%';
 
     const thEl = document.createElement('th');
     thEl.textContent = 'Available schedules for this task';
@@ -20,6 +24,7 @@ function createTaskAvailableScheduleTable(task) {
 
     if (Object.keys(task.schedules).length == 0) {
         const tdEl = document.createElement('td');
+        tdEl.className = 'entry';
         tdEl.textContent = 'There are no schedules available.';
 
         const trEl = document.createElement('tr');
@@ -31,6 +36,7 @@ function createTaskAvailableScheduleTable(task) {
             const scheduleName = task.schedules[scheduleId];
 
             const tdEl = document.createElement('td');
+            tdEl.className = 'entry';
             tdEl.textContent = scheduleName;
 
             const trEl = document.createElement('tr');
@@ -44,7 +50,7 @@ function createTaskAvailableScheduleTable(task) {
     return tableEl;
 }
 
-function onAvialableSchedulesReceived() {
+function onAvailableSchedulesReceived() {
     if (this.status == OK) {
         const task = JSON.parse(this.responseText);
         const mainContentEl = document.getElementById('main-content');
@@ -58,7 +64,7 @@ function onScheduleButtonClicked() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onAvialableSchedulesReceived);
+    xhr.addEventListener('load', onAvailableSchedulesReceived);
     xhr.open('GET', 'protected/tasks/user/' + user.id + '?taskId=' + currentTask.id);
     xhr.send();
 }
