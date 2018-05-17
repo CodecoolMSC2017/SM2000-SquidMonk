@@ -5,6 +5,24 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
+function newMessage(targetEl, classes, message) {
+    clearMessages();
+
+    const pEl = document.createElement('p');
+    pEl.classList.add(classes);
+    pEl.textContent = message;
+
+    targetEl.appendChild(pEl);
+}
+
+function clearMessages() {
+    const messageEls = document.getElementsByClassName('message');
+    for (let i = 0; i < messageEls.length; i++) {
+        const messageEl = messageEls[i];
+        messageEl.remove();
+    }
+}
+
 function clearMainContent() {
     const mainDivEl = document.getElementById('main-content');
     mainDivEl.textContent = '';

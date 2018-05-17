@@ -28,8 +28,8 @@ public class TaskUserServlet extends AbstractServlet {
             sendMessage(resp, HttpServletResponse.SC_OK, tasks);
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "User id is not a valid number");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -45,15 +45,17 @@ public class TaskUserServlet extends AbstractServlet {
             taskService.insertTask(userId, name, "");
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "User id is not a valid number");
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
-    private int getUserId(String uri) throws NumberFormatException {
+    private int getUserId(String uri) throws ServiceException {
         String userIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
-        return Integer.parseInt(userIdAsString);
+        try {
+            return Integer.parseInt(userIdAsString);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("User id is not a valid number");
+        }
     }
 }

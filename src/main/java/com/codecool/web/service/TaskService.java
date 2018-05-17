@@ -14,7 +14,7 @@ public interface TaskService {
 
     void insertTask (int userId, String name, String content) throws SQLException, ServiceException;
 
-    void updateTask(int taskId, String newName, String newContent) throws SQLException;
+    void updateTask(int taskId, String newName, String newContent) throws SQLException, ServiceException;
 
     void deleteTask(int taskId) throws SQLException;
 
