@@ -4,6 +4,7 @@ function onScheduleBadRequestClick() {
     createButtonRow.removeEventListener('click', onScheduleBadRequestClick);
     createButtonRow.innerHTML = '';
     const createButton = document.createElement('td');
+    createButton.className = 'entry';
 
     createButton.colSpan = '3';
     createButton.textContent = 'Create new schedule';
@@ -17,6 +18,7 @@ function onTaskBadRequestClick() {
     createButtonRow.removeEventListener('click', onTaskBadRequestClick);
     createButtonRow.innerHTML = '';
     const createButton = document.createElement('td');
+    createButton.className = 'entry';
 
     createButton.colSpan = '2';
     createButton.textContent = 'Create new Task';
@@ -35,6 +37,7 @@ function onCreateScheduleResponse() {
         const message = JSON.parse(this.responseText);
 
         const newTdEl = document.createElement('td');
+        newTdEl.className = 'entry';
         newTdEl.colSpan = '3';
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
@@ -52,6 +55,7 @@ function onCreateTaskResponse() {
         const message = JSON.parse(this.responseText);
 
         const newTdEl = document.createElement('td');
+        newTdEl.className = 'entry';
         newTdEl.colSpan = '3';
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
@@ -89,6 +93,7 @@ function onCreateScheduleButtonClicked() {
     const td1El = this.children[0];
     td1El.textContent = '';
     td1El.colSpan = '2';
+    td1El.className = 'create-row-input-td';
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-schedule-name-input';
@@ -102,6 +107,7 @@ function onCreateScheduleButtonClicked() {
     buttonEl.addEventListener('click', onCreateScheduleSubmitButtonClicked);
 
     const td2El = document.createElement('td');
+    td2El.className = 'create-row-button-td';
     td2El.appendChild(buttonEl);
     this.appendChild(td2El);
 }
@@ -112,6 +118,7 @@ function onCreateTaskButtonClicked() {
     const td1El = this.children[0];
     td1El.textContent = '';
     td1El.colSpan = '1';
+    td1El.className = 'create-row-input-td';
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-task-name-input';
@@ -125,6 +132,7 @@ function onCreateTaskButtonClicked() {
     buttonEl.addEventListener('click', onCreateTaskSubmitButtonClicked);
 
     const td2El = document.createElement('td');
+    td2El.className = 'create-row-button-td';
     td2El.appendChild(buttonEl);
     this.appendChild(td2El);
 }
@@ -176,11 +184,14 @@ function createScheduleRow(schedule) {
 
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = schedule.scheduleName;
+    entryNameTd.className = 'entry';
 
     const entryNumTd = document.createElement('td');
     entryNumTd.textContent = schedule.numOfTasks;
+    entryNumTd.className = 'entry';
 
     const entryPublicTd = document.createElement('td');
+    entryPublicTd.className = 'entry';
     if (schedule.public === true) {
         entryPublicTd.innerHTML = '<i class="fa fa-check"></i>';
     } else {
@@ -204,9 +215,13 @@ function createTaskRow(task) {
 
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = task.name;
+    entryNameTd.style.width = '80%';
+    entryNameTd.className = 'entry';
 
     const entryUsagesTd = document.createElement('td');
     entryUsagesTd.textContent = task.usages;
+    entryUsagesTd.style.width = '20%';
+    entryNameTd.className = 'entry';
 
     entryTr.appendChild(entryNameTd);
     entryTr.appendChild(entryUsagesTd);
@@ -224,6 +239,7 @@ function onSchedulesReceived() {
 
     const createButton = document.createElement('td');
     createButton.colSpan = '3';
+    createButton.className = 'entry';
     createButton.textContent = 'Create new schedule';
 
     const createButtonRow = document.createElement('tr');
@@ -270,6 +286,7 @@ function onTasksReceived() {
     taskDiv.id = 'dashboard-task-table';
 
     const createButton = document.createElement('td');
+    createButton.className = 'entry';
     createButton.colSpan = '2';
     createButton.textContent = 'Create new task';
 
