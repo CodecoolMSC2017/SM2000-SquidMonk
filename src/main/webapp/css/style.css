@@ -149,7 +149,7 @@ div.table-title {
 
 .dash-table tr {
   border-top: 1px solid #C1C3D1;
-  border-bottom-: 1px solid #C1C3D1;
+  border-bottom: 1px solid #C1C3D1;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
@@ -217,8 +217,10 @@ div.table-title {
 
 /* Schedule table style START */
 .schedule-table {
-  margin-top: 30px;
-  margin-left: 150px;
+  margin-top: 40px;
+  margin-left: 60px;
+  margin-right: 60px;
+  margin-bottom: 10px;
   float: left;
   border-spacing: 10px 0px;
   text-align: center;
@@ -232,10 +234,17 @@ div.table-title {
   background-color: green;
   height: 30px;
   width: 150px;
+  border-style: solid;
+  border-color: lightgray;
+  border-width: 1px;
 }
 
 .ok-task {
   background-color: red;
+}
+
+.task-counter {
+  height: 30px;
 }
 
 /* Schedule table style END */
