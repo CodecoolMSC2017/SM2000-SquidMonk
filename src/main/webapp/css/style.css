@@ -29,14 +29,14 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    -webkit-transition-duration: 0.4s;
-    transition-duration: 0.4s;
     cursor: pointer;
 }
 
 .form-table button:hover {
     background-color: #555555;
     color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .form-table input {
@@ -50,14 +50,14 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    -webkit-transition-duration: 0.4s;
-    transition-duration: 0.4s;
     cursor: auto;
 }
 
 .form-table input:focus {
     background-color: #555555;
     color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .form-table input:focus::-webkit-input-placeholder {
@@ -160,8 +160,11 @@ div.table-title {
   background:#4E5066;
   color:#FFFFFF;
   cursor: pointer;
-  transition-duration: 300ms;
-  transition-timing-function: ease-out;
+}
+
+.dash-table tr:hover {
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .dash-table tr:first-child {
@@ -398,16 +401,17 @@ div.table-title {
     font-size: 16px;
     margin: 0px;
     cursor: auto;
-    transition-duration: 0.4s;
 }
 
 .create-row-input-td input:focus {
     background-color: #555555;
     color: white;
+    transition-duration: 0.4s;
 }
 
 .create-row-input-td input:focus::-webkit-input-placeholder {
     color: #555555;
+    transition-duration: 0.4s;
 }
 
 .create-button {
@@ -422,12 +426,12 @@ div.table-title {
     font-size: 16px;
     margin: 0px;
     cursor: pointer;
-    transition-duration: 0.4s;
 }
 
 .create-button:hover {
     background-color: #555555;
     color: white;
+    transition-duration: 0.4s;
 }
 
 .create-row-input-td {
@@ -441,4 +445,94 @@ div.table-title {
     margin: 5px;
     padding: 5px;
     width: 10%;
+}
+
+.task-button {
+    width: 15%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.task-button:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+.task-edit-input {
+    width: 22.5%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: auto;
+}
+
+.task-edit-input:focus {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.task-edit-input input:focus::-webkit-input-placeholder {
+    color: #555555;
+}
+
+.task-edit-button {
+    width: 15%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.task-edit-button:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.task-title h1 {
+   color: #fafafa;
+   font-size: 50px;
+   font-weight: 400;
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
+
+.task-description h1 {
+   color: #fafafa;
+   font-size: 36px;
+   font-weight: 400;
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
+
+.squid {
+    width: 290px;
 }

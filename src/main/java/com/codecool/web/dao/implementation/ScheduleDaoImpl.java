@@ -127,6 +127,25 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
         return schedules;
     }
 
+    @Override
+    public List<Integer> getSchedulesOfTask(int userId, int taskId) throws SQLException {
+        // schedule id : task ids
+        List<Integer> schedules = new ArrayList<>();
+        String sql = "SELECT id, task_id FROM schedules " +
+                "JOIN col_tsk ON id = schedule_id " +
+                "WHERE user_id = ? AND task_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, taskId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    schedules.add(resultSet.getInt("id"));
+                }
+            }
+        }
+        return schedules;
+    }
+
     private DashboardScheduleDto fetchDashboardDto(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");

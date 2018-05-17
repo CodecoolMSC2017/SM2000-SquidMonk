@@ -24,4 +24,6 @@ public interface ScheduleDao {
     List<DashboardScheduleDto> findUserDashboardSchedules(int userId) throws SQLException;
 
     Map<Integer, String> findAllByTaskId(int taskId) throws SQLException;
+
+    List<Integer> getSchedulesOfTask(int userId, int taskId) throws SQLException;
 }

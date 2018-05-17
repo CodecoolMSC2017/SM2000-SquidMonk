@@ -1,6 +1,7 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dto.DashboardTaskDto;
+import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
@@ -24,12 +25,21 @@ public class TaskUserServlet extends AbstractServlet {
             TaskService service = new JsTaskService(connection);
 
             int userId = getUserId(req.getRequestURI());
-            List<DashboardTaskDto> tasks = service.getDtos(userId);
-            sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+            String taskIdAsString = req.getParameter("taskId");
+            if (taskIdAsString == null) {
+                List<DashboardTaskDto> tasks = service.getDtos(userId);
+                sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+            } else {
+                int taskId = Integer.parseInt(taskIdAsString);
+                TaskDto taskDto = service.getDtoWithAvailableSchedules(userId, taskId);
+                sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
+            }
         } catch (SQLException e) {
             handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "User id is not a valid number");
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
         }
     }
 
@@ -45,15 +55,17 @@ public class TaskUserServlet extends AbstractServlet {
             taskService.insertTask(userId, name, "");
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "User id is not a valid number");
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
-    private int getUserId(String uri) throws NumberFormatException {
+    private int getUserId(String uri) throws ServiceException {
         String userIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
-        return Integer.parseInt(userIdAsString);
+        try {
+            return Integer.parseInt(userIdAsString);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("User id is not a valid number");
+        }
     }
 }

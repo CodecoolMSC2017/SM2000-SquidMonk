@@ -262,49 +262,49 @@ INSERT INTO columns (schedule_id, name) VALUES
     (7, 'Csanád Column 2'); --13
 
 INSERT INTO tasks (user_id, name, content) VALUES
-    (4, 'Csba Task 1', 'Content'), --1
-    (4, 'Csba Task 2', 'Content'), --2
-    (4, 'Csba Task 3', 'Content'), --3
-    (5, 'Bence Task 1', 'Content'), --4
-    (5, 'Bence Task 2', 'Content'), --5
-    (5, 'Bence Task 3', 'Content'), --6
-    (5, 'Bence Task 4', 'Content'), --7
-    (5, 'Bence Task 5', 'Content'), --8
-    (5, 'Bence Task 6', 'Content'), --9
-    (5, 'Bence Task 7', 'Content'), --10
-    (5, 'Bence Task 8', 'Content'), --11
-    (5, 'Bence Task 9', 'Content'), --12
-    (5, 'Bence Task 10', 'Content'), --13
-    (5, 'Bence Task 11', 'Content'), --14
-    (5, 'Bence Task 12', 'Content'), --15
-    (5, 'Bence Task 13', 'Content'), --16
-    (5, 'Bence Task 14', 'Content'), --17
-    (5, 'Bence Task 15', 'Content'), --18
-    (5, 'Bence Task 16', 'Content'), --19
-    (5, 'Bence Task 17', 'Content'), --20
-    (5, 'Bence Task 18', 'Content'), --21
-    (5, 'Bence Task 19', 'Content'), --22
-    (5, 'Bence Task 20', 'Content'), --23
-    (5, 'Bence Task 21', 'Content'), --24
-    (5, 'Bence Task 22', 'Content'), --25
-    (5, 'Bence Task 23', 'Content'), --26
-    (5, 'Bence Task 24', 'Content'), --27
-    (6, 'FBence Task 1', ''), --28
-    (7, 'Csanád Task 1', 'Content'), --29
-    (7, 'Csanád Task 2', 'Content'), --30
-    (8, 'Teszt Task #1', 'Content'), --31
-    (8, 'Teszt Task #2', 'Content'), --32
-    (8, 'Teszt Task #3', 'Content'), --33
-    (8, 'Teszt Task #4', 'Content'), --34
-    (8, 'Teszt Task #5', 'Content'), --35
-    (8, 'Teszt Task #6', 'Content'), --36
-    (8, 'Teszt Task #7', 'Content'), --37
-    (8, 'Teszt Task #8', 'Content'), --38
-    (8, 'Teszt Task #9', 'Content'), --39
-    (8, 'Teszt Task #10', 'Content'), --40
-    (8, 'Teszt Task #11', 'Content'), --41
-    (8, 'Teszt Task #12', 'Content'), --42
-    (8, 'Teszt Task #13', 'Content'); --43
+    (4, 'Clean toilet', ''), --1
+    (4, 'Take out the trash', ''), --2
+    (4, 'Level up my paladin to 100', ''), --3
+    (5, 'Get laid (difficult)', ''), --4
+    (5, 'Learn to sing', ''), --5
+    (5, 'Dress up', ''), --6
+    (5, 'Buy a car', ''), --7
+    (5, 'Sell unnecessary stuff', ''), --8
+    (5, 'Clean out room', ''), --9
+    (5, 'Learn PHP', ''), --10
+    (5, 'Learn german', ''), --11
+    (5, 'Finish schedule master', ''), --12
+    (5, 'Make burndown chart', ''), --13
+    (5, 'Go shopping', ''), --14
+    (5, 'Bake a cake', ''), --15
+    (5, 'Eat healthy', ''), --16
+    (5, 'Attend meeting', ''), --17
+    (5, 'Give away money', ''), --18
+    (5, 'Travel to China', ''), --19
+    (5, 'Call mom', ''), --20
+    (5, 'Exercise', ''), --21
+    (5, 'Go to the gym', ''), --22
+    (5, 'Make bed', ''), --23
+    (5, 'Wash dishes', ''), --24
+    (5, 'Vacuum', ''), --25
+    (5, 'Sweep', ''), --26
+    (5, 'Mop', ''), --27
+    (6, 'Dust all surfaces', ''), --28
+    (7, 'Scrub sink', ''), --29
+    (7, 'Clean oven', ''), --30
+    (8, 'Wash bedding', ''), --31
+    (8, 'Clean windows', ''), --32
+    (8, 'Reformat computer', ''), --33
+    (8, 'Refactor old codes', ''), --34
+    (8, 'Hand in assignments', ''), --35
+    (8, 'Shovel snow away', ''), --36
+    (8, 'Cut grass', ''), --37
+    (8, 'Take a shower', ''), --38
+    (8, 'Wash pillows', ''), --39
+    (8, 'Wipe light switches', ''), --40
+    (8, 'Clean closets', ''), --41
+    (8, 'Deal with the mail', ''), --42
+    (8, 'Read the news', ''); --43
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),

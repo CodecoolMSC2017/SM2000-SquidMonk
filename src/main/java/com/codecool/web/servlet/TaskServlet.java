@@ -2,6 +2,7 @@ package com.codecool.web.servlet;
 
 import com.codecool.web.dto.TaskDto;
 import com.codecool.web.service.TaskService;
+import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsTaskService;
 
 import javax.servlet.ServletException;
@@ -26,8 +27,8 @@ public class TaskServlet extends AbstractServlet {
             sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -44,8 +45,8 @@ public class TaskServlet extends AbstractServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -60,13 +61,17 @@ public class TaskServlet extends AbstractServlet {
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
-    private int getTaskId(String uri) throws NumberFormatException {
+    private int getTaskId(String uri) throws ServiceException {
         String taskIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
-        return Integer.parseInt(taskIdAsString);
+        try {
+            return Integer.parseInt(taskIdAsString);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Task id is not a valid number");
+        }
     }
 }
