@@ -67,6 +67,7 @@ public class TaskServlet extends AbstractServlet {
 
     private int getTaskId(String uri) throws NumberFormatException {
         String taskIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
-        return Integer.parseInt(taskIdAsString);
+        System.out.println(taskIdAsString.split("\\?")[0]);
+        return Integer.parseInt(taskIdAsString.split("\\?")[0]);
     }
 }

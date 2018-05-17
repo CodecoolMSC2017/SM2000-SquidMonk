@@ -1,27 +1,63 @@
 
+let currentTask;
+
 function onDeleteResponse() {
     if (this.status = NO_CONTENT) {
         showDashboard();
     }
 }
 
-function onScheduleButtonClicked() {
-    const taskId = this.getAttribute('data-task-id');    
+function onScheduleButtonClicked() {   
     console.log('schedule task');
 }
 
 function onDeleteButtonClicked() {
-    const taskId = this.getAttribute('data-task-id');
-
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onDeleteResponse);
-    xhr.open('DELETE', 'protected/tasks/' + taskId);
+    xhr.open('DELETE', 'protected/tasks/' + currentTask.id);
+    xhr.send();
+}
+
+function onEditResponse() {
+    if (this.status == OK) {
+        getTask();
+    }
+}
+
+function onEditTaskSubmitButtonClicked() {
+    const name = document.getElementById('task-edit-name-input').value;
+    const content = document.getElementById('task-edit-content-input').value;
+
+    const params = new URLSearchParams();
+    params.append('name', name);
+    params.append('content', content);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onEditResponse);
+    xhr.open('PUT', 'protected/tasks/' + currentTask.id + '?' + params.toString());
     xhr.send();
 }
 
 function onEditButtonClicked() {
-    const taskId = this.getAttribute('data-task-id');
-    console.log('edit');
+    const nameInputEl = document.createElement('input');
+    nameInputEl.value = currentTask.name;
+    nameInputEl.id = 'task-edit-name-input';
+
+    const contentInputEl = document.createElement('input');
+    contentInputEl.value = currentTask.content;
+    contentInputEl.id = 'task-edit-content-input';
+
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Ok';
+    submitButton.addEventListener('click', onEditTaskSubmitButtonClicked);
+
+    const pEl = document.createElement('p');
+    pEl.appendChild(nameInputEl);
+    pEl.appendChild(contentInputEl);
+    pEl.appendChild(submitButton);
+
+    const mainContentEl = document.getElementById('main-content');
+    mainContentEl.insertBefore(pEl, mainContentEl.children[2]);
 }
 
 function createTaskScheduleTable(task) {
@@ -62,28 +98,31 @@ function createTaskScheduleTable(task) {
 }
 
 function displayTask(task) {
+    currentTask = task;
+
     const taskNameEl = document.createElement('p');
     taskNameEl.textContent = task.name;
 
+    const taskContentEl = document.createElement('p');
+    taskContentEl.textContent = 'Description: ' + task.content;
+
     const scheduleButton = document.createElement('button');
     scheduleButton.textContent = 'Schedule task';
-    scheduleButton.setAttribute('data-task-id', task.id);
     scheduleButton.addEventListener('click', onScheduleButtonClicked);
 
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
-    editButton.setAttribute('data-task-id', task.id);
     editButton.addEventListener('click', onEditButtonClicked);
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.setAttribute('data-task-id', task.id);
     deleteButton.addEventListener('click', onDeleteButtonClicked);
 
     clearMainContent();
 
     const mainContentEl = document.getElementById('main-content');
     mainContentEl.appendChild(taskNameEl);
+    mainContentEl.appendChild(taskContentEl);
     mainContentEl.appendChild(scheduleButton);
     mainContentEl.appendChild(editButton);
     mainContentEl.appendChild(deleteButton);
@@ -101,7 +140,12 @@ function onTaskReceived() {
 }
 
 function getTask() {
-    const taskId = this.getAttribute('data-task-id');
+    let taskId;
+    if (typeof this.getAttribute != 'undefined') {
+        taskId = this.getAttribute('data-task-id');
+    } else {
+        taskId = currentTask.id;
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onTaskReceived);
