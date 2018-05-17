@@ -222,11 +222,57 @@ div.table-title {
   margin: 5px 10px 5px 10px;
 }
 
+.schedule-input {
+  width: 40%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: auto;
+}
+
+.schedule-input:focus {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.schedule-input input:focus::-webkit-input-placeholder {
+  color: #555555;
+}
+
+.schedule-button {
+  width: 25%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.schedule-button:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
 /* Schedule table style START */
 .schedule-table {
   margin-top: 40px;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 10px;
   float: left;
   border-spacing: 10px 0px;
@@ -239,8 +285,8 @@ div.table-title {
 
 .no-task {
   background-color: green;
-  height: 30px;
-  width: 200px;
+  height: 35px;
+  width: 250px;
   border-style: solid;
   border-color: lightgray;
   border-width: 1px;
@@ -248,11 +294,14 @@ div.table-title {
 
 .ok-task {
   background-color: red;
-  width: 200px;
+  width: 250px;
 }
 
 .task-counter {
-  height: 30px;
+  height: 35px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
 }
 
 /* Schedule table style END */

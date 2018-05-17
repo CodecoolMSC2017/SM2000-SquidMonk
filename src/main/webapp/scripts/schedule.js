@@ -32,9 +32,11 @@ function addColumn() {
     const inputEl = document.createElement('input');
     inputEl.setAttribute('placeholder', 'Enter name here');
     inputEl.setAttribute('id', 'new-column-input');
+    inputEl.setAttribute('class', 'schedule-input');
 
     const buttonEl = document.createElement('button');
     buttonEl.addEventListener('click', sendNewColumnData);
+    buttonEl.setAttribute('class', 'schedule-button');
     buttonEl.textContent = "Add";
 
     messageDiv.appendChild(hEl);
@@ -116,6 +118,7 @@ function noColumnMessage(mainDiv, scheduleId){
 
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'schedule-new-column-button');
+    buttonEl.setAttribute('class', 'schedule-button');
     buttonEl.addEventListener('click', addColumn);
     buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
