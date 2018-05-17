@@ -86,7 +86,7 @@ function createTimeslotRows(mainDiv, schedule) {
             if (typeof tsk != 'undefined') {
                 tdHeight = 40 * tsk.slotsTaken.length;
 
-                tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.start +":00";
+                tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
                 tdEl.setAttribute('style', 'height: ' + tdHeight + 'px');
                 tdEl.setAttribute('class', 'ok-task');
@@ -94,7 +94,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 taskSpaceCounter = tsk.slotsTaken.length;
 
                 if (tdHeight >= 120) {
-                    tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br><i>" + tsk.task.content + "</i><br><br>" + tsk.task.start + ":00 to " + tsk.task.start +":00";
+                    tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br><i>" + tsk.task.content + "</i><br><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
                 }
 
                 tdEl.addEventListener('click', addTask);
