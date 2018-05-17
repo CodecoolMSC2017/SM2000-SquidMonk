@@ -217,7 +217,8 @@ div.table-title {
 .dash-table th.schedule {
     width: 6%;
 }
-/* General Schedule styling */
+
+/* General Schedule styling START */
 .schedule-small-margin {
   margin: 5px 10px 5px 10px;
 }
@@ -248,7 +249,7 @@ div.table-title {
 }
 
 .schedule-button {
-  width: 25%;
+  width: 20%;
   background-color: white;
   color: black;
   border: 2px solid #555555;
@@ -257,7 +258,7 @@ div.table-title {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  margin: 30px 2px 4px 2px;
   cursor: pointer;
 }
 
@@ -268,33 +269,65 @@ div.table-title {
   transition-timing-function: ease-in-out;
 }
 
+.h-centered-div {
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* General Schedule styling END */
+
 /* Schedule table style START */
+.schedule-div-table {
+  margin: 0 auto;
+  text-align: center;
+}
+
 .schedule-table {
-  margin-top: 40px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
   margin-bottom: 10px;
-  float: left;
-  border-spacing: 10px 0px;
+  display: inline-block;
+  /*border-spacing: 10px 0px;*/
   text-align: center;
 }
 
 .schedule-table th {
   font-size: 1.2em;
+  padding-bottom: 15px;
+}
+
+.schedule-table td {
+  font-size: 1.1em;
 }
 
 .no-task {
-  background-color: green;
+  color: gray;
+  background-color: lightgoldenrodyellow;
   height: 35px;
-  width: 250px;
+  width: 270px;
   border-style: solid;
   border-color: lightgray;
   border-width: 1px;
 }
 
+.no-task:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
 .ok-task {
-  background-color: red;
-  width: 250px;
+  background-color: lightblue;
+  width: 270px;
+}
+
+.ok-task:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
 }
 
 .task-counter {

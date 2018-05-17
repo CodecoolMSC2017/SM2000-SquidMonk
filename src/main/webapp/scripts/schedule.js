@@ -45,6 +45,8 @@ function addColumn() {
 }
 
 function createHeaderRow(mainDiv, schedule) {
+    const tableDivEl = document.createElement('div');
+    tableDivEl.setAttribute('class', 'schedule-div-table');
     
     for (let i = 0; i < schedule.columns.length; i++) {
         const column = schedule.columns[i];
@@ -54,14 +56,14 @@ function createHeaderRow(mainDiv, schedule) {
         tableEl.setAttribute('id', column.id);
 
         const trEl = document.createElement('tr');
-        
+
         const thEl = document.createElement('th');
         thEl.textContent = column.name;
-        thEl.setAttribute('colspan', '2');
 
         trEl.appendChild(thEl);
         tableEl.appendChild(trEl);
-        mainDiv.appendChild(tableEl);   
+        tableDivEl.appendChild(tableEl);
+        mainDiv.appendChild(tableDivEl);   
     }
 }
 
@@ -78,16 +80,12 @@ function createTimeslotRows(mainDiv, schedule) {
             const tsk = column.tasks[n];
             const trEl = document.createElement('tr');
             const tdEl = document.createElement('td');
-            const counterTdEl = document.createElement('td');
             taskSpaceCounter--;
 
-            counterTdEl.textContent = n + " - " + (n+1);
-            counterTdEl.setAttribute('class', 'task-counter');
-            trEl.appendChild(counterTdEl);
-
             if (typeof tsk != 'undefined') {
-                tdEl.textContent = tsk.task.name;
+                tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.start +":00";
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
+                tdEl.setAttribute('style', 'height: ' + (40 * tsk.slotsTaken.length) + 'px');
                 tdEl.setAttribute('class', 'ok-task');
                 taskSpaceCounter = tsk.slotsTaken.length;
 
@@ -97,6 +95,7 @@ function createTimeslotRows(mainDiv, schedule) {
 
             if (typeof tsk == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
+                tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
                 tdEl.addEventListener('click', viewTask);
                 trEl.appendChild(tdEl);
@@ -119,6 +118,7 @@ function noColumnMessage(mainDiv, scheduleId){
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'schedule-new-column-button');
     buttonEl.setAttribute('class', 'schedule-button');
+    buttonEl.setAttribute('style', 'margin-top: 0px');
     buttonEl.addEventListener('click', addColumn);
     buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
@@ -128,6 +128,32 @@ function noColumnMessage(mainDiv, scheduleId){
     messageDiv.appendChild(brEl);
     messageDiv.appendChild(buttonEl);
     mainDiv.appendChild(messageDiv);
+}
+
+function createTitleButtons(mainDiv, columnNumber) {
+    const buttonDivEl = document.createElement('div');
+    buttonDivEl.setAttribute('class', 'h-centered-div');
+
+    const buttonAdd = document.createElement('button');
+    buttonAdd.setAttribute('class', 'schedule-button');
+    buttonAdd.textContent = "Add new Routine";
+
+    const buttonEdit = document.createElement('button');
+    buttonEdit.setAttribute('class', 'schedule-button');
+    buttonEdit.textContent = "Edit Routine Names";
+
+    const buttonRemove = document.createElement('button');
+    buttonRemove.setAttribute('class', 'schedule-button');
+    buttonRemove.textContent = "Delete a routine";
+
+
+    if (columnNumber < 7) {
+        buttonDivEl.appendChild(buttonAdd);
+    }
+
+    buttonDivEl.appendChild(buttonEdit);
+    buttonDivEl.appendChild(buttonRemove);
+    mainDiv.appendChild(buttonDivEl);
 }
 
 function onScheduleReceived() {
@@ -140,12 +166,11 @@ function onScheduleReceived() {
         noColumnMessage(mainDiv, schedule.scheduleId);
 
     } else {
-        /* Create Title */
-        /*const h2El = document.createElement('h2');
-        h2El.textContent = "Your Daily Routine:";*/
+        /* Create Title buttons */
+        createTitleButtons(mainDiv, schedule.columns.length);
 
         /* Create first header row */
-        const tableEl = createHeaderRow(mainDiv, schedule);
+        createHeaderRow(mainDiv, schedule);
 
         /* Create timeslot rows with tasks */
         createTimeslotRows(mainDiv, schedule);
