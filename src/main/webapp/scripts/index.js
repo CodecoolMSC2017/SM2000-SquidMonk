@@ -55,6 +55,7 @@ function onLoad() {
     document.getElementById('logout-button').addEventListener('click', onLogoutClick);
     document.getElementById('menu-dashboard').addEventListener('click', showDashboard);
     document.getElementById('menu-profile').addEventListener('click', onMenuProfileClick);
+    document.getElementById('sound-content').addEventListener('click', onSoundClicked);
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
