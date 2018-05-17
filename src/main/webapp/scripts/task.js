@@ -17,6 +17,7 @@ function createTaskAvailableScheduleTable(task) {
     tableEl.align = 'center';
     tableEl.style.marginTop = '20px';
     tableEl.style.width = '45%';
+    tableEl.id = 'task-available-schedule-table';
 
     const thEl = document.createElement('th');
     thEl.textContent = 'Available schedules for this task';
@@ -147,7 +148,7 @@ function createTaskScheduleTable(task) {
     tableEl.style.marginTop = '20px';
     tableEl.style.width = '45%';
     tableEl.className = 'dash-table';
-    tableEl.classList.add('task-schedule-table');
+    tableEl.id = 'task-schedule-table';
 
     const thEl = document.createElement('th');
     thEl.textContent = 'Schedules containing this task';
