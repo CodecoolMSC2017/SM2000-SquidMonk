@@ -211,7 +211,7 @@ div.table-title {
     width: 6%;
 }
 
-/* Schedule table style */
+/* Schedule table style START */
 .schedule-table {
   margin-top: 30px;
   margin-left: auto;
@@ -222,20 +222,23 @@ div.table-title {
   font-size: 1.2em;
 }
 
-/*.schedule-table th, td {
-
-}*/
-
 .no-task {
   background-color: green;
   height: 30px;
   width: 150px;
 }
 
-.emptyelement {
-  width: 5%;
+.ok-task {
+  background-color: red;
 }
 
+.emptyelement {
+  width: 4%;
+}
+
+/* Schedule table style END */
+
+/* Empty schedule styling START */
 .hv-centered-div {
   position: absolute;
   margin: auto;
@@ -254,6 +257,7 @@ div.table-title {
   vertical-align: middle;
   line-height: normal;
 }
+/* Empty schedule styling END */
 
 .prof-table {
   background: white;
