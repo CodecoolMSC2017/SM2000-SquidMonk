@@ -6,6 +6,22 @@ function viewTask(mainDiv) {
     
 }
 
+function editSingleRoutineName() {
+
+}
+
+function addColumn() {
+
+}
+
+function editColumnNames() {
+
+}
+
+function removeColumn() {
+
+}
+
 function sendNewColumnData() {
     const inputEl = document.getElementById('new-column-input');
     const value = inputEl.value;
@@ -22,7 +38,7 @@ function sendNewColumnData() {
     xhr.send();
 }
 
-function addColumn() {
+function addColumnToEmptySchedule() {
     const messageDiv = (document.getElementsByClassName('hv-centered-div'))[0];
     removeAllChildren(messageDiv);
     
@@ -58,6 +74,7 @@ function createHeaderRow(mainDiv, schedule) {
         const trEl = document.createElement('tr');
 
         const thEl = document.createElement('th');
+        thEl.addEventListener('click', editSingleRoutineName);
         thEl.textContent = column.name;
 
         trEl.appendChild(thEl);
@@ -127,7 +144,7 @@ function noColumnMessage(mainDiv, scheduleId){
     buttonEl.setAttribute('id', 'schedule-new-column-button');
     buttonEl.setAttribute('class', 'schedule-button');
     buttonEl.setAttribute('style', 'margin-top: 0px');
-    buttonEl.addEventListener('click', addColumn);
+    buttonEl.addEventListener('click', addColumnToEmptySchedule);
     buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
     const brEl = document.createElement('br');
@@ -144,14 +161,17 @@ function createTitleButtons(mainDiv, columnNumber) {
 
     const buttonAdd = document.createElement('button');
     buttonAdd.setAttribute('class', 'schedule-button');
+    buttonAdd.addEventListener('click', addColumn);
     buttonAdd.textContent = "Add new Routine";
 
     const buttonEdit = document.createElement('button');
     buttonEdit.setAttribute('class', 'schedule-button');
+    buttonEdit.addEventListener('click', editColumnNames);
     buttonEdit.textContent = "Edit Routine Names";
 
     const buttonRemove = document.createElement('button');
     buttonRemove.setAttribute('class', 'schedule-button');
+    buttonRemove.addEventListener('click', removeColumn);
     buttonRemove.textContent = "Delete a routine";
 
 
