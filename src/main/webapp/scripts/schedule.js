@@ -107,6 +107,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
                 tdEl.setAttribute('style', 'height: ' + tdHeight + 'px');
                 tdEl.setAttribute('class', 'ok-task');
+                tdEl.setAttribute('data-task-id', tsk.task.id);
 
                 taskSpaceCounter = tsk.slotsTaken.length;
 
@@ -114,7 +115,7 @@ function createTimeslotRows(mainDiv, schedule) {
                     tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br><i>" + tsk.task.content + "</i><br><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
                 }
 
-                tdEl.addEventListener('click', addTask);
+                tdEl.addEventListener('click', getTask);
                 trEl.appendChild(tdEl);
             }
 
@@ -122,7 +123,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 tdEl.setAttribute('class', 'no-task');
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
-                tdEl.addEventListener('click', viewTask);
+                tdEl.addEventListener('click', addTask);
                 trEl.appendChild(tdEl);
             }
 
