@@ -39,4 +39,26 @@ public class ScheduleServlet extends AbstractServlet {
             handleSqlError(resp, e);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int schedId = Integer.parseInt(req.getParameter("scheduleId"));
+        String columnName = req.getParameter("columnName");
+
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ColumnDao columnDao = new ColumnDaoImpl(connection);
+            TaskDao taskDao = new TaskDaoImpl(connection);
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
+            ScheduleService scheduleService = new JsScheduleService(columnDao, taskDao, controlTable);
+
+            scheduleService.addNewColumnToSchedule(schedId, columnName);
+
+            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(schedId);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        }
+    }
 }

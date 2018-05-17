@@ -1,13 +1,45 @@
-function addTask() {
+function addTask(mainDiv) {
 
 }
 
-function viewTask() {
+function viewTask(mainDiv) {
     
 }
 
-function addColumn() {
+function sendNewColumnData() {
+    const inputEl = document.getElementById('new-column-input');
+    const value = inputEl.value;
+    const messageDiv = (document.getElementsByClassName('hv-centered-div'))[0];
 
+    const params = new URLSearchParams();
+    params.append('scheduleId', messageDiv.getAttribute('schedule-id'));
+    params.append('columnName', value);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/schedule/?' + params.toString());
+    xhr.send();
+}
+
+function addColumn() {
+    const messageDiv = (document.getElementsByClassName('hv-centered-div'))[0];
+    removeAllChildren(messageDiv);
+    
+    const hEl = document.createElement('h2');
+    hEl.textContent = "Type the name of your routine:";
+
+    const inputEl = document.createElement('input');
+    inputEl.setAttribute('placeholder', 'Enter name here');
+    inputEl.setAttribute('id', 'new-column-input');
+
+    const buttonEl = document.createElement('button');
+    buttonEl.addEventListener('click', sendNewColumnData);
+    buttonEl.textContent = "Add";
+
+    messageDiv.appendChild(hEl);
+    messageDiv.appendChild(inputEl);
+    messageDiv.appendChild(buttonEl);
 }
 
 function createHeaderRow(mainDiv, schedule) {
@@ -73,18 +105,19 @@ function createTimeslotRows(mainDiv, schedule) {
     }
 }
 
-function noColumnMessage(mainDiv){
+function noColumnMessage(mainDiv, scheduleId){
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'hv-centered-div');
+    messageDiv.setAttribute('schedule-id', scheduleId);
 
     const hEl = document.createElement('h1');
     hEl.setAttribute('class', 'hv-centered-text');
-    hEl.textContent = "You don't have any schedules defined!";
+    hEl.textContent = "You don't have any routines defined!";
 
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'schedule-new-column-button');
-    buttonEl.textContent = "Add some!";
     buttonEl.addEventListener('click', addColumn);
+    buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
     const brEl = document.createElement('br');
 
@@ -101,7 +134,7 @@ function onScheduleReceived() {
 
     if (schedule.columns.length == 0) {
         /* If no columns show this */
-        noColumnMessage(mainDiv);
+        noColumnMessage(mainDiv, schedule.scheduleId);
 
     } else {
         /* Create Title */

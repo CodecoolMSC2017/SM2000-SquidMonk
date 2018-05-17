@@ -66,4 +66,9 @@ public class JsScheduleService implements ScheduleService {
 
         return scheduleDto;
     }
+
+    @Override
+    public void addNewColumnToSchedule(int schedId, String columnName) throws SQLException {
+        columnDao.insertColumn(schedId, columnName);
+    }
 }
