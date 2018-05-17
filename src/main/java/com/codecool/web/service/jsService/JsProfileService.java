@@ -20,4 +20,13 @@ public class JsProfileService implements ProfileService {
     public User showDataByUserId(int userId) throws SQLException, ServiceException {
         return userDao.findById(userId);
     }
+
+    @Override
+    public void changeUserName(int userId, String name) throws SQLException, ServiceException {
+
+        if (name == null || name.equals("")) {
+            throw new ServiceException("Profile name can not be empty!");
+        }
+        userDao.changeName(userId, name);
+    }
 }
