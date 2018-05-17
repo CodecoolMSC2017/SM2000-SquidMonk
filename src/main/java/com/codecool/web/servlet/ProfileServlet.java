@@ -33,4 +33,24 @@ public class ProfileServlet extends AbstractServlet {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getSession().getAttribute("user");
+        try (Connection connection = getConnection(req.getServletContext())) {
+            UserDao userDao = new UserDaoImpl(connection);
+            JsProfileService profileService = new JsProfileService(userDao);
+
+            int userId = user.getId();
+            String name = req.getParameter("name");
+
+            profileService.changeUserName(userId, name);
+            resp.setStatus(HttpServletResponse.SC_OK);
+
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
+    }
 }
