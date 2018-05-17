@@ -75,6 +75,18 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
+    public void changeName(int userId, String name) throws SQLException {
+
+        String sql = "UPDATE users SET name = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, userId);
+            executeInsert(statement);
+        }
+    }
+
+    @Override
     public void deleteUser(int userId) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";
 
