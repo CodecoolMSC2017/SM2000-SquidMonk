@@ -118,7 +118,7 @@ div.table-title {
   padding:5px;
   width: 48.96%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  animation: float 5s infinite;
+  /*animation: float 5s infinite;*/
 }
 
 .dash-table table {
@@ -190,13 +190,17 @@ div.table-title {
 
 .dash-table td {
   background:#FFFFFF;
-  padding:20px;
+  padding: 0px;
   text-align: center;
   vertical-align:middle;
   font-weight:300;
   font-size:18px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+}
+
+.dash-table td.entry {
+    padding: 20px;
 }
 
 .dash-table th.public {
@@ -214,8 +218,10 @@ div.table-title {
 /* Schedule table style START */
 .schedule-table {
   margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 150px;
+  float: left;
+  border-spacing: 10px 0px;
+  text-align: center;
 }
 
 .schedule-table th {
@@ -230,10 +236,6 @@ div.table-title {
 
 .ok-task {
   background-color: red;
-}
-
-.emptyelement {
-  width: 4%;
 }
 
 /* Schedule table style END */
@@ -367,4 +369,62 @@ div.table-title {
 
 .prof-table tr:nth-child(odd):hover td:last-child {
   background:#4E5066;
+}
+
+
+.item-name-input {
+    width: 90.5%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: auto;
+    transition-duration: 0.4s;
+}
+
+.create-row-input-td input:focus {
+    background-color: #555555;
+    color: white;
+}
+
+.create-row-input-td input:focus::-webkit-input-placeholder {
+    color: #555555;
+}
+
+.create-button {
+    width: 100%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.create-button:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.create-row-input-td {
+    margin: 5px;
+    padding: 5px;
+    height: 61px;
+    width: 90%;
+}
+
+.create-row-button-td {
+    margin: 5px;
+    padding: 5px;
+    width: 10%;
 }

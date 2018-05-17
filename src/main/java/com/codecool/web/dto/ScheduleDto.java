@@ -1,33 +1,27 @@
 package com.codecool.web.dto;
 
-import com.codecool.web.model.Column;
-import com.codecool.web.model.Task;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ScheduleDto {
 
     private int scheduleId;
-    private Map<Column, Task> columnTaskMap;
-    private List<Column> columns;
-    private List<Task> tasks;
+    private List<ScheduleColumnDto> columns;
 
-    public ScheduleDto(int scheduleId, List<Column> columns, List<Task> tasks) {
+    public ScheduleDto(int scheduleId) {
         this.scheduleId = scheduleId;
-        this.columns = columns;
-        this.tasks = tasks;
+        columns = new ArrayList<>();
     }
 
     public int getScheduleId() {
         return scheduleId;
     }
 
-    public List<Column> getColumns() {
+    public List<ScheduleColumnDto> getColumns() {
         return columns;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public void addColumns(ScheduleColumnDto columnDto) {
+        columns.add(columnDto);
     }
 }
