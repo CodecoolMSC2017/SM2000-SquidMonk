@@ -1,20 +1,28 @@
 package com.codecool.web.service.jsService;
 
+import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
+import com.codecool.web.dao.implementation.ScheduleDaoImpl;
+import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dto.DashboardTaskDto;
+import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class JsTaskService implements TaskService {
 
     private TaskDao taskDao;
+    private ScheduleDao scheduleDao;
 
-    public JsTaskService(TaskDao taskDao) {
-        this.taskDao = taskDao;
+    public JsTaskService(Connection connection) {
+        this.taskDao = new TaskDaoImpl(connection);
+        this.scheduleDao = new ScheduleDaoImpl(connection);
     }
 
     @Override
@@ -53,5 +61,13 @@ public class JsTaskService implements TaskService {
     @Override
     public List<DashboardTaskDto> getDtos(int userId) throws SQLException {
         return taskDao.findTaskUsages(userId);
+    }
+
+    @Override
+    public TaskDto getDtoById(int taskId) throws SQLException {
+        Task task = getById(taskId);
+        Map<Integer, String> schedules = scheduleDao.findAllByTaskId(taskId);
+
+        return new TaskDto(task.getId(), task.getName(), task.getContent(), schedules);
     }
 }

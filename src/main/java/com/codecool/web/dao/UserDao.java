@@ -15,6 +15,8 @@ public interface UserDao {
 
     void changeRole(int userId, boolean isAdmin) throws SQLException;
 
+    void changeName(int userId, String name) throws SQLException;
+
     void deleteUser(int userId) throws SQLException;
 
 }

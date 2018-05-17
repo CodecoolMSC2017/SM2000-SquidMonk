@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
@@ -102,6 +104,27 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
             }
         }
         return dbSchedDtoList;
+    }
+
+    @Override
+    public Map<Integer, String> findAllByTaskId(int taskId) throws SQLException {
+        Map<Integer, String> schedules = new HashMap<>();
+        String sql = "SELECT id, name FROM col_tsk " +
+                "LEFT JOIN schedules ON id = schedule_id " +
+                "WHERE task_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, taskId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                String name;
+                Integer id;
+                while (resultSet.next()) {
+                    id = resultSet.getInt("id");
+                    name = resultSet.getString("name");
+                    schedules.put(id, name);
+                }
+            }
+        }
+        return schedules;
     }
 
     private DashboardScheduleDto fetchDashboardDto(ResultSet resultSet) throws SQLException {

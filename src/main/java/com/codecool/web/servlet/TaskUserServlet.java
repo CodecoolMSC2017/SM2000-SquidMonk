@@ -1,7 +1,5 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.TaskDao;
-import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
@@ -23,8 +21,7 @@ public class TaskUserServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskDao taskDao = new TaskDaoImpl(connection);
-            TaskService service = new JsTaskService(taskDao);
+            TaskService service = new JsTaskService(connection);
 
             int userId = getUserId(req.getRequestURI());
             List<DashboardTaskDto> tasks = service.getDtos(userId);
@@ -39,8 +36,7 @@ public class TaskUserServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskDao taskDao = new TaskDaoImpl(connection);
-            TaskService taskService = new JsTaskService(taskDao);
+            TaskService taskService = new JsTaskService(connection);
 
             String name = req.getParameter("name");
             User user = (User) req.getSession().getAttribute("user");
