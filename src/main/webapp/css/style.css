@@ -432,3 +432,89 @@ div.table-title {
     padding: 5px;
     width: 10%;
 }
+
+.task-button {
+    width: 15%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.task-button:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+.task-edit-input {
+    width: 22.5%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: auto;
+}
+
+.task-edit-input:focus {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.task-edit-input input:focus::-webkit-input-placeholder {
+    color: #555555;
+}
+
+.task-edit-button {
+    width: 15%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.task-edit-button:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.task-title h1 {
+   color: #fafafa;
+   font-size: 50px;
+   font-weight: 400;
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
+
+.task-description h1 {
+   color: #fafafa;
+   font-size: 36px;
+   font-weight: 400;
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
