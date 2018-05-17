@@ -11,6 +11,7 @@ function createHeaderRow(mainDiv, schedule) {
         
         const thEl = document.createElement('th');
         thEl.textContent = column.name;
+        thEl.setAttribute('colspan', '2');
 
         trEl.appendChild(thEl);
         tableEl.appendChild(trEl);

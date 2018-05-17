@@ -214,8 +214,8 @@ div.table-title {
 /* Schedule table style START */
 .schedule-table {
   margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 150px;
+  float: left;
 }
 
 .schedule-table th {
@@ -230,10 +230,6 @@ div.table-title {
 
 .ok-task {
   background-color: red;
-}
-
-.emptyelement {
-  width: 4%;
 }
 
 /* Schedule table style END */
