@@ -36,7 +36,7 @@ function onCreateScheduleResponse() {
 
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = message.message + ' Click here to dismiss';
+        newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onScheduleBadRequestClick);
     }
@@ -53,7 +53,7 @@ function onCreateTaskResponse() {
 
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = message.message + ' Click here to dismiss';
+        newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onTaskBadRequestClick);
     }
@@ -237,9 +237,19 @@ function onSchedulesReceived() {
     scheduleTable.appendChild(createButtonRow);
     scheduleTable.appendChild(createScheduleTableHead());
 
-    for (let i = 0; i < schedules.length; i++) {
-        const schedule = schedules[i];
-        scheduleTable.appendChild(createScheduleRow(schedule));
+    if (schedules.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '3';
+        messageTdEl.textContent = 'You do not have any schedules.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        scheduleTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < schedules.length; i++) {
+            const schedule = schedules[i];
+            scheduleTable.appendChild(createScheduleRow(schedule));
+        }
     }
     scheduleDiv.appendChild(scheduleTable);
 
@@ -274,9 +284,19 @@ function onTasksReceived() {
     taskTable.appendChild(createButtonRow);
     taskTable.appendChild(createTaskTableHead());
 
-    for (let i = 0; i < tasks.length; i++) {
-        const task = tasks[i];
-        taskTable.appendChild(createTaskRow(task));
+    if (tasks.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '2';
+        messageTdEl.textContent = 'You do not have any tasks.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        taskTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i];
+            taskTable.appendChild(createTaskRow(task));
+        }
     }
     taskDiv.appendChild(taskTable);
 
