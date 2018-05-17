@@ -57,7 +57,7 @@ public class TaskServlet extends AbstractServlet {
             int taskId = getTaskId(req.getRequestURI());
 
             taskService.deleteTask(taskId);
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {

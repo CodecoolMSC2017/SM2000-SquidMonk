@@ -1,13 +1,26 @@
 
+function onDeleteResponse() {
+    if (this.status = NO_CONTENT) {
+        showDashboard();
+    }
+}
+
 function onScheduleButtonClicked() {
+    const taskId = this.getAttribute('data-task-id');    
     console.log('schedule task');
 }
 
 function onDeleteButtonClicked() {
-    console.log('delete');
+    const taskId = this.getAttribute('data-task-id');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteResponse);
+    xhr.open('DELETE', 'protected/tasks/' + taskId);
+    xhr.send();
 }
 
 function onEditButtonClicked() {
+    const taskId = this.getAttribute('data-task-id');
     console.log('edit');
 }
 
@@ -49,21 +62,28 @@ function createTaskScheduleTable(task) {
 }
 
 function displayTask(task) {
+    const taskNameEl = document.createElement('p');
+    taskNameEl.textContent = task.name;
+
     const scheduleButton = document.createElement('button');
     scheduleButton.textContent = 'Schedule task';
+    scheduleButton.setAttribute('data-task-id', task.id);
     scheduleButton.addEventListener('click', onScheduleButtonClicked);
 
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
+    editButton.setAttribute('data-task-id', task.id);
     editButton.addEventListener('click', onEditButtonClicked);
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
+    deleteButton.setAttribute('data-task-id', task.id);
     deleteButton.addEventListener('click', onDeleteButtonClicked);
 
     clearMainContent();
 
     const mainContentEl = document.getElementById('main-content');
+    mainContentEl.appendChild(taskNameEl);
     mainContentEl.appendChild(scheduleButton);
     mainContentEl.appendChild(editButton);
     mainContentEl.appendChild(deleteButton);
