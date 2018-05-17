@@ -29,14 +29,14 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    -webkit-transition-duration: 0.4s;
-    transition-duration: 0.4s;
     cursor: pointer;
 }
 
 .form-table button:hover {
     background-color: #555555;
     color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .form-table input {
@@ -50,14 +50,14 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    -webkit-transition-duration: 0.4s;
-    transition-duration: 0.4s;
     cursor: auto;
 }
 
 .form-table input:focus {
     background-color: #555555;
     color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .form-table input:focus::-webkit-input-placeholder {
@@ -160,8 +160,11 @@ div.table-title {
   background:#4E5066;
   color:#FFFFFF;
   cursor: pointer;
-  transition-duration: 300ms;
-  transition-timing-function: ease-out;
+}
+
+.dash-table tr:hover {
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .dash-table tr:first-child {
@@ -384,16 +387,17 @@ div.table-title {
     font-size: 16px;
     margin: 0px;
     cursor: auto;
-    transition-duration: 0.4s;
 }
 
 .create-row-input-td input:focus {
     background-color: #555555;
     color: white;
+    transition-duration: 0.4s;
 }
 
 .create-row-input-td input:focus::-webkit-input-placeholder {
     color: #555555;
+    transition-duration: 0.4s;
 }
 
 .create-button {
@@ -408,12 +412,12 @@ div.table-title {
     font-size: 16px;
     margin: 0px;
     cursor: pointer;
-    transition-duration: 0.4s;
 }
 
 .create-button:hover {
     background-color: #555555;
     color: white;
+    transition-duration: 0.4s;
 }
 
 .create-row-input-td {
