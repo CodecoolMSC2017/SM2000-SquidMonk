@@ -2,10 +2,10 @@
 function onTaskReceived() {
     if (this.status == OK) {
         const task = JSON.parse(this.responseText);
-        const h1El = document.getElementById('task-title');
-        h1El.textContent = task.name;
         console.log(task);
-        showContents(['task-content', 'topnav-content']);
+
+        const mainDivEl = document.getElementById('main-content');
+        mainDivEl.textContent = task.name;
     }
 }
 

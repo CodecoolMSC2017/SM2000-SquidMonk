@@ -18,7 +18,7 @@ function onTaskBadRequestClick() {
     createButtonRow.innerHTML = '';
     const createButton = document.createElement('td');
 
-    createButton.colSpan = '3';
+    createButton.colSpan = '2';
     createButton.textContent = 'Create new Task';
     createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
 
@@ -111,7 +111,7 @@ function onCreateTaskButtonClicked() {
 
     const td1El = this.children[0];
     td1El.textContent = '';
-    td1El.colSpan = '2';
+    td1El.colSpan = '1';
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-task-name-input';
@@ -160,16 +160,12 @@ function createTaskTableHead() {
     const taskTableHeaderTr = document.createElement('tr');
     const taskTableNameTh = document.createElement('th');
     taskTableNameTh.textContent = 'Name';
-    const taskTableContentTh = document.createElement('th');
-    taskTableContentTh.textContent = 'Content';
-    taskTableContentTh.className = 'content';
-    const taskTableScheduleTh = document.createElement('th');
-    taskTableScheduleTh.textContent = 'Schedule';
-    taskTableScheduleTh.className = 'schedule';
+    
+    const taskTableUsagesTh = document.createElement('th');
+    taskTableUsagesTh.textContent = 'Usages';
 
     taskTableHeaderTr.appendChild(taskTableNameTh);
-    taskTableHeaderTr.appendChild(taskTableContentTh);
-    taskTableHeaderTr.appendChild(taskTableScheduleTh);
+    taskTableHeaderTr.appendChild(taskTableUsagesTh);
 
     return taskTableHeaderTr;
 }
@@ -209,21 +205,11 @@ function createTaskRow(task) {
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = task.name;
 
-    const entryContentTd = document.createElement('td');
-    entryContentTd.textContent = task.content;
-
-    const entryScheduleTd = document.createElement('td');
-    if (task.scheduleId === null) {
-        entryScheduleTd.textContent = 'null';
-    } else {
-        entryScheduleTd.textContent = task.scheduleId;
-    }
+    const entryUsagesTd = document.createElement('td');
+    entryUsagesTd.textContent = task.usages;
 
     entryTr.appendChild(entryNameTd);
-    entryTr.appendChild(entryContentTd);
-    entryTr.appendChild(entryScheduleTd);
-
-    //entryTr.addEventListener('click', onSchedMouseClick);
+    entryTr.appendChild(entryUsagesTd);
 
     return entryTr;
 }
@@ -274,7 +260,7 @@ function onTasksReceived() {
     taskDiv.id = 'dashboard-task-table';
 
     const createButton = document.createElement('td');
-    createButton.colSpan = '3';
+    createButton.colSpan = '2';
     createButton.textContent = 'Create new task';
 
     const createButtonRow = document.createElement('tr');

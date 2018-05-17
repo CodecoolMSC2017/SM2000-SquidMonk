@@ -1,6 +1,7 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.TaskDao;
+import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
@@ -47,5 +48,10 @@ public class JsTaskService implements TaskService {
     @Override
     public Task getById(int taskId) throws SQLException {
         return taskDao.findById(taskId);
+    }
+
+    @Override
+    public List<DashboardTaskDto> getDtos(int userId) throws SQLException {
+        return taskDao.findTaskUsages(userId);
     }
 }
