@@ -69,7 +69,7 @@ public class TaskServlet extends AbstractServlet {
     private int getTaskId(String uri) throws ServiceException {
         String taskIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
         try {
-            return Integer.parseInt(taskIdAsString.split("\\?")[0]);
+            return Integer.parseInt(taskIdAsString);
         } catch (NumberFormatException e) {
             throw new ServiceException("Task id is not a valid number");
         }

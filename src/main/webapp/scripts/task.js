@@ -7,8 +7,60 @@ function onDeleteResponse() {
     }
 }
 
-function onScheduleButtonClicked() {   
-    console.log('schedule task');
+function createTaskAvailableScheduleTable(task) {
+    const tableEl = document.createElement('table');
+
+    const thEl = document.createElement('th');
+    thEl.textContent = 'Available schedules for this task';
+
+    const headTrEl = document.createElement('tr');
+    headTrEl.appendChild(thEl);
+
+    tableEl.appendChild(headTrEl);
+
+    if (Object.keys(task.schedules).length == 0) {
+        const tdEl = document.createElement('td');
+        tdEl.textContent = 'There are no schedules available.';
+
+        const trEl = document.createElement('tr');
+        trEl.appendChild(tdEl);
+
+        tableEl.appendChild(trEl);
+    } else {
+        for (let scheduleId in task.schedules) {
+            const scheduleName = task.schedules[scheduleId];
+
+            const tdEl = document.createElement('td');
+            tdEl.textContent = scheduleName;
+
+            const trEl = document.createElement('tr');
+            trEl.id = scheduleId;
+            trEl.addEventListener('click', onScheduleClick);
+            trEl.appendChild(tdEl);
+            
+            tableEl.appendChild(trEl);
+        }
+    }
+    return tableEl;
+}
+
+function onAvialableSchedulesReceived() {
+    if (this.status == OK) {
+        const task = JSON.parse(this.responseText);
+        const mainContentEl = document.getElementById('main-content');
+        mainContentEl.appendChild(createTaskAvailableScheduleTable(task));
+    } else {
+        console.log(this.responseText);
+    }
+}
+
+function onScheduleButtonClicked() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onAvialableSchedulesReceived);
+    xhr.open('GET', 'protected/tasks/user/' + user.id + '?taskId=' + currentTask.id);
+    xhr.send();
 }
 
 function onDeleteButtonClicked() {

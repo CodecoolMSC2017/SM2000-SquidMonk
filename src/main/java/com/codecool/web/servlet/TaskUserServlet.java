@@ -1,6 +1,7 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dto.DashboardTaskDto;
+import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
@@ -24,12 +25,21 @@ public class TaskUserServlet extends AbstractServlet {
             TaskService service = new JsTaskService(connection);
 
             int userId = getUserId(req.getRequestURI());
-            List<DashboardTaskDto> tasks = service.getDtos(userId);
-            sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+            String taskIdAsString = req.getParameter("taskId");
+            if (taskIdAsString == null) {
+                List<DashboardTaskDto> tasks = service.getDtos(userId);
+                sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+            } else {
+                int taskId = Integer.parseInt(taskIdAsString);
+                TaskDto taskDto = service.getDtoWithAvailableSchedules(taskId);
+                sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
+            }
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        } catch (NumberFormatException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
         }
     }
 

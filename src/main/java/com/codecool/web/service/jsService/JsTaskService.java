@@ -71,4 +71,12 @@ public class JsTaskService implements TaskService {
 
         return new TaskDto(task.getId(), task.getName(), task.getContent(), schedules);
     }
+
+    @Override
+    public TaskDto getDtoWithAvailableSchedules(int taskId) throws SQLException {
+        Task task = getById(taskId);
+        Map<Integer, String> schedules = scheduleDao.findAvailableByTaskId(taskId);
+
+        return new TaskDto(task.getId(), task.getName(), task.getContent(), schedules);
+    }
 }
