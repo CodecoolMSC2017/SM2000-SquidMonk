@@ -31,7 +31,7 @@ public class TaskUserServlet extends AbstractServlet {
                 sendMessage(resp, HttpServletResponse.SC_OK, tasks);
             } else {
                 int taskId = Integer.parseInt(taskIdAsString);
-                TaskDto taskDto = service.getDtoWithAvailableSchedules(taskId);
+                TaskDto taskDto = service.getDtoWithAvailableSchedules(userId, taskId);
                 sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
             }
         } catch (SQLException e) {

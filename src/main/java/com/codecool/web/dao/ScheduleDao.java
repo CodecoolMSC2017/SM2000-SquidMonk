@@ -25,5 +25,5 @@ public interface ScheduleDao {
 
     Map<Integer, String> findAllByTaskId(int taskId) throws SQLException;
 
-    Map<Integer,String> findAvailableByTaskId(int taskId) throws SQLException;
+    List<Integer> getSchedulesOfTask(int userId, int taskId) throws SQLException;
 }

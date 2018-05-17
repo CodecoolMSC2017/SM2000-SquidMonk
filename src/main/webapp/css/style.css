@@ -149,7 +149,7 @@ div.table-title {
 
 .dash-table tr {
   border-top: 1px solid #C1C3D1;
-  border-bottom-: 1px solid #C1C3D1;
+  border-bottom: 1px solid #C1C3D1;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
@@ -217,11 +217,17 @@ div.table-title {
 .dash-table th.schedule {
     width: 6%;
 }
+/* General Schedule styling */
+.schedule-small-margin {
+  margin: 5px 10px 5px 10px;
+}
 
 /* Schedule table style START */
 .schedule-table {
-  margin-top: 30px;
-  margin-left: 150px;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 10px;
   float: left;
   border-spacing: 10px 0px;
   text-align: center;
@@ -234,11 +240,19 @@ div.table-title {
 .no-task {
   background-color: green;
   height: 30px;
-  width: 150px;
+  width: 200px;
+  border-style: solid;
+  border-color: lightgray;
+  border-width: 1px;
 }
 
 .ok-task {
   background-color: red;
+  width: 200px;
+}
+
+.task-counter {
+  height: 30px;
 }
 
 /* Schedule table style END */

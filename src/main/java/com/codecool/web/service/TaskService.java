@@ -24,5 +24,5 @@ public interface TaskService {
 
     TaskDto getDtoById(int taskId) throws SQLException;
 
-    TaskDto getDtoWithAvailableSchedules(int taskId) throws SQLException;
+    TaskDto getDtoWithAvailableSchedules(int userId, int taskId) throws SQLException;
 }

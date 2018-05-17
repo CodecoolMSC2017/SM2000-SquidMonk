@@ -7,6 +7,10 @@ function onDeleteResponse() {
     }
 }
 
+function onShowUsageButtonClicked() {
+    displayTask(currentTask);
+}
+
 function createTaskAvailableScheduleTable(task) {
     const otherTable = document.getElementById('task-schedule-table');
     if (otherTable != null) {
@@ -52,6 +56,12 @@ function createTaskAvailableScheduleTable(task) {
             tableEl.appendChild(trEl);
         }
     }
+
+    const scheduleButton = document.getElementById('schedule-task-button');
+    scheduleButton.textContent = 'Show usages';
+    scheduleButton.removeEventListener('click', onScheduleButtonClicked);
+    scheduleButton.addEventListener('click', onShowUsageButtonClicked);
+
     return tableEl;
 }
 
@@ -202,6 +212,7 @@ function displayTask(task) {
     }
 
     const scheduleButton = document.createElement('button');
+    scheduleButton.id = 'schedule-task-button';
     scheduleButton.className = 'task-button';
     scheduleButton.textContent = 'Schedule task';
     scheduleButton.addEventListener('click', onScheduleButtonClicked);

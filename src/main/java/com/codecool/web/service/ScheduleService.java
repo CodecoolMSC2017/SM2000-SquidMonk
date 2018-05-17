@@ -14,4 +14,6 @@ public interface ScheduleService {
     List<Task> getTasksByScheduleId(int schedId) throws SQLException;
 
     ScheduleDto fillScheduleDto(int schedId) throws SQLException;
+
+    void addNewColumnToSchedule(int schedId, String columnName)  throws SQLException;
 }
