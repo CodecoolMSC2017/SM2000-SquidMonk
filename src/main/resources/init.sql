@@ -262,11 +262,11 @@ INSERT INTO columns (schedule_id, name) VALUES
     (7, 'Csanád Column 2'); --13
 
 INSERT INTO tasks (user_id, name, content) VALUES
-    (4, 'Clean toilet', ''), --1
-    (4, 'Take out the trash', ''), --2
-    (4, 'Level up my paladin to 100', ''), --3
-    (5, 'Get laid (difficult)', ''), --4
-    (5, 'Learn to sing', ''), --5
+    (4, 'Clean toilet', 'It really needs cleaning!'), --1
+    (4, 'Take out the trash', 'So much....'), --2
+    (4, 'Level up my paladin to 100', 'Nothing less would suffice!'), --3
+    (5, 'Get laid (difficult)', '(Not really)'), --4
+    (5, 'Learn to sing', '(Now this is difficult)'), --5
     (5, 'Dress up', ''), --6
     (5, 'Buy a car', ''), --7
     (5, 'Sell unnecessary stuff', ''), --8
@@ -293,8 +293,8 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (7, 'Scrub sink', ''), --29
     (7, 'Clean oven', ''), --30
     (8, 'Wash bedding', ''), --31
-    (8, 'Clean windows', ''), --32
-    (8, 'Reformat computer', ''), --33
+    (8, 'Clean windows', 'Have wet wipes ready!'), --32
+    (8, 'Reformat computer', 'Do not forget: format c: :)'), --33
     (8, 'Refactor old codes', ''), --34
     (8, 'Hand in assignments', ''), --35
     (8, 'Shovel snow away', ''), --36
@@ -303,8 +303,8 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (8, 'Wash pillows', ''), --39
     (8, 'Wipe light switches', ''), --40
     (8, 'Clean closets', ''), --41
-    (8, 'Deal with the mail', ''), --42
-    (8, 'Read the news', ''); --43
+    (8, 'Deal with the mail', 'Got one from Grandma yesterday. Could be important!'), --42
+    (8, 'Read the news', 'Sooo much to catch up with'); --43
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
