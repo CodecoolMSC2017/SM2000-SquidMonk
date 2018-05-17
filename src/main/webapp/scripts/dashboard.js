@@ -256,6 +256,7 @@ function onSchedulesReceived() {
     if (schedules.length == 0) {
         const messageTdEl = document.createElement('td');
         messageTdEl.colSpan = '3';
+        messageTdEl.className = 'entry';
         messageTdEl.textContent = 'You do not have any schedules.';
 
         const messageTrEl = document.createElement('tr');
@@ -304,6 +305,7 @@ function onTasksReceived() {
     if (tasks.length == 0) {
         const messageTdEl = document.createElement('td');
         messageTdEl.colSpan = '2';
+        messageTdEl.className = 'entry';
         messageTdEl.textContent = 'You do not have any tasks.';
 
         const messageTrEl = document.createElement('tr');
