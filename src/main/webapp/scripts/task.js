@@ -8,6 +8,10 @@ function onDeleteResponse() {
 }
 
 function createTaskAvailableScheduleTable(task) {
+    const otherTable = document.getElementById('task-schedule-table');
+    if (otherTable != null) {
+        otherTable.remove();
+    }
     const tableEl = document.createElement('table');
 
     const thEl = document.createElement('th');
@@ -128,11 +132,16 @@ function onEditButtonClicked() {
 }
 
 function createTaskScheduleTable(task) {
+    const otherTable = document.getElementById('task-available-schedule-table');
+    if (otherTable != null) {
+        otherTable.remove();
+    }
     const tableEl = document.createElement('table');
     tableEl.align = 'center';
     tableEl.style.marginTop = '20px';
     tableEl.style.width = '45%';
     tableEl.className = 'dash-table';
+    tableEl.classList.add('task-schedule-table');
 
     const thEl = document.createElement('th');
     thEl.textContent = 'Schedules containing this task';
