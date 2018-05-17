@@ -88,10 +88,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
     }
 
-    public List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException {
+    @Override
+    public List<DashboardTaskDto> findTaskUsages(int userId) throws SQLException {
         List<DashboardTaskDto> tasks = new ArrayList<>();
-        String sql = "SELECT id, name, content, schedule_id FROM tasks " +
-                "LEFT JOIN col_tsk ON id = task_id WHERE user_id = ? ORDER BY id DESC";
+        String sql = "SELECT id, name FROM tasks WHERE user_id = ? ORDER BY id DESC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -106,9 +106,21 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     private DashboardTaskDto fetchDashboardTaskDto(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
-        String content = resultSet.getString("content");
-        int scheduleId = resultSet.getInt("schedule_id");
-        return new DashboardTaskDto(id, name, content, scheduleId);
+        int amount = getOccurrences(id);
+        return new DashboardTaskDto(id, name, amount);
+    }
+
+    private int getOccurrences(int id) throws SQLException {
+        String sql = "SELECT COUNT(task_id) AS amount FROM col_tsk WHERE task_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("amount");
+                }
+            }
+        }
+        return 0;
     }
 
     private Task fetchTask(ResultSet resultSet) throws SQLException {

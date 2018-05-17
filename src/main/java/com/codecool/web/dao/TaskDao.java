@@ -20,5 +20,5 @@ public interface TaskDao {
 
     void updateContent (int taskId, String content) throws SQLException;
 
-    List<DashboardTaskDto> findUserDashboardTasks(int userId) throws SQLException;
+    List<DashboardTaskDto> findTaskUsages(int userId) throws SQLException;
 }

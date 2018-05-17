@@ -18,7 +18,7 @@ function onTaskBadRequestClick() {
     createButtonRow.innerHTML = '';
     const createButton = document.createElement('td');
 
-    createButton.colSpan = '3';
+    createButton.colSpan = '2';
     createButton.textContent = 'Create new Task';
     createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
 
@@ -31,9 +31,12 @@ function onCreateScheduleResponse() {
     } else if (this.status == BAD_REQUEST) {
         const createButtonRow = document.getElementById('schedule-create-button-row');
         createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = 'Schedule name can not be empty!';
+        newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onScheduleBadRequestClick);
     }
@@ -45,9 +48,12 @@ function onCreateTaskResponse() {
     } else if (this.status == BAD_REQUEST) {
         const createButtonRow = document.getElementById('task-create-button-row');
         createButtonRow.innerHTML = '';
+
+        const message = JSON.parse(this.responseText);
+
         const newTdEl = document.createElement('td');
         newTdEl.colSpan = '3';
-        newTdEl.textContent = 'Task name can not be empty!';
+        newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onTaskBadRequestClick);
     }
@@ -86,10 +92,12 @@ function onCreateScheduleButtonClicked() {
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-schedule-name-input';
-    inputEl.setAttribute('placeholder', 'Name');
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of the schedule');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
     buttonEl.textContent = 'Create';
     buttonEl.addEventListener('click', onCreateScheduleSubmitButtonClicked);
 
@@ -103,14 +111,16 @@ function onCreateTaskButtonClicked() {
 
     const td1El = this.children[0];
     td1El.textContent = '';
-    td1El.colSpan = '2';
+    td1El.colSpan = '1';
     
     const inputEl = document.createElement('input');
     inputEl.id = 'create-task-name-input';
-    inputEl.setAttribute('placeholder', 'Name');
+    inputEl.classList.add('item-name-input');
+    inputEl.setAttribute('placeholder', 'Name of new task');
     td1El.appendChild(inputEl);
 
     const buttonEl = document.createElement('button');
+    buttonEl.classList.add('create-button');
     buttonEl.textContent = 'Create';
     buttonEl.addEventListener('click', onCreateTaskSubmitButtonClicked);
 
@@ -150,16 +160,12 @@ function createTaskTableHead() {
     const taskTableHeaderTr = document.createElement('tr');
     const taskTableNameTh = document.createElement('th');
     taskTableNameTh.textContent = 'Name';
-    const taskTableContentTh = document.createElement('th');
-    taskTableContentTh.textContent = 'Content';
-    taskTableContentTh.className = 'content';
-    const taskTableScheduleTh = document.createElement('th');
-    taskTableScheduleTh.textContent = 'Schedule';
-    taskTableScheduleTh.className = 'schedule';
+    
+    const taskTableUsagesTh = document.createElement('th');
+    taskTableUsagesTh.textContent = 'Usages';
 
     taskTableHeaderTr.appendChild(taskTableNameTh);
-    taskTableHeaderTr.appendChild(taskTableContentTh);
-    taskTableHeaderTr.appendChild(taskTableScheduleTh);
+    taskTableHeaderTr.appendChild(taskTableUsagesTh);
 
     return taskTableHeaderTr;
 }
@@ -199,21 +205,11 @@ function createTaskRow(task) {
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = task.name;
 
-    const entryContentTd = document.createElement('td');
-    entryContentTd.textContent = task.content;
-
-    const entryScheduleTd = document.createElement('td');
-    if (task.scheduleId === null) {
-        entryScheduleTd.textContent = 'null';
-    } else {
-        entryScheduleTd.textContent = task.scheduleId;
-    }
+    const entryUsagesTd = document.createElement('td');
+    entryUsagesTd.textContent = task.usages;
 
     entryTr.appendChild(entryNameTd);
-    entryTr.appendChild(entryContentTd);
-    entryTr.appendChild(entryScheduleTd);
-
-    //entryTr.addEventListener('click', onSchedMouseClick);
+    entryTr.appendChild(entryUsagesTd);
 
     return entryTr;
 }
@@ -241,9 +237,19 @@ function onSchedulesReceived() {
     scheduleTable.appendChild(createButtonRow);
     scheduleTable.appendChild(createScheduleTableHead());
 
-    for (let i = 0; i < schedules.length; i++) {
-        const schedule = schedules[i];
-        scheduleTable.appendChild(createScheduleRow(schedule));
+    if (schedules.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '3';
+        messageTdEl.textContent = 'You do not have any schedules.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        scheduleTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < schedules.length; i++) {
+            const schedule = schedules[i];
+            scheduleTable.appendChild(createScheduleRow(schedule));
+        }
     }
     scheduleDiv.appendChild(scheduleTable);
 
@@ -264,7 +270,7 @@ function onTasksReceived() {
     taskDiv.id = 'dashboard-task-table';
 
     const createButton = document.createElement('td');
-    createButton.colSpan = '3';
+    createButton.colSpan = '2';
     createButton.textContent = 'Create new task';
 
     const createButtonRow = document.createElement('tr');
@@ -278,9 +284,19 @@ function onTasksReceived() {
     taskTable.appendChild(createButtonRow);
     taskTable.appendChild(createTaskTableHead());
 
-    for (let i = 0; i < tasks.length; i++) {
-        const task = tasks[i];
-        taskTable.appendChild(createTaskRow(task));
+    if (tasks.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '2';
+        messageTdEl.textContent = 'You do not have any tasks.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        taskTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i];
+            taskTable.appendChild(createTaskRow(task));
+        }
     }
     taskDiv.appendChild(taskTable);
 

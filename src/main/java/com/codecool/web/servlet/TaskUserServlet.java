@@ -24,9 +24,10 @@ public class TaskUserServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskDao taskDao = new TaskDaoImpl(connection);
+            TaskService service = new JsTaskService(taskDao);
 
             int userId = getUserId(req.getRequestURI());
-            List<DashboardTaskDto> tasks = taskDao.findUserDashboardTasks(userId);
+            List<DashboardTaskDto> tasks = service.getDtos(userId);
             sendMessage(resp, HttpServletResponse.SC_OK, tasks);
         } catch (SQLException e) {
             handleSqlError(resp, e);

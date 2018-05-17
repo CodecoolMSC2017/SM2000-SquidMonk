@@ -1,6 +1,7 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.TaskDao;
+import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
@@ -24,7 +25,7 @@ public class JsTaskService implements TaskService {
     @Override
     public void insertTask(int userId, String name, String content) throws SQLException, ServiceException {
         if (name == null || name.equals("")) {
-            throw new ServiceException("Name can't be empty");
+            throw new ServiceException("Task name can not be empty!");
         }
         taskDao.insertTask(userId, name, content);
     }
@@ -47,5 +48,10 @@ public class JsTaskService implements TaskService {
     @Override
     public Task getById(int taskId) throws SQLException {
         return taskDao.findById(taskId);
+    }
+
+    @Override
+    public List<DashboardTaskDto> getDtos(int userId) throws SQLException {
+        return taskDao.findTaskUsages(userId);
     }
 }
