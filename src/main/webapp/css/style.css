@@ -522,3 +522,11 @@ div.table-title {
 .squid {
     width: 290px;
 }
+
+#sound-content {
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0px;
+}

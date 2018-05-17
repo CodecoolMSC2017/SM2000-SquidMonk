@@ -8,7 +8,7 @@ function onLoginResponse() {
     const json = JSON.parse(this.responseText);
     if (this.status === OK) {
         localStorage.setItem('user', JSON.stringify(json));
-        showContents(['topnav-content', 'main-content', 'logout-content']);
+        showContents(['topnav-content', 'main-content', 'sound-content']);
         mainContentEl = document.getElementById('main-content');
         mainContentEl.textContent = '';
         const divEl = document.createElement('div');

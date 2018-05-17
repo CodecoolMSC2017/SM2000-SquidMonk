@@ -1,3 +1,4 @@
+let count = 0;
 
 function onScheduleBadRequestClick() {
     const createButtonRow = document.getElementById('schedule-create-button-row');
@@ -372,5 +373,21 @@ function showDashboard() {
     requestSchedules();
     requestTasks();
 
-    showContents(['topnav-content', 'main-content']);
+    showContents(['topnav-content', 'main-content', 'sound-content']);
+}
+
+function onSoundClicked() {
+    count++;
+    if (count === 10) {
+        count = 0;
+        const embed = document.createElement('embed');
+        embed.id = 'embed';
+        embed.setAttribute('src', 'sounds/naaa.mp3');
+        embed.setAttribute('hidden', 'true');
+        this.appendChild(embed);
+    } else {
+        if (document.getElementById('embed') != null) {
+            this.removeChild(document.getElementById('embed'));
+        }
+    }
 }
