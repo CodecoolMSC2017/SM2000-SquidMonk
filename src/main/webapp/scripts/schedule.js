@@ -2,7 +2,7 @@ function addTask(mainDiv) {
 
 }
 
-function viewTask(mainDiv) {
+function deleteSchedule() {
     
 }
 
@@ -144,7 +144,7 @@ function noColumnMessage(mainDiv, scheduleId){
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'schedule-new-column-button');
     buttonEl.setAttribute('class', 'schedule-button');
-    buttonEl.setAttribute('style', 'margin-top: 0px');
+    buttonEl.setAttribute('style', 'margin-top: 0px; width: 20%');
     buttonEl.addEventListener('click', addColumnToEmptySchedule);
     buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
@@ -175,6 +175,11 @@ function createTitleButtons(mainDiv, columnNumber) {
     buttonRemove.addEventListener('click', removeColumn);
     buttonRemove.textContent = "Delete a routine";
 
+    const buttonDeleteSchedule = document.createElement('button');
+    buttonDeleteSchedule.setAttribute('class', 'schedule-button');
+    buttonDeleteSchedule.addEventListener('click', deleteSchedule);
+    buttonDeleteSchedule.textContent = "Delete this schedule";
+
 
     if (columnNumber < 7) {
         buttonDivEl.appendChild(buttonAdd);
@@ -182,6 +187,7 @@ function createTitleButtons(mainDiv, columnNumber) {
 
     buttonDivEl.appendChild(buttonEdit);
     buttonDivEl.appendChild(buttonRemove);
+    buttonDivEl.appendChild(buttonDeleteSchedule);
     mainDiv.appendChild(buttonDivEl);
 }
 
