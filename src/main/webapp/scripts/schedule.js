@@ -20,6 +20,7 @@ function createHeaderRow(mainDiv, schedule) {
 }
 
 function createTimeslotRows(mainDiv, schedule) {
+    let taskSpaceCounter = 0;
     
     /* As many columns are needed as the column list's size */
     for (let i = 0; i < schedule.columns.length; i++) {
@@ -32,13 +33,18 @@ function createTimeslotRows(mainDiv, schedule) {
             const trEl = document.createElement('tr');
             const tdEl = document.createElement('td');
             const counterTdEl = document.createElement('td');
+            taskSpaceCounter--;
 
             counterTdEl.textContent = n + " - " + (n+1);
 
             if (typeof tsk != 'undefined') {
                 tdEl.textContent = tsk.task.name;
+                tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
                 tdEl.setAttribute('class', 'ok-task');
-            } else {
+                taskSpaceCounter = tsk.slotsTaken.length;
+            }
+
+            if (typeof tsk == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
             }
 

@@ -216,6 +216,8 @@ div.table-title {
   margin-top: 30px;
   margin-left: 150px;
   float: left;
+  border-spacing: 10px 0px;
+  text-align: center;
 }
 
 .schedule-table th {
