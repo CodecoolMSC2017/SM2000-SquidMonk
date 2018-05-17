@@ -69,6 +69,7 @@ function createHeaderRow(mainDiv, schedule) {
 
 function createTimeslotRows(mainDiv, schedule) {
     let taskSpaceCounter = 0;
+    let tdHeight = 0;
     
     /* As many columns are needed as the column list's size */
     for (let i = 0; i < schedule.columns.length; i++) {
@@ -83,11 +84,18 @@ function createTimeslotRows(mainDiv, schedule) {
             taskSpaceCounter--;
 
             if (typeof tsk != 'undefined') {
+                tdHeight = 40 * tsk.slotsTaken.length;
+
                 tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.start +":00";
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
-                tdEl.setAttribute('style', 'height: ' + (40 * tsk.slotsTaken.length) + 'px');
+                tdEl.setAttribute('style', 'height: ' + tdHeight + 'px');
                 tdEl.setAttribute('class', 'ok-task');
+
                 taskSpaceCounter = tsk.slotsTaken.length;
+
+                if (tdHeight >= 120) {
+                    tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br><i>" + tsk.task.content + "</i><br><br>" + tsk.task.start + ":00 to " + tsk.task.start +":00";
+                }
 
                 tdEl.addEventListener('click', addTask);
                 trEl.appendChild(tdEl);
