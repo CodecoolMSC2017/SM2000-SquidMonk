@@ -1,5 +1,6 @@
 package com.codecool.web.service;
 
+import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 
@@ -11,4 +12,6 @@ public interface ScheduleService {
     List<Column> getColumnsByScheduleId(int schedId) throws SQLException;
 
     List<Task> getTasksByScheduleId(int schedId) throws SQLException;
+
+    ScheduleDto fillScheduleDto(int schedId) throws SQLException;
 }

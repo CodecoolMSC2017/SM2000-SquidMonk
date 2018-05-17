@@ -31,9 +31,9 @@ public class ScheduleServlet extends AbstractServlet {
             TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
             ScheduleService scheduleService = new JsScheduleService(columnDao, taskDao, controlTable);
 
-            ScheduleDto scheduleDto = new ScheduleDto(schedId, scheduleService.getColumnsByScheduleId(schedId), scheduleService.getTasksByScheduleId(schedId));
+
             resp.setStatus(HttpServletResponse.SC_OK);
-            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            sendMessage(resp, HttpServletResponse.SC_OK, scheduleService.fillScheduleDto(schedId));
 
         } catch (SQLException e) {
             handleSqlError(resp, e);
