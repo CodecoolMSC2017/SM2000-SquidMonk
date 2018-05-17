@@ -1,8 +1,6 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.TaskDao;
-import com.codecool.web.dao.implementation.TaskDaoImpl;
-import com.codecool.web.model.Task;
+import com.codecool.web.dto.TaskDto;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.jsService.JsTaskService;
 
@@ -20,13 +18,12 @@ public class TaskServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskDao taskDao = new TaskDaoImpl(connection);
-            TaskService taskService = new JsTaskService(taskDao);
+            TaskService taskService = new JsTaskService(connection);
 
             int taskId = getTaskId(req.getRequestURI());
-            Task task = taskService.getById(taskId);
+            TaskDto taskDto = taskService.getDtoById(taskId);
 
-            sendMessage(resp, HttpServletResponse.SC_OK, task);
+            sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {
@@ -37,8 +34,7 @@ public class TaskServlet extends AbstractServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskDao taskDao = new TaskDaoImpl(connection);
-            TaskService taskService = new JsTaskService(taskDao);
+            TaskService taskService = new JsTaskService(connection);
 
             String newName = req.getParameter("name");
             String newContent = req.getParameter("content");
@@ -56,13 +52,12 @@ public class TaskServlet extends AbstractServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskDao taskDao = new TaskDaoImpl(connection);
-            TaskService taskService = new JsTaskService(taskDao);
+            TaskService taskService = new JsTaskService(connection);
 
             int taskId = getTaskId(req.getRequestURI());
 
             taskService.deleteTask(taskId);
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {
