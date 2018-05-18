@@ -29,6 +29,8 @@ function addColumn() {
 
     const darkBackgroundDiv = document.createElement('div');
     darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+    darkBackgroundDiv.setAttribute('id', scheduleId);
+    darkBackgroundDiv.addEventListener('click', onScheduleClick);
 
     const aboveDivEl = document.createElement('div');
     aboveDivEl.setAttribute('class', 'schedule-above-div');
