@@ -22,7 +22,37 @@ function editSingleRoutineName() {
 }
 
 function addColumn() {
+    const mainDiv = document.getElementById('main-content');
 
+    const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
+    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
+
+    const darkBackgroundDiv = document.createElement('div');
+    darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+
+    const aboveDivEl = document.createElement('div');
+    aboveDivEl.setAttribute('class', 'schedule-above-div');
+    aboveDivEl.setAttribute('id', 'schedule-add-column');
+    aboveDivEl.setAttribute('schedule-id', scheduleId);
+    
+    const hEl = document.createElement('h2');
+    hEl.textContent = "Type the name of your routine:";
+
+    const inputEl = document.createElement('input');
+    inputEl.setAttribute('placeholder', 'Enter name here');
+    inputEl.setAttribute('id', 'new-column-input');
+    inputEl.setAttribute('class', 'schedule-input');
+
+    const buttonEl = document.createElement('button');
+    buttonEl.addEventListener('click', sendNewColumnData);
+    buttonEl.setAttribute('class', 'schedule-button');
+    buttonEl.textContent = "Add";
+
+    aboveDivEl.appendChild(hEl);
+    aboveDivEl.appendChild(inputEl);
+    aboveDivEl.appendChild(buttonEl);
+    mainDiv.appendChild(darkBackgroundDiv);
+    mainDiv.appendChild(aboveDivEl);
 }
 
 function editColumnNames() {
@@ -36,10 +66,11 @@ function removeColumn() {
 function sendNewColumnData() {
     const inputEl = document.getElementById('new-column-input');
     const value = inputEl.value;
-    const messageDiv = (document.getElementsByClassName('hv-centered-div'))[0];
+    const divEl = document.getElementById('schedule-add-column');
+    const scheduleId = divEl.getAttribute('schedule-id');
 
     const params = new URLSearchParams();
-    params.append('scheduleId', messageDiv.getAttribute('schedule-id'));
+    params.append('scheduleId', scheduleId);
     params.append('columnName', value);
     
     const xhr = new XMLHttpRequest();
@@ -50,7 +81,7 @@ function sendNewColumnData() {
 }
 
 function addColumnToEmptySchedule() {
-    const messageDiv = (document.getElementsByClassName('hv-centered-div'))[0];
+    const messageDiv = document.getElementById('schedule-add-column');
     removeAllChildren(messageDiv);
     
     const hEl = document.createElement('h2');
@@ -146,6 +177,7 @@ function createTimeslotRows(mainDiv, schedule) {
 function noColumnMessage(mainDiv, scheduleId){
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'hv-centered-div');
+    messageDiv.setAttribute('id', 'schedule-add-column');
     messageDiv.setAttribute('schedule-id', scheduleId);
 
     const hEl = document.createElement('h1');
@@ -195,6 +227,7 @@ function createTitleButtons(mainDiv, schedule) {
 
     const buttonDeleteSchedule = document.createElement('button');
     buttonDeleteSchedule.setAttribute('class', 'schedule-button');
+    buttonDeleteSchedule.setAttribute('id', 'schedule-delete-button');
     buttonDeleteSchedule.setAttribute('schedule-id', schedule.id);
     buttonDeleteSchedule.addEventListener('click', deleteSchedule);
     buttonDeleteSchedule.textContent = "Delete this schedule";
