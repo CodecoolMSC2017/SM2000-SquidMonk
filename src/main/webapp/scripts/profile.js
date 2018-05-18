@@ -115,7 +115,8 @@ function onChangeProfileNameClicked() {
 
     const buttonEl = document.createElement('button');
     buttonEl.textContent = 'Submit';
-    //buttonEl.addEventListener('click', onChangeProfileNameSubmitClicked);
+    buttonEl.addEventListener('click', onChangeProfileNameSubmitClicked);
+    //buttonEl.setAttribute('class', 'task-button');
     buttonTdEl.appendChild(buttonEl);
 
     createChangesRow.appendChild(profTableChangeNameTd);
@@ -179,7 +180,7 @@ function onCreateProfileResponse() {
         newTdEl.colSpan = '3';
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
-        createButtonRow.addEventListener('click', nameProfileRow);
+        createButtonRow.addEventListener('click', onMenuProfileClick);
     }
 }
 
@@ -192,7 +193,7 @@ function onChangeProfileNameSubmitClicked() {
     params.append('name', inputEl.value);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', receiveProfile);
+    xhr.addEventListener('load', onCreateProfileResponse);
     xhr.open('PUT', 'protected/profile/user/' + user.id);
     xhr.send(params);
 }
