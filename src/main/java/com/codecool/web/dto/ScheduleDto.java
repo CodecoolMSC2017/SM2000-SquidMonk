@@ -5,16 +5,16 @@ import java.util.List;
 
 public class ScheduleDto {
 
-    private int scheduleId;
+    private int id;
     private List<ScheduleColumnDto> columns;
 
-    public ScheduleDto(int scheduleId) {
-        this.scheduleId = scheduleId;
+    public ScheduleDto(int id) {
+        this.id = id;
         columns = new ArrayList<>();
     }
 
-    public int getScheduleId() {
-        return scheduleId;
+    public int getId() {
+        return id;
     }
 
     public List<ScheduleColumnDto> getColumns() {

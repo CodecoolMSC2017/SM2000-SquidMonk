@@ -1,8 +1,10 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dao.ColumnDao;
+import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
+import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleDto;
@@ -56,6 +58,24 @@ public class ScheduleServlet extends AbstractServlet {
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(schedId);
             resp.setStatus(HttpServletResponse.SC_OK);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int schedId = Integer.parseInt(req.getParameter("scheduleId"));
+
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
+            ScheduleService scheduleService = new JsScheduleService(scheduleDao);
+
+            scheduleService.deleteSchedule(schedId);
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+            /*sendMessage(resp, HttpServletResponse.SC_OK);*/
 
         } catch (SQLException e) {
             handleSqlError(resp, e);

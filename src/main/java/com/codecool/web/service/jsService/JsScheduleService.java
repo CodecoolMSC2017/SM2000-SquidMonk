@@ -1,6 +1,7 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.ColumnDao;
+import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleColumnDto;
@@ -19,11 +20,16 @@ public class JsScheduleService implements ScheduleService {
     private ColumnDao columnDao;
     private TskColSchedConnectorDao controlTable;
     private TaskDao taskDao;
+    private ScheduleDao scheduleDao;
 
     public JsScheduleService(ColumnDao columnDao, TaskDao taskDao, TskColSchedConnectorDao controlTable) {
         this.columnDao = columnDao;
         this.taskDao = taskDao;
         this.controlTable = controlTable;
+    }
+
+    public JsScheduleService(ScheduleDao scheduleDao) {
+        this.scheduleDao = scheduleDao;
     }
 
     @Override
@@ -70,5 +76,10 @@ public class JsScheduleService implements ScheduleService {
     @Override
     public void addNewColumnToSchedule(int schedId, String columnName) throws SQLException {
         columnDao.insertColumn(schedId, columnName);
+    }
+
+    @Override
+    public void deleteSchedule(int schedId) throws SQLException {
+        scheduleDao.deleteSchedule(schedId);
     }
 }

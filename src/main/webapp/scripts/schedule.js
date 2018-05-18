@@ -2,8 +2,19 @@ function addTask(mainDiv) {
 
 }
 
+function viewTask() {
+
+}
+
 function deleteSchedule() {
+    const params = new URLSearchParams();
+    params.append('scheduleId', this.getAttribute('schedule-id'));
     
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', showDashboard);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/schedule/?' + params.toString());
+    xhr.send();
 }
 
 function editSingleRoutineName() {
@@ -143,20 +154,27 @@ function noColumnMessage(mainDiv, scheduleId){
 
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'schedule-new-column-button');
-    buttonEl.setAttribute('class', 'schedule-button');
-    buttonEl.setAttribute('style', 'margin-top: 0px; width: 20%');
+    buttonEl.setAttribute('class', 'schedule-button-empty-schedule');
     buttonEl.addEventListener('click', addColumnToEmptySchedule);
     buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
+
+    const buttonDeleteSchedule = document.createElement('button');
+    buttonDeleteSchedule.setAttribute('class', 'schedule-button-empty-schedule');
+    buttonDeleteSchedule.setAttribute('schedule-id', scheduleId);
+    buttonDeleteSchedule.addEventListener('click', deleteSchedule);
+    buttonDeleteSchedule.innerHTML = "<h4 class=schedule-small-margin> Delete this schedule </h4>";
+
 
     const brEl = document.createElement('br');
 
     messageDiv.appendChild(hEl);
     messageDiv.appendChild(brEl);
     messageDiv.appendChild(buttonEl);
+    messageDiv.appendChild(buttonDeleteSchedule);
     mainDiv.appendChild(messageDiv);
 }
 
-function createTitleButtons(mainDiv, columnNumber) {
+function createTitleButtons(mainDiv, schedule) {
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
 
@@ -177,11 +195,12 @@ function createTitleButtons(mainDiv, columnNumber) {
 
     const buttonDeleteSchedule = document.createElement('button');
     buttonDeleteSchedule.setAttribute('class', 'schedule-button');
+    buttonDeleteSchedule.setAttribute('schedule-id', schedule.id);
     buttonDeleteSchedule.addEventListener('click', deleteSchedule);
     buttonDeleteSchedule.textContent = "Delete this schedule";
 
 
-    if (columnNumber < 7) {
+    if (schedule.columns.length < 7) {
         buttonDivEl.appendChild(buttonAdd);
     }
 
@@ -198,11 +217,11 @@ function onScheduleReceived() {
 
     if (schedule.columns.length == 0) {
         /* If no columns show this */
-        noColumnMessage(mainDiv, schedule.scheduleId);
+        noColumnMessage(mainDiv, schedule.id);
 
     } else {
         /* Create Title buttons */
-        createTitleButtons(mainDiv, schedule.columns.length);
+        createTitleButtons(mainDiv, schedule);
 
         /* Create first header row */
         createHeaderRow(mainDiv, schedule);

@@ -15,5 +15,7 @@ public interface ScheduleService {
 
     ScheduleDto fillScheduleDto(int schedId) throws SQLException;
 
-    void addNewColumnToSchedule(int schedId, String columnName)  throws SQLException;
+    void addNewColumnToSchedule(int schedId, String columnName) throws SQLException;
+
+    void deleteSchedule(int schedID) throws SQLException;
 }
