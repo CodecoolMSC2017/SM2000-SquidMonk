@@ -112,7 +112,7 @@ function createTimeslotRows(mainDiv, schedule) {
             taskSpaceCounter--;
 
             if (typeof tsk != 'undefined') {
-                tdHeight = 41 * tsk.slotsTaken.length;
+                tdHeight = 39 * tsk.slotsTaken.length;
 
                 tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
