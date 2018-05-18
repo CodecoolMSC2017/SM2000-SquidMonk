@@ -112,7 +112,7 @@ function createTimeslotRows(mainDiv, schedule) {
             taskSpaceCounter--;
 
             if (typeof tsk != 'undefined') {
-                tdHeight = 40 * tsk.slotsTaken.length;
+                tdHeight = 41 * tsk.slotsTaken.length;
 
                 tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
                 tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
@@ -152,11 +152,11 @@ function noColumnMessage(mainDiv, scheduleId){
     hEl.setAttribute('class', 'hv-centered-text');
     hEl.textContent = "You don't have any routines defined!";
 
-    const buttonEl = document.createElement('button');
-    buttonEl.setAttribute('id', 'schedule-new-column-button');
-    buttonEl.setAttribute('class', 'schedule-button-empty-schedule');
-    buttonEl.addEventListener('click', addColumnToEmptySchedule);
-    buttonEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
+    const buttonCreateEl = document.createElement('button');
+    buttonCreateEl.setAttribute('id', 'schedule-new-column-button');
+    buttonCreateEl.setAttribute('class', 'schedule-button-empty-schedule');
+    buttonCreateEl.addEventListener('click', addColumnToEmptySchedule);
+    buttonCreateEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
     const buttonDeleteSchedule = document.createElement('button');
     buttonDeleteSchedule.setAttribute('class', 'schedule-button-empty-schedule');
@@ -169,7 +169,7 @@ function noColumnMessage(mainDiv, scheduleId){
 
     messageDiv.appendChild(hEl);
     messageDiv.appendChild(brEl);
-    messageDiv.appendChild(buttonEl);
+    messageDiv.appendChild(buttonCreateEl);
     messageDiv.appendChild(buttonDeleteSchedule);
     mainDiv.appendChild(messageDiv);
 }
