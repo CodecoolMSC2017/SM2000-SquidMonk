@@ -35,40 +35,33 @@ function sharePopupDialog() {
     aboveDivEl.setAttribute('id', 'schedule-add-column');
     aboveDivEl.setAttribute('schedule-id', scheduleId);
 
-    const shareDivEl = document.createElement('div');
-    shareDivEl.setAttribute('class', 'h-centered-div');
-    shareDivEl.setAttribute('id', 'share-div-schedule');
-    
-    if (public === true) {
-        const shareTitle = document.createElement('h2');
-        shareTitle.textContent = 'Share this schedule!';
+    const shareUrl = document.createElement('h3');
+    shareUrl.setAttribute('id', 'schedule-share-url');
 
-        const shareUrl = document.createElement('h3');
-        shareUrl.textContent = document.URL + url;
-
-        aboveDivEl.appendChild(shareTitle);
-        shareDivEl.appendChild(shareUrl);
-    } else {
-        const shareTitle = document.createElement('h2');
-        shareTitle.textContent = "You haven't shared this schedule yet!";
-
-        aboveDivEl.appendChild(shareTitle);
-    }
+    const shareTitle = document.createElement('h2');
+    shareTitle.setAttribute('id', 'share-title-schedule')
 
     const buttonPublish = document.createElement('button');
     buttonPublish.setAttribute('class', 'schedule-button');
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.setAttribute('data-sched-id', scheduleId);
-
     buttonPublish.setAttribute('ispublic', public);
+
     if (public === true) {
+        shareTitle.textContent = 'Share this schedule!';
+        shareUrl.textContent = document.URL + url;
         buttonPublish.textContent = "Unpublish";
+        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     } else {
+        shareTitle.textContent = "You haven't shared this schedule yet!";
+        shareUrl.textContent = "";
         buttonPublish.textContent = "Publish";
+        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     }
 
+    aboveDivEl.appendChild(shareTitle);
+    aboveDivEl.appendChild(shareUrl);
     aboveDivEl.appendChild(buttonPublish);
-    aboveDivEl.appendChild(shareDivEl);
     mainDiv.appendChild(darkBackgroundDiv);
     mainDiv.appendChild(aboveDivEl);
 }
@@ -328,6 +321,7 @@ function createTitleButtons(mainDiv, schedule) {
 
     const buttonPublish = document.createElement('button');
     buttonPublish.setAttribute('class', 'schedule-button');
+    buttonPublish.setAttribute('id', 'schedule-share-button');
     buttonPublish.setAttribute('public-schedule', schedule.public);
     buttonPublish.setAttribute('url', schedule.url);
     buttonPublish.addEventListener('click', sharePopupDialog);
@@ -361,25 +355,30 @@ function onSchedulePublishClick() {
     const buttonEl = this;
     const id = this.getAttribute('data-sched-id');
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', function() {
-        onSchedulePublishReceived(buttonEl)
-    });
     xhr.addEventListener('error', onNetworkError);
     xhr.open('PUT', 'protected/schedule/' + id + '/visible', true);
     xhr.send();
+
+    onSchedulePublish(buttonEl);
 }
 
-function onSchedulePublishReceived(el) {
-    const shareDivEl = document.getElementById('share-div-schedule');
+function onSchedulePublish(el) {
+    const shareUrl = document.getElementById('schedule-share-url');
+    const shareTitle = document.getElementById('share-title-schedule');
+    const url = document.getElementById('schedule-share-button').getAttribute('url');
 
     if (el.getAttribute('ispublic') === 'true') {
         el.setAttribute('ispublic', false);
-        shareDivEl.style.display = 'none';
-        el.textContent = "Publish";;
+        shareUrl.textContent = "";
+        shareTitle.textContent = "You haven't shared this schedule yet!";
+        el.textContent = "Publish";
+        el.setAttribute('style', 'margin-top: 0px;');
     } else {
-        shareDivEl.style.display = 'block';
         el.setAttribute('ispublic', true);
-        el.textContent = "Unpublish";;
+        el.setAttribute('style', 'margin-top: 0px;');
+        shareTitle.textContent = 'Share this schedule!';
+        shareUrl.textContent = document.URL + url;
+        el.textContent = "Unpublish";
     }
 }
 
