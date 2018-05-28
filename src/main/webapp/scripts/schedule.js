@@ -306,20 +306,6 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
-    if (schedule.public === true) {
-        shareDivEl = document.createElement('div');
-        shareDivEl.setAttribute('class', 'h-centered-div');
-
-        const shareTitle = document.createElement('h2');
-        shareTitle.textContent = 'Share this schedule!';
-
-        const shareUrl = document.createElement('h3');
-        shareUrl.textContent = document.URL + "schedules/public/" + schedule.url;
-
-        shareDivEl.appendChild(shareTitle);
-        shareDivEl.appendChild(shareUrl);
-        mainDiv.appendChild(shareDivEl);
-    }
 
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
@@ -392,7 +378,7 @@ function onSchedulePublish(el) {
         el.setAttribute('ispublic', true);
         el.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + url;
+        shareUrl.textContent = document.URL + "schedules/public/" + schedule.url;
         el.textContent = "Unpublish";
     }
 }
