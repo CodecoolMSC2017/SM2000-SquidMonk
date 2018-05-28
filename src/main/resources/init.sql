@@ -52,137 +52,128 @@ CREATE TABLE col_tsk (
 
 CREATE OR REPLACE FUNCTION check_task_occurrences()
     RETURNS TRIGGER AS '
-DECLARE
-    schedule_count integer;
-    column_count integer;
-BEGIN
-    SELECT COUNT(col_tsk.task_id) FROM col_tsk
-    WHERE col_tsk.task_id = NEW.task_id
-    AND col_tsk.schedule_id = NEW.schedule_id
-    INTO schedule_count;
+        DECLARE
+            schedule_count integer;
+            column_count integer;
+        BEGIN
+            SELECT COUNT(col_tsk.task_id) FROM col_tsk
+            WHERE col_tsk.task_id = NEW.task_id
+            AND col_tsk.schedule_id = NEW.schedule_id
+            INTO schedule_count;
 
-    SELECT COUNT(col_tsk.task_id) FROM col_tsk
-    WHERE col_tsk.task_id = NEW.task_id
-    AND col_tsk.col_id = NEW.col_id
-    INTO column_count;
+            SELECT COUNT(col_tsk.task_id) FROM col_tsk
+            WHERE col_tsk.task_id = NEW.task_id
+            AND col_tsk.col_id = NEW.col_id
+            INTO column_count;
 
-    IF schedule_count = 1 AND column_count = 1 THEN
-		RETURN NEW;
-	ELSE
-  		RAISE EXCEPTION ''Task overflow'';
-	END IF;
-END;
-'
-LANGUAGE 'plpgsql';
+            IF schedule_count = 1 AND column_count = 1 THEN
+                RETURN NEW;
+            ELSE
+                RAISE EXCEPTION ''Task overflow'';
+            END IF;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION check_schedules_capacity()
     RETURNS TRIGGER AS '
-DECLARE
-    count integer;
-BEGIN
-    SELECT COUNT(columns.id) FROM columns
-    WHERE columns.schedule_id = NEW.schedule_id
-    INTO count;
+        DECLARE
+            count integer;
+        BEGIN
+            SELECT COUNT(columns.id) FROM columns
+            WHERE columns.schedule_id = NEW.schedule_id
+            INTO count;
 
-    IF count > 7 THEN
-        RAISE EXCEPTION ''Capacity of this schedule is reached'';
-    ELSE
-        RETURN NEW;
-    END IF;
-END;
-'
-LANGUAGE 'plpgsql';
+            IF count > 7 THEN
+                RAISE EXCEPTION ''Capacity of this schedule is reached'';
+            ELSE
+                RETURN NEW;
+            END IF;
+        END;'
+    LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION check_columns_integrity()
+CREATE OR REPLACE FUNCTION check_task_overlap()
     RETURNS TRIGGER AS '
-DECLARE
-    r col_tsk%rowtype;
-BEGIN
-    FOR r IN SELECT * FROM col_tsk
-    WHERE col_tsk.col_id = NEW.col_id
-    LOOP
-        IF NEW.task_id = r.task_id AND NEW.col_id = r.col_id AND NEW.schedule_id = r.schedule_id THEN
-            CONTINUE;
-        ELSIF NEW.task_start < r.task_end AND NEW.task_start >= r.task_start THEN
-            RAISE EXCEPTION ''Task start time intersects another task'';
-        ELSIF NEW.task_end <= r.task_end AND NEW.task_end > r.task_start THEN
-            RAISE EXCEPTION ''Task end time intersects another task'';
-        END IF;
-    END LOOP;
-    RETURN NEW;
-END;
-'
-LANGUAGE 'plpgsql';
+        DECLARE
+            r col_tsk%rowtype;
+        BEGIN
+            FOR r IN SELECT * FROM col_tsk
+            WHERE col_tsk.col_id = NEW.col_id
+            LOOP
+                IF NEW.task_id = r.task_id AND NEW.col_id = r.col_id AND NEW.schedule_id = r.schedule_id THEN
+                    CONTINUE;
+                ELSIF NEW.task_start < r.task_end AND NEW.task_start >= r.task_start THEN
+                    RAISE EXCEPTION ''Task start time intersects another task'';
+                ELSIF NEW.task_end <= r.task_end AND NEW.task_end > r.task_start THEN
+                    RAISE EXCEPTION ''Task end time intersects another task'';
+                END IF;
+            END LOOP;
+            RETURN NEW;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION delete_task_connections()
     RETURNS TRIGGER AS '
-BEGIN
-    DELETE FROM col_tsk WHERE col_tsk.task_id = OLD.id;
-    RETURN OLD;
-END;
-'
-LANGUAGE 'plpgsql';
+        BEGIN
+            DELETE FROM col_tsk WHERE col_tsk.task_id = OLD.id;
+            RETURN OLD;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION delete_column_connections()
     RETURNS TRIGGER AS '
-BEGIN
-    DELETE FROM col_tsk WHERE col_tsk.col_id = OLD.id;
-    RETURN OLD;
-END;
-'
-LANGUAGE 'plpgsql';
+        BEGIN
+            DELETE FROM col_tsk WHERE col_tsk.col_id = OLD.id;
+            RETURN OLD;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION delete_schedule_connections()
     RETURNS TRIGGER AS '
-BEGIN
-    DELETE FROM col_tsk WHERE schedule_id = OLD.id;
-    DELETE FROM columns WHERE schedule_id = OLD.id;
-    RETURN OLD;
-END;
-'
-LANGUAGE 'plpgsql';
+        BEGIN
+            DELETE FROM col_tsk WHERE schedule_id = OLD.id;
+            DELETE FROM columns WHERE schedule_id = OLD.id;
+            RETURN OLD;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION delete_user_connections()
     RETURNS TRIGGER AS '
-BEGIN
-    DELETE FROM schedules WHERE user_id = OLD.id;
-    DELETE FROM tasks WHERE user_id = OLD.id;
-    RETURN OLD;
-END;
-'
-LANGUAGE 'plpgsql';
+        BEGIN
+            DELETE FROM schedules WHERE user_id = OLD.id;
+            DELETE FROM tasks WHERE user_id = OLD.id;
+            RETURN OLD;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION check_task_insert_into_own_schedule()
     RETURNS TRIGGER AS '
-DECLARE
-    schedule schedules%rowtype;
-    task tasks%rowtype;
-BEGIN
-    SELECT * FROM schedules WHERE schedules.id = NEW.schedule_id INTO schedule;
-    SELECT * FROM tasks WHERE tasks.id = NEW.task_id INTO task;
+        DECLARE
+            schedule schedules%rowtype;
+            task tasks%rowtype;
+        BEGIN
+            SELECT * FROM schedules WHERE schedules.id = NEW.schedule_id INTO schedule;
+            SELECT * FROM tasks WHERE tasks.id = NEW.task_id INTO task;
 
-    IF schedule.user_id <> task.user_id THEN
-        RAISE EXCEPTION ''Task can only be assigned to own schedule'';
-    END IF;
-    RETURN NEW;
-END;
-'
-LANGUAGE 'plpgsql';
+            IF schedule.user_id <> task.user_id THEN
+                RAISE EXCEPTION ''Task can only be assigned to own schedule'';
+            END IF;
+            RETURN NEW;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION check_column_schedule_id_match()
     RETURNS TRIGGER AS '
-DECLARE
-    col columns%rowtype;
-BEGIN
-    SELECT * FROM columns WHERE columns.id = NEW.col_id INTO col;
+        DECLARE
+            col columns%rowtype;
+        BEGIN
+            SELECT * FROM columns WHERE columns.id = NEW.col_id INTO col;
 
-    IF col.schedule_id <> NEW.schedule_id THEN
-        RAISE EXCEPTION ''Schedule-column mismatch'';
-    END IF;
-    RETURN NEW;
-END;
-'
-LANGUAGE 'plpgsql';
+            IF col.schedule_id <> NEW.schedule_id THEN
+                RAISE EXCEPTION ''Schedule-column mismatch'';
+            END IF;
+            RETURN NEW;
+        END;'
+    LANGUAGE 'plpgsql';
 
 CREATE TRIGGER task_overflow_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
@@ -190,7 +181,7 @@ CREATE TRIGGER task_overflow_check
 
 CREATE TRIGGER column_integrity_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
-    EXECUTE PROCEDURE check_columns_integrity();
+    EXECUTE PROCEDURE check_task_overlap();
 
 CREATE TRIGGER task_insert_into_own_schedule_check
     AFTER INSERT OR UPDATE ON col_tsk FOR EACH ROW
