@@ -249,6 +249,17 @@ function onCreateProfileResponse() {
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onMenuProfileClick);
+    } else if (this.status == INTERNAL_SERVER_ERROR) {
+        const mainDiv = document.getElementById('main-content');
+        const inputEmailEl = document.getElementById('new-profile-email-input');
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const message = JSON.parse(this.responseText);
+
+        const createExceptionMessageEl = document.createElement('p');
+        createExceptionMessageEl.textContent = 'This email (' + inputEmailEl.value + ') already exists! Please enter an other email!';
+        createExceptionMessageEl.className = 'exception-message';
+        mainDiv.appendChild(createExceptionMessageEl);
     }
 }
 

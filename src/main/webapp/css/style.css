@@ -754,3 +754,8 @@ div.table-title {
     position: absolute;
     bottom: 0px;
 }
+
+.exception-message {
+    text-align: center;
+    color: red;
+}
