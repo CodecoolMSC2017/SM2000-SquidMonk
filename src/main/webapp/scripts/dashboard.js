@@ -230,7 +230,7 @@ function onPublicClick() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', requestSchedules);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('PUT', 'protected/schedule/' + this.id, true);
+    xhr.open('PUT', 'protected/schedule/' + this.id + '/visible', true);
     xhr.send();
 }
 
