@@ -29,4 +29,13 @@ public class JsProfileService implements ProfileService {
         }
         userDao.changeName(userId, name);
     }
+
+    @Override
+    public void changeUserEmail(int userId, String email) throws SQLException, ServiceException {
+
+        if (email == null || email.equals("")) {
+            throw new ServiceException("Profile email can not be empty!");
+        }
+        userDao.changeEmail(userId, email);
+    }
 }

@@ -17,6 +17,8 @@ public interface UserDao {
 
     void changeName(int userId, String name) throws SQLException;
 
+    void changeEmail(int userId, String email) throws SQLException;
+
     void deleteUser(int userId) throws SQLException;
 
 }
