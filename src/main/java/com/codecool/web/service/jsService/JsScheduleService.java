@@ -10,6 +10,7 @@ import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleColumnDto;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Column;
+import com.codecool.web.model.Schedule;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ScheduleService;
 
@@ -50,6 +51,9 @@ public class JsScheduleService implements ScheduleService {
     @Override
     public ScheduleDto fillScheduleDto(int schedId) throws SQLException {
         ScheduleDto scheduleDto = new ScheduleDto(schedId);
+        Schedule schedule = scheduleDao.findById(schedId);
+        scheduleDto.setPublic(schedule.isPublic());
+
         ScheduleColumnDto columnDto;
 
         for (Column column : getColumnsByScheduleId(schedId)) {

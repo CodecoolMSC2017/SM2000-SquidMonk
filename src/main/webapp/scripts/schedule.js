@@ -248,6 +248,22 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
+    if (schedule.public === true) {
+        const shareDivEl = document.createElement('div');
+        shareDivEl.setAttribute('class', 'h-centered-div');
+
+        const shareTitle = document.createElement('strong');
+        shareTitle.textContent = 'Share this schedule!';
+
+        const shareUrl = document.createElement('p');
+        shareUrl.textContent = document.URL + "/" + schedule.url;
+
+        shareDivEl.appendChild(shareTitle);
+        shareDivEl.appendChild(document.createElement('br'));
+        shareDivEl.appendChild(shareUrl);
+        mainDiv.appendChild(shareDivEl);
+    }
+
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
 
@@ -266,12 +282,12 @@ function createTitleButtons(mainDiv, schedule) {
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.style.width = '5%';
     buttonPublish.setAttribute('data-sched-id', schedule.id);
+
+    buttonPublish.setAttribute('ispublic', schedule.public);
     if (schedule.public === true) {
         buttonPublish.innerHTML = '<i class="fa fa-check"></i>';
-        buttonPublish.setAttribute('isPublic', true);
     } else {
         buttonPublish.innerHTML = '<i class="fa fa-remove"></i>';
-        buttonPublish.setAttribute('isPublic', false);
     }
 
     const buttonRemove = document.createElement('button');
@@ -299,17 +315,18 @@ function createTitleButtons(mainDiv, schedule) {
 }
 
 function onSchedulePublishClick() {
-    console.log(this);
+    const buttonEl = this;
     const id = this.getAttribute('data-sched-id');
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSchedulePublishReceived(this));
+    xhr.addEventListener('load', function() {
+        onSchedulePublishReceived(buttonEl)
+    });
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('PUT', 'protected/schedule/' + id, true);
+    xhr.open('PUT', 'protected/schedule/' + id + '/visible', true);
     xhr.send();
 }
 
 function onSchedulePublishReceived(el) {
-    console.log(el.getAttribute('ispublic'));
     if (el.getAttribute('ispublic') === 'true') {
         el.setAttribute('ispublic', false);
         el.innerHTML = '<i class="fa fa-remove"></i>';
