@@ -52,7 +52,7 @@ public class TaskUserServlet extends AbstractServlet {
 
     private int getUserId(String uri) throws ServiceException {
         String[] splitUri = uri.split("/");
-        if (uri.length() < 6) {
+        if (splitUri.length < 6) {
             throw new ServiceException("Missing user id");
         }
         String userIdAsString = splitUri[5];

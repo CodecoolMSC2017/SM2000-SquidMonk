@@ -101,7 +101,7 @@ public class ScheduleServlet extends AbstractServlet {
 
     private int getScheduleId(String uri) throws ServiceException {
         String[] splitUri = uri.split("/");
-        if (uri.length() < 5) {
+        if (splitUri.length < 5) {
             throw new ServiceException("Missing schedule id");
         }
         String idAsString = splitUri[4];
