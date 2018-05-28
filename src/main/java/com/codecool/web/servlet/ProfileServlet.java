@@ -59,6 +59,7 @@ public class ProfileServlet extends AbstractServlet {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }
