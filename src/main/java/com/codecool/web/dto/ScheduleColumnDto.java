@@ -1,14 +1,15 @@
 package com.codecool.web.dto;
 
+import com.codecool.web.model.Task;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ScheduleColumnDto {
 
     private int id;
     private String name;
-    private Map<Integer, ScheduleTaskDto> tasks;
+    private Map<Integer, Task> tasks;
 
     public ScheduleColumnDto(int id, String name) {
         this.id = id;
@@ -24,12 +25,12 @@ public class ScheduleColumnDto {
         return name;
     }
 
-    public Map<Integer, ScheduleTaskDto> getTasks() {
+    public Map<Integer, Task> getTasks() {
         return tasks;
     }
 
-    public void addTask(ScheduleTaskDto taskDto) {
-        tasks.put(taskDto.getTask().getStart(), taskDto);
+    public void addTask(Task taskDto) {
+        tasks.put(taskDto.getStart(), taskDto);
     }
 
     @Override
