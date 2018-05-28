@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 let shareDivEl;
 
 function addTask(mainDiv) {
-=======
+}
+
 function addTask() {
->>>>>>> e869ddbd0cacbf5710ec430ef739ba13bebd10cc
 
 }
 
