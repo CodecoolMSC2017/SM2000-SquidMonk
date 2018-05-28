@@ -1,10 +1,7 @@
 package com.codecool.web.dto;
 
-<<<<<<< HEAD
 import com.codecool.web.service.PassEncrypt;
-=======
 import com.codecool.web.comparator.ScheduleComlumnDtoComparator;
->>>>>>> 6292f15d81fd641c26db4136508e6072816a8d02
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +33,6 @@ public class ScheduleDto {
         columns.add(columnDto);
     }
 
-<<<<<<< HEAD
     public String getUrl() {
         return url;
     }
@@ -47,9 +43,10 @@ public class ScheduleDto {
 
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
-=======
+
+    }
+
     public void sortColumnsById() {
         Collections.sort(columns, new ScheduleComlumnDtoComparator());
->>>>>>> 6292f15d81fd641c26db4136508e6072816a8d02
     }
 }
