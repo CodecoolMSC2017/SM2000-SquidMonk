@@ -1,3 +1,5 @@
+let shareDivEl;
+
 function addTask(mainDiv) {
 
 }
@@ -249,17 +251,16 @@ function noColumnMessage(mainDiv, scheduleId){
 
 function createTitleButtons(mainDiv, schedule) {
     if (schedule.public === true) {
-        const shareDivEl = document.createElement('div');
+        shareDivEl = document.createElement('div');
         shareDivEl.setAttribute('class', 'h-centered-div');
 
-        const shareTitle = document.createElement('strong');
+        const shareTitle = document.createElement('h2');
         shareTitle.textContent = 'Share this schedule!';
 
-        const shareUrl = document.createElement('p');
-        shareUrl.textContent = document.URL + "/" + schedule.url;
+        const shareUrl = document.createElement('h3');
+        shareUrl.textContent = document.URL + schedule.url;
 
         shareDivEl.appendChild(shareTitle);
-        shareDivEl.appendChild(document.createElement('br'));
         shareDivEl.appendChild(shareUrl);
         mainDiv.appendChild(shareDivEl);
     }
@@ -329,8 +330,10 @@ function onSchedulePublishClick() {
 function onSchedulePublishReceived(el) {
     if (el.getAttribute('ispublic') === 'true') {
         el.setAttribute('ispublic', false);
+        shareDivEl.style.display = 'none';
         el.innerHTML = '<i class="fa fa-remove"></i>';
     } else {
+        shareDivEl.style.display = 'block';
         el.setAttribute('ispublic', true);
         el.innerHTML = '<i class="fa fa-check"></i>';
     }
