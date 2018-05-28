@@ -1,5 +1,3 @@
-let shareDivEl;
-
 function addTask() {
 
 }
@@ -16,6 +14,63 @@ function getTasksToView() {
 
 function viewTask() {
     
+}
+
+function sharePopupDialog() {
+    const mainDiv = document.getElementById('main-content');
+    const buttonEl = this;
+    const public = buttonEl.getAttribute('public-schedule');
+    const url = buttonEl.getAttribute('url');
+
+    const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
+    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
+
+    const darkBackgroundDiv = document.createElement('div');
+    darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+    darkBackgroundDiv.setAttribute('id', scheduleId);
+    darkBackgroundDiv.addEventListener('click', onScheduleClick);
+
+    const aboveDivEl = document.createElement('div');
+    aboveDivEl.setAttribute('class', 'schedule-above-div');
+    aboveDivEl.setAttribute('id', 'schedule-add-column');
+    aboveDivEl.setAttribute('schedule-id', scheduleId);
+
+    const shareDivEl = document.createElement('div');
+    shareDivEl.setAttribute('class', 'h-centered-div');
+    shareDivEl.setAttribute('id', 'share-div-schedule');
+    
+    if (public === true) {
+        const shareTitle = document.createElement('h2');
+        shareTitle.textContent = 'Share this schedule!';
+
+        const shareUrl = document.createElement('h3');
+        shareUrl.textContent = document.URL + url;
+
+        aboveDivEl.appendChild(shareTitle);
+        shareDivEl.appendChild(shareUrl);
+    } else {
+        const shareTitle = document.createElement('h2');
+        shareTitle.textContent = "You haven't shared this schedule yet!";
+
+        aboveDivEl.appendChild(shareTitle);
+    }
+
+    const buttonPublish = document.createElement('button');
+    buttonPublish.setAttribute('class', 'schedule-button');
+    buttonPublish.addEventListener('click', onSchedulePublishClick);
+    buttonPublish.setAttribute('data-sched-id', scheduleId);
+
+    buttonPublish.setAttribute('ispublic', public);
+    if (public === true) {
+        buttonPublish.textContent = "Unpublish";
+    } else {
+        buttonPublish.textContent = "Publish";
+    }
+
+    aboveDivEl.appendChild(buttonPublish);
+    aboveDivEl.appendChild(shareDivEl);
+    mainDiv.appendChild(darkBackgroundDiv);
+    mainDiv.appendChild(aboveDivEl);
 }
 
 function sendDeleteSchedule() {
@@ -258,21 +313,6 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
-    if (schedule.public === true) {
-        shareDivEl = document.createElement('div');
-        shareDivEl.setAttribute('class', 'h-centered-div');
-
-        const shareTitle = document.createElement('h2');
-        shareTitle.textContent = 'Share this schedule!';
-
-        const shareUrl = document.createElement('h3');
-        shareUrl.textContent = document.URL + schedule.url;
-
-        shareDivEl.appendChild(shareTitle);
-        shareDivEl.appendChild(shareUrl);
-        mainDiv.appendChild(shareDivEl);
-    }
-
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
 
@@ -288,16 +328,10 @@ function createTitleButtons(mainDiv, schedule) {
 
     const buttonPublish = document.createElement('button');
     buttonPublish.setAttribute('class', 'schedule-button');
-    buttonPublish.addEventListener('click', onSchedulePublishClick);
-    buttonPublish.style.width = '5%';
-    buttonPublish.setAttribute('data-sched-id', schedule.id);
-
-    buttonPublish.setAttribute('ispublic', schedule.public);
-    if (schedule.public === true) {
-        buttonPublish.innerHTML = '<i class="fa fa-check"></i>';
-    } else {
-        buttonPublish.innerHTML = '<i class="fa fa-remove"></i>';
-    }
+    buttonPublish.setAttribute('public-schedule', schedule.public);
+    buttonPublish.setAttribute('url', schedule.url);
+    buttonPublish.addEventListener('click', sharePopupDialog);
+    buttonPublish.textContent = "Share schedule";
 
     const buttonRemove = document.createElement('button');
     buttonRemove.setAttribute('class', 'schedule-button');
@@ -336,14 +370,16 @@ function onSchedulePublishClick() {
 }
 
 function onSchedulePublishReceived(el) {
+    const shareDivEl = document.getElementById('share-div-schedule');
+
     if (el.getAttribute('ispublic') === 'true') {
         el.setAttribute('ispublic', false);
         shareDivEl.style.display = 'none';
-        el.innerHTML = '<i class="fa fa-remove"></i>';
+        el.textContent = "Publish";;
     } else {
         shareDivEl.style.display = 'block';
         el.setAttribute('ispublic', true);
-        el.innerHTML = '<i class="fa fa-check"></i>';
+        el.textContent = "Unpublish";;
     }
 }
 
