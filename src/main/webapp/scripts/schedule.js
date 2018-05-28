@@ -8,9 +8,9 @@ function getTasksToView() {
     const taskId = this.getAttribute('data-task-id');
     
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', showDashboard);
+    //xhr.addEventListener('load', showDashboard);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/schedule/task/?' + taskId);
+    xhr.open('GET', 'protected/schedule/task/' + taskId);
     xhr.send();
 }
 
