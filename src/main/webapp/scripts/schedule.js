@@ -222,6 +222,19 @@ function createTitleButtons(mainDiv, schedule) {
     buttonEdit.addEventListener('click', editColumnNames);
     buttonEdit.textContent = "Edit Routine Names";
 
+    const buttonPublish = document.createElement('button');
+    buttonPublish.setAttribute('class', 'schedule-button');
+    buttonPublish.addEventListener('click', onSchedulePublishClick);
+    buttonPublish.style.width = '5%';
+    buttonPublish.setAttribute('data-sched-id', schedule.id);
+    if (schedule.public === true) {
+        buttonPublish.innerHTML = '<i class="fa fa-check"></i>';
+        buttonPublish.setAttribute('isPublic', true);
+    } else {
+        buttonPublish.innerHTML = '<i class="fa fa-remove"></i>';
+        buttonPublish.setAttribute('isPublic', false);
+    }
+
     const buttonRemove = document.createElement('button');
     buttonRemove.setAttribute('class', 'schedule-button');
     buttonRemove.addEventListener('click', removeColumn);
@@ -240,9 +253,31 @@ function createTitleButtons(mainDiv, schedule) {
     }
 
     buttonDivEl.appendChild(buttonEdit);
+    buttonDivEl.appendChild(buttonPublish);
     buttonDivEl.appendChild(buttonRemove);
     buttonDivEl.appendChild(buttonDeleteSchedule);
     mainDiv.appendChild(buttonDivEl);
+}
+
+function onSchedulePublishClick() {
+    console.log(this);
+    const id = this.getAttribute('data-sched-id');
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSchedulePublishReceived(this));
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/' + id, true);
+    xhr.send();
+}
+
+function onSchedulePublishReceived(el) {
+    console.log(el.getAttribute('ispublic'));
+    if (el.getAttribute('ispublic') === 'true') {
+        el.setAttribute('ispublic', false);
+        el.innerHTML = '<i class="fa fa-remove"></i>';
+    } else {
+        el.setAttribute('ispublic', true);
+        el.innerHTML = '<i class="fa fa-check"></i>';
+    }
 }
 
 function onScheduleReceived() {
