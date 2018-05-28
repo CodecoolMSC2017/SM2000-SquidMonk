@@ -81,4 +81,16 @@ public class ScheduleServlet extends AbstractServlet {
             handleSqlError(resp, e);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI();
+        int schedId = Integer.parseInt(uri.substring(uri.lastIndexOf("/") + 1, uri.length()));
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
+            scheduleDao.updateVisibility(schedId);
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        }
+    }
 }

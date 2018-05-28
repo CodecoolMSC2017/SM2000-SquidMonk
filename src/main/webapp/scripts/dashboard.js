@@ -186,13 +186,22 @@ function createScheduleRow(schedule) {
     const entryNameTd = document.createElement('td');
     entryNameTd.textContent = schedule.scheduleName;
     entryNameTd.className = 'entry';
+    entryNameTd.id = schedule.scheduleId;
+    entryNameTd.addEventListener('click', onScheduleClick);
 
     const entryNumTd = document.createElement('td');
     entryNumTd.textContent = schedule.numOfTasks;
     entryNumTd.className = 'entry';
+    entryNumTd.id = schedule.scheduleId;
+    entryNumTd.addEventListener('click', onScheduleClick);
 
     const entryPublicTd = document.createElement('td');
     entryPublicTd.className = 'entry';
+    entryPublicTd.id = schedule.scheduleId;
+    entryPublicTd.setAttribute('isPublic', schedule.public);
+    entryPublicTd.addEventListener('click', onPublicClick);
+    entryPublicTd.addEventListener('mouseover', onPublicTdMouseHover);
+    entryPublicTd.addEventListener('mouseout', onPublicTdMouseOut);
     if (schedule.public === true) {
         entryPublicTd.innerHTML = '<i class="fa fa-check"></i>';
     } else {
@@ -203,9 +212,26 @@ function createScheduleRow(schedule) {
     entryTr.appendChild(entryNumTd);
     entryTr.appendChild(entryPublicTd);
 
-    entryTr.addEventListener('click', onScheduleClick);
+    //entryTr.addEventListener('click', onScheduleClick);
 
     return entryTr;
+}
+
+function onPublicTdMouseHover() {
+    this.style.color = 'white';
+    this.style.backgroundColor = 'black';
+}
+
+function onPublicTdMouseOut() {
+    this.removeAttribute('style');
+}
+
+function onPublicClick() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', requestSchedules);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/' + this.id, true);
+    xhr.send();
 }
 
 function createTaskRow(task) {

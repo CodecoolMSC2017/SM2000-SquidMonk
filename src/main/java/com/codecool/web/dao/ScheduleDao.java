@@ -15,7 +15,7 @@ public interface ScheduleDao {
 
     void insertSchedule(int userId, String name) throws SQLException;
 
-    void updateVisibility(int scheduleId, boolean isPublic) throws SQLException;
+    void updateVisibility(int scheduleId) throws SQLException;
 
     void updateName(int scheduleId, String name) throws SQLException;
 
