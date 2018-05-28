@@ -73,8 +73,23 @@ public class JsScheduleService implements ScheduleService {
     }
 
     @Override
+    public boolean getVisibility(int schedId) throws SQLException {
+        return scheduleDao.getVisibility(schedId);
+    }
+
+    @Override
+    public void updateVisibility(int schedId) throws SQLException {
+        scheduleDao.updateVisibility(schedId);
+    }
+
+    @Override
     public void addNewColumnToSchedule(int schedId, String columnName) throws SQLException {
         columnDao.insertColumn(schedId, columnName);
+    }
+
+    @Override
+    public void updateColumnName(int columnId, String columnName) throws SQLException {
+        columnDao.updateName(columnId, columnName);
     }
 
     @Override

@@ -353,32 +353,34 @@ function createTitleButtons(mainDiv, schedule) {
 
 function onSchedulePublishClick() {
     const buttonEl = this;
-    const id = this.getAttribute('data-sched-id');
+    const id = buttonEl.getAttribute('data-sched-id');
+
     const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSchedulePublishReceived);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('PUT', 'protected/schedule/' + id + '/visible', true);
     xhr.send();
-
-    onSchedulePublish(buttonEl);
 }
 
-function onSchedulePublish(el) {
+function onSchedulePublishReceived() {
+    const is_public = JSON.parse(this.responseText);
+    const shareButton = document.getElementById('schedule-share-button');
     const shareUrl = document.getElementById('schedule-share-url');
     const shareTitle = document.getElementById('share-title-schedule');
-    const url = document.getElementById('schedule-share-button').getAttribute('url');
+    const url = shareButton.getAttribute('url');
 
-    if (el.getAttribute('ispublic') === 'true') {
-        el.setAttribute('ispublic', false);
+    if (is_public.message === 'false') {
+        shareButton.setAttribute('ispublic', false);
         shareUrl.textContent = "";
         shareTitle.textContent = "You haven't shared this schedule yet!";
-        el.textContent = "Publish";
-        el.setAttribute('style', 'margin-top: 0px;');
+        shareButton.textContent = "Publish";
+        shareButton.setAttribute('style', 'margin-top: 0px;');
     } else {
-        el.setAttribute('ispublic', true);
-        el.setAttribute('style', 'margin-top: 0px;');
+        shareButton.setAttribute('ispublic', true);
+        shareButton.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
         shareUrl.textContent = document.URL + url;
-        el.textContent = "Unpublish";
+        shareButton.textContent = "Unpublish";
     }
 }
 

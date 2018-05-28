@@ -4,6 +4,7 @@ import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
+import com.codecool.web.dto.MessageDto;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.exception.ServiceException;
@@ -75,19 +76,21 @@ public class ScheduleServlet extends AbstractServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
+            ScheduleService scheduleService = new JsScheduleService(connection);
 
             int scheduleId = getScheduleId(req.getRequestURI());
 
             if (req.getRequestURI().endsWith("/visible")) {
-                scheduleDao.updateVisibility(scheduleId);
+                scheduleService.updateVisibility(scheduleId);
+
+                String visibility = String.valueOf(scheduleService.getVisibility(scheduleId));
+                MessageDto messageDto = new MessageDto(visibility);
+                sendMessage(resp, HttpServletResponse.SC_OK, messageDto);
             } else {
-                ColumnDao columnDao = new ColumnDaoImpl(connection);
-                ScheduleService scheduleService = new JsScheduleService(connection);
 
                 String columnNewName = req.getParameter("columnName");
                 int columnId = Integer.parseInt(req.getParameter("columnId"));
-                columnDao.updateName(columnId, columnNewName);
+                scheduleService.updateColumnName(columnId, columnNewName);
 
                 ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
                 sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
