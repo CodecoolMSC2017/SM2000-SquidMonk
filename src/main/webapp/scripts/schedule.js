@@ -110,13 +110,12 @@ function sendNewColumnData() {
     const scheduleId = divEl.getAttribute('schedule-id');
 
     const params = new URLSearchParams();
-    params.append('scheduleId', scheduleId);
     params.append('columnName', value);
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('POST', 'protected/schedule/?' + params.toString());
+    xhr.open('POST', 'protected/schedule/' + scheduleId + '?' + params.toString());
     xhr.send();
 }
 
