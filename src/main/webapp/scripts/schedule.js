@@ -1,21 +1,32 @@
+<<<<<<< HEAD
 let shareDivEl;
 
 function addTask(mainDiv) {
+=======
+function addTask() {
+>>>>>>> e869ddbd0cacbf5710ec430ef739ba13bebd10cc
 
 }
 
-function viewTask() {
-
-}
-
-function deleteSchedule() {
-    const params = new URLSearchParams();
-    params.append('scheduleId', this.getAttribute('schedule-id'));
+function getTasksToView() {
+    const taskId = this.getAttribute('data-task-id');
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', showDashboard);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('DELETE', 'protected/schedule/?' + params.toString());
+    xhr.send();
+}
+
+function viewTask() {
+    
+}
+
+function sendDeleteSchedule() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', showDashboard);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/schedule/' + this.getAttribute('schedule-id'));
     xhr.send();
 }
 
@@ -180,31 +191,32 @@ function createTimeslotRows(mainDiv, schedule) {
 
         /* 24 slots (rows) are needed */
         for (let n = 0; n < 24; n++) {
-            const tsk = column.tasks[n];
+            const task = column.tasks[n];
             const trEl = document.createElement('tr');
             const tdEl = document.createElement('td');
             taskSpaceCounter--;
 
-            if (typeof tsk != 'undefined') {
-                tdHeight = 39 * tsk.slotsTaken.length;
+            if (typeof task != 'undefined') {
+                const slotsTaken = task.end - task.start;
+                tdHeight = 39 * slotsTaken;
 
-                tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
-                tdEl.setAttribute('rowspan', tsk.slotsTaken.length);
+                tdEl.innerHTML = "<b>" + task.name + "</b><br>" + task.start + ":00 to " + task.end +":00";
+                tdEl.setAttribute('rowspan', slotsTaken);
                 tdEl.setAttribute('style', 'height: ' + tdHeight + 'px');
                 tdEl.setAttribute('class', 'ok-task');
-                tdEl.setAttribute('data-task-id', tsk.task.id);
+                tdEl.setAttribute('data-task-id', task.id);
 
-                taskSpaceCounter = tsk.slotsTaken.length;
+                taskSpaceCounter = slotsTaken;
 
                 if (tdHeight >= 120) {
-                    tdEl.innerHTML = "<b>" + tsk.task.name + "</b><br><i>" + tsk.task.content + "</i><br><br>" + tsk.task.start + ":00 to " + tsk.task.end +":00";
+                    tdEl.innerHTML = "<b>" + task.name + "</b><br><i>" + task.content + "</i><br><br>" + task.start + ":00 to " + task.end +":00";
                 }
 
-                tdEl.addEventListener('click', getTask);
+                tdEl.addEventListener('click', getTasksToView);
                 trEl.appendChild(tdEl);
             }
 
-            if (typeof tsk == 'undefined' && taskSpaceCounter <= 0) {
+            if (typeof task == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
@@ -236,7 +248,7 @@ function noColumnMessage(mainDiv, scheduleId){
     const buttonDeleteSchedule = document.createElement('button');
     buttonDeleteSchedule.setAttribute('class', 'schedule-button-bigger');
     buttonDeleteSchedule.setAttribute('schedule-id', scheduleId);
-    buttonDeleteSchedule.addEventListener('click', deleteSchedule);
+    buttonDeleteSchedule.addEventListener('click', sendDeleteSchedule);
     buttonDeleteSchedule.innerHTML = "<h4 class=schedule-small-margin> Delete this schedule </h4>";
 
 
@@ -300,7 +312,7 @@ function createTitleButtons(mainDiv, schedule) {
     buttonDeleteSchedule.setAttribute('class', 'schedule-button');
     buttonDeleteSchedule.setAttribute('id', 'schedule-delete-button');
     buttonDeleteSchedule.setAttribute('schedule-id', schedule.id);
-    buttonDeleteSchedule.addEventListener('click', deleteSchedule);
+    buttonDeleteSchedule.addEventListener('click', sendDeleteSchedule);
     buttonDeleteSchedule.textContent = "Delete this schedule";
 
 

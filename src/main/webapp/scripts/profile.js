@@ -21,14 +21,40 @@ function receiveProfile() {
     params.append('userId', user.id);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', setupProfileContentEl);
+    xhr.addEventListener('load', setupProfileContentEl(user));
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/profile/user/' + user.id);
     xhr.send(params);
 }
 
-function setupProfileContentEl() {
-    const user = JSON.parse(this.responseText);
+function onProfileReceived() {
+    if (this.status == OK) {
+        const user = JSON.parse(this.responseText);
+        setupProfileContentEl(user);
+        localStorage.setItem('user', this.responseText);
+    } else {
+        console.log(this);
+    }
+}
+
+function receiveUpdateProfile() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const mainDiv = document.getElementById('main-content');
+    removeAllChildren(mainDiv);
+
+    const params = new URLSearchParams();
+    params.append('userId', user.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onProfileReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/profile/user/' + '?' + params.toString());
+    xhr.send();
+}
+
+function setupProfileContentEl(user) {
+    //const user = JSON.parse(this.responseText);
     const userDiv = document.createElement('div');
     userDiv.className = 'prof-table';
     userDiv.id = 'userDiv';
@@ -72,7 +98,7 @@ function nameProfileRow(user) {
 
     const profUpdateNameTd = document.createElement('td');
     profUpdateNameTd.addEventListener('click', onChangeProfileNameClicked);
-    profUpdateNameTd.id = 'profile-change-button-td';
+    profUpdateNameTd.id = 'profile-name-change-button-td';
     profUpdateNameTd.textContent = 'Change';
 
     profTableNameTr.appendChild(profTableNameTd);
@@ -87,7 +113,7 @@ function onProfileBadRequestClick() {
 
     const profNameRowTitle = document.getElementById('prof-name-title');
     const profName = document.getElementById('prof-name');
-    const profNameRowButton = document.getElementById('profile-change-button-td');
+    const profNameRowButton = document.getElementById('profile-name-change-button-td');
 
     createChangesRow.appendChild(profNameRowTitle);
     createChangesRow.appendChild(profName);
@@ -109,13 +135,13 @@ function onChangeProfileNameClicked() {
     const buttonTdEl = document.createElement('td');
 
     const inputNameEl = document.createElement('input');
-    inputNameEl.id = 'new-profile-name-input'
+    inputNameEl.id = 'new-profile-name-input';
     inputNameEl.setAttribute('placeholder', 'New profile name');
     inputTdEl.appendChild(inputNameEl);
 
     const buttonEl = document.createElement('button');
     buttonEl.textContent = 'Submit';
-    buttonEl.addEventListener('click', onChangeProfileNameSubmitClicked);
+    buttonEl.addEventListener('click', onChangeProfileSubmitClicked);
     //buttonEl.setAttribute('class', 'task-button');
     buttonTdEl.appendChild(buttonEl);
 
@@ -126,14 +152,18 @@ function onChangeProfileNameClicked() {
 
 function emailProfileRow(user) {
     const profTableEmailTr = document.createElement('tr');
+    profTableEmailTr.id = 'profile-email-row';
     const profTableEmailTd = document.createElement('td');
     profTableEmailTd.textContent = 'Email';
+    profTableEmailTd.id = 'profile-email-title';
 
     const profEntryEmailTd = document.createElement('td');
-    profEntryEmailTd.id = user.id;
+    profEntryEmailTd.id = 'profile-email';
     profEntryEmailTd.textContent = user.email;
 
     const profUpdateEmailTd = document.createElement('td');
+    profUpdateEmailTd.addEventListener('click', onChangeProfileEmailClicked);
+    profUpdateEmailTd.id = 'profile-email-change-button-td';
     profUpdateEmailTd.textContent = 'Change';
 
     profTableEmailTr.appendChild(profTableEmailTd);
@@ -141,6 +171,36 @@ function emailProfileRow(user) {
     profTableEmailTr.appendChild(profUpdateEmailTd);
 
     return profTableEmailTr;
+}
+
+function onChangeProfileEmailClicked() {
+    const createChangesRow = document.getElementById('profile-email-row');
+    createChangesRow.removeEventListener('click', onChangeProfileEmailClicked);
+    createChangesRow.id = 'change-email-row';
+    createChangesRow.innerHTML = '';
+
+
+    const profTableChangeEmailTd = document.createElement('td');
+    profTableChangeEmailTd.textContent = 'Email';
+
+    const inputTdEl = document.createElement('td');
+
+    const buttonTdEl = document.createElement('td');
+
+    const inputEmailEl = document.createElement('input');
+    inputEmailEl.id = 'new-profile-email-input';
+    inputEmailEl.setAttribute('placeholder', 'New profile email');
+    inputTdEl.appendChild(inputEmailEl);
+
+    const buttonEl = document.createElement('button');
+    buttonEl.textContent = 'Submit';
+    buttonEl.addEventListener('click', onChangeProfileSubmitClicked);
+    //buttonEl.setAttribute('class', 'task-button');
+    buttonTdEl.appendChild(buttonEl);
+
+    createChangesRow.appendChild(profTableChangeEmailTd);
+    createChangesRow.appendChild(inputTdEl);
+    createChangesRow.appendChild(buttonTdEl);
 }
 
 function roleProfileRow(user) {
@@ -167,10 +227,18 @@ function roleProfileRow(user) {
 }
 
 function onCreateProfileResponse() {
+    let elementId;
+
     if (this.status == OK) {
-        receiveProfile();
+        receiveUpdateProfile();
     } else if (this.status == BAD_REQUEST) {
-        const createButtonRow = document.getElementById('change-name-row');
+
+        if (document.getElementById('new-profile-name-input') != '') {
+            elementId = 'change-name-row';
+        } else if (document.getElementById('new-profile-email-input') != '') {
+            elementId = 'change-email-row';
+        }
+        const createButtonRow = document.getElementById(elementId);
         createButtonRow.innerHTML = '';
 
         const user = JSON.parse(localStorage.getItem('user'));
@@ -184,16 +252,22 @@ function onCreateProfileResponse() {
     }
 }
 
-function onChangeProfileNameSubmitClicked() {
+function onChangeProfileSubmitClicked() {
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const inputEl = document.getElementById('new-profile-name-input');
+    const inputNameEl = document.getElementById('new-profile-name-input');
+    const inputEmailEl = document.getElementById('new-profile-email-input');
 
     const params = new URLSearchParams();
-    params.append('name', inputEl.value);
+    if (inputNameEl != null) {
+        params.append('name', inputNameEl.value);
+    }
+    if (inputEmailEl != null) {
+        params.append('email', inputEmailEl.value);
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onCreateProfileResponse);
-    xhr.open('PUT', 'protected/profile/user/' + user.id);
-    xhr.send(params);
+    xhr.open('PUT', 'protected/profile/user/' + user.id + '?' + params.toString());
+    xhr.send();
 }
