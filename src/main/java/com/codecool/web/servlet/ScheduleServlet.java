@@ -74,28 +74,24 @@ public class ScheduleServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        int columnId = Integer.parseInt(req.getParameter("columnId"));
-        String columnNewName = req.getParameter("columnName");
-
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
+
             int scheduleId = getScheduleId(req.getRequestURI());
 
-            if (columnNewName  == null) {
+            if (req.getRequestURI().endsWith("/visible")) {
                 scheduleDao.updateVisibility(scheduleId);
             } else {
                 ColumnDao columnDao = new ColumnDaoImpl(connection);
                 ScheduleService scheduleService = new JsScheduleService(connection);
 
+                String columnNewName = req.getParameter("columnName");
+                int columnId = Integer.parseInt(req.getParameter("columnId"));
                 columnDao.updateName(columnId, columnNewName);
 
                 ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
                 sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
             }
-
-
-            scheduleDao.updateVisibility(scheduleId);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
