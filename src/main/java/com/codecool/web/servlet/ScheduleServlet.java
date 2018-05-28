@@ -1,6 +1,8 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.dao.implementation.ColumnDaoImpl;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.service.ScheduleService;
@@ -72,9 +74,26 @@ public class ScheduleServlet extends AbstractServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
         int schedId = Integer.parseInt(uri.substring(uri.lastIndexOf("/") + 1, uri.length()));
+
+        //For use with column renaming
+        int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
+        int columnId = Integer.parseInt(req.getParameter("columnId"));
+        String columnNewName = req.getParameter("columnName");
+
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
-            scheduleDao.updateVisibility(schedId);
+
+            if (columnNewName  == null) {
+                scheduleDao.updateVisibility(schedId);
+            } else {
+                ColumnDao columnDao = new ColumnDaoImpl(connection);
+                ScheduleService scheduleService = new JsScheduleService(connection);
+
+                columnDao.updateName(columnId, columnNewName);
+
+                ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
+                sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            }
         } catch (SQLException e) {
             handleSqlError(resp, e);
         }

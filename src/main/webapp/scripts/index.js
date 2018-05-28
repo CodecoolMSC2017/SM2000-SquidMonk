@@ -15,6 +15,10 @@ function newMessage(targetEl, classes, message) {
     targetEl.appendChild(pEl);
 }
 
+function onNetWorkError() {
+    
+}
+
 function clearMessages() {
     const messageEls = document.getElementsByClassName('message');
     for (let i = 0; i < messageEls.length; i++) {

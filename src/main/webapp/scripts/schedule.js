@@ -22,6 +22,8 @@ function sendRenameColumn() {
     const inputEl = document.getElementById('column-rename-input');
     const value = inputEl.value;
     const columnId = buttonEl.getAttribute('columnId');
+    const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
+    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
 
     const params = new URLSearchParams();
     params.append('columnId', columnId);
@@ -30,7 +32,7 @@ function sendRenameColumn() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('PUT', 'protected/schedule/?' + params.toString());
+    xhr.open('PUT', 'protected/schedule/' + scheduleId + '?' + params.toString(), true);
     xhr.send();
 }
 
