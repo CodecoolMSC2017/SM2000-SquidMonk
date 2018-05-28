@@ -378,7 +378,7 @@ function onSchedulePublish(el) {
         el.setAttribute('ispublic', true);
         el.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + "schedules/public/" + schedule.url;
+        shareUrl.textContent = document.URL + "schedules/public/" + url;
         el.textContent = "Unpublish";
     }
 }
