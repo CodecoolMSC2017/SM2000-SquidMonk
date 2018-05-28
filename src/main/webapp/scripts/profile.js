@@ -233,9 +233,10 @@ function onCreateProfileResponse() {
         receiveUpdateProfile();
     } else if (this.status == BAD_REQUEST) {
 
-        if (document.getElementById('new-profile-name-input') != '') {
+        if (document.getElementById('new-profile-name-input')) {
             elementId = 'change-name-row';
-        } else if (document.getElementById('new-profile-email-input') != '') {
+        }
+        if (document.getElementById('new-profile-email-input')) {
             elementId = 'change-email-row';
         }
         const createButtonRow = document.getElementById(elementId);
