@@ -2,6 +2,7 @@ package com.codecool.web.dto;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ScheduleColumnDto {
 
@@ -29,5 +30,13 @@ public class ScheduleColumnDto {
 
     public void addTask(ScheduleTaskDto taskDto) {
         tasks.put(taskDto.getTask().getStart(), taskDto);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScheduleColumnDto columnDto = (ScheduleColumnDto) o;
+        return getId() == columnDto.getId();
     }
 }

@@ -67,6 +67,7 @@ public class JsScheduleService implements ScheduleService {
                 }
             }
         }
+        scheduleDto.sortColumnsById();
         return scheduleDto;
     }
 
