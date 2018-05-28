@@ -53,7 +53,6 @@ public class JsScheduleService implements ScheduleService {
         ScheduleDto scheduleDto = new ScheduleDto(schedId);
         Schedule schedule = scheduleDao.findById(schedId);
         scheduleDto.setPublic(schedule.isPublic());
-
         ScheduleColumnDto columnDto;
 
         for (Column column : getColumnsByScheduleId(schedId)) {
@@ -68,6 +67,7 @@ public class JsScheduleService implements ScheduleService {
                 }
             }
         }
+
         scheduleDto.sortColumnsById();
         return scheduleDto;
     }
