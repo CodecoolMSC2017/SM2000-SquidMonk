@@ -35,6 +35,8 @@ public class ScheduleUserServlet extends AbstractServlet {
             handleSqlError(resp, e);
         } catch (NumberFormatException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid user id");
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -57,8 +59,16 @@ public class ScheduleUserServlet extends AbstractServlet {
         }
     }
 
-    private int getUserId(String uri) throws NumberFormatException {
-        String userIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
-        return Integer.parseInt(userIdAsString);
+    private int getUserId(String uri) throws NumberFormatException, ServiceException {
+        String[] splitUri = uri.split("/");
+        if (uri.length() < 6) {
+            throw new ServiceException("Missing user id");
+        }
+        String userIdAsString = splitUri[5];
+        try {
+            return Integer.parseInt(userIdAsString);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("User id is not a valid number");
+        }
     }
 }
