@@ -10,7 +10,7 @@ function getTasksToView() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', showDashboard);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('DELETE', 'protected/schedule/?' + params.toString());
+    xhr.open('GET', 'protected/schedule/task/?' + taskId);
     xhr.send();
 }
 
