@@ -248,8 +248,6 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
-    console.log('schedule:');
-    console.log(schedule);
     if (schedule.public === true) {
         const shareDivEl = document.createElement('div');
         shareDivEl.setAttribute('class', 'h-centered-div');
@@ -284,13 +282,12 @@ function createTitleButtons(mainDiv, schedule) {
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.style.width = '5%';
     buttonPublish.setAttribute('data-sched-id', schedule.id);
-    console.log(schedule.isPublic);
-    if (schedule.isPublic === false) {
+
+    buttonPublish.setAttribute('ispublic', schedule.public);
+    if (schedule.public === true) {
         buttonPublish.innerHTML = '<i class="fa fa-check"></i>';
-        buttonPublish.setAttribute('isPublic', true);
     } else {
         buttonPublish.innerHTML = '<i class="fa fa-remove"></i>';
-        buttonPublish.setAttribute('isPublic', false);
     }
 
     const buttonRemove = document.createElement('button');
@@ -319,7 +316,6 @@ function createTitleButtons(mainDiv, schedule) {
 
 function onSchedulePublishClick() {
     const buttonEl = this;
-    console.log(buttonEl);
     const id = this.getAttribute('data-sched-id');
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function() {
@@ -331,7 +327,7 @@ function onSchedulePublishClick() {
 }
 
 function onSchedulePublishReceived(el) {
-    if (el.getAttribute('ispublic') === true) {
+    if (el.getAttribute('ispublic') === 'true') {
         el.setAttribute('ispublic', false);
         el.innerHTML = '<i class="fa fa-remove"></i>';
     } else {
