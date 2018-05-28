@@ -248,6 +248,23 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
+    console.log(schedule);
+    if (schedule.public === 'true') {
+        const shareDivEl = document.createElement('div');
+        shareDivEl.setAttribute('class', 'h-centered-div');
+
+        const shareTitle = document.createElement('strong');
+        shareTitle.textContent = 'Share this schedule!';
+
+        const shareUrl = document.createElement('p');
+        shareUrl.textContent = document.URL + "/" + schedule.url;
+
+        shareDivEl.appendChild(shareTitle);
+        shareDivEl.appendChild(document.createElement('br'));
+        shareDivEl.appendChild(shareUrl);
+        mainDiv.appendChild(shareDivEl);
+    }
+
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
 
