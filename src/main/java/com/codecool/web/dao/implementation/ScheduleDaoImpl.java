@@ -61,11 +61,10 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
     }
 
     @Override
-    public void updateVisibility(int scheduleId, boolean isPublic) throws SQLException {
-        String sql = "UPDATE schedules SET is_public=? WHERE id=?";
+    public void updateVisibility(int scheduleId) throws SQLException {
+        String sql = "UPDATE schedules SET is_public = NOT is_public WHERE id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setBoolean(1, isPublic);
-            statement.setInt(2, scheduleId);
+            statement.setInt(1, scheduleId);
             executeInsert(statement);
         }
     }
