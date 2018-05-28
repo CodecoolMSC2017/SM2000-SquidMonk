@@ -248,6 +248,31 @@ div.table-title {
   color: #555555;
 }
 
+.schedule-input-small-padding {
+  width: 51%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: auto;
+}
+
+.schedule-input-small-padding:focus {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.schedule-input-small-padding input:focus::-webkit-input-placeholder {
+  color: #555555;
+}
+
 .schedule-input-nosize {
   background-color: white;
   color: black;
@@ -293,7 +318,7 @@ div.table-title {
   transition-timing-function: ease-in-out;
 }
 
-.schedule-button-empty-schedule {
+.schedule-button-bigger {
   width: 32%;
   background-color: white;
   color: black;
@@ -307,7 +332,28 @@ div.table-title {
   cursor: pointer;
 }
 
-.schedule-button-empty-schedule:hover {
+.schedule-button-bigger:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.schedule-button-small-padding {
+  width: 32%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 2px 4px 2px;
+  cursor: pointer;
+}
+
+.schedule-button-small-padding:hover {
   background-color: #555555;
   color: white;
   transition-duration: 300ms;

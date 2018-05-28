@@ -1,6 +1,7 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dto.TaskDto;
+import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsTaskService;
@@ -19,11 +20,17 @@ public class TaskServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskService taskService = new JsTaskService(connection);
+            TaskService service = new JsTaskService(connection);
 
             int taskId = getTaskId(req.getRequestURI());
-            TaskDto taskDto = taskService.getDtoById(taskId);
+            User user = (User) req.getSession().getAttribute("user");
 
+            TaskDto taskDto;
+            if (req.getRequestURI().endsWith("/availableSchedules")) {
+                taskDto = service.getDtoWithAvailableSchedules(user.getId(), taskId);
+            } else {
+                taskDto = service.getDtoById(taskId);
+            }
             sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
         } catch (SQLException e) {
             handleSqlError(resp, e);
@@ -67,7 +74,11 @@ public class TaskServlet extends AbstractServlet {
     }
 
     private int getTaskId(String uri) throws ServiceException {
-        String taskIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
+        String[] splitUri = uri.split("/");
+        if (splitUri.length < 5) {
+            throw new ServiceException("Missing task id");
+        }
+        String taskIdAsString = splitUri[4];
         try {
             return Integer.parseInt(taskIdAsString);
         } catch (NumberFormatException e) {

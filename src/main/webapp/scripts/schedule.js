@@ -17,8 +17,44 @@ function deleteSchedule() {
     xhr.send();
 }
 
-function editSingleRoutineName() {
+function sendRenameColumn() {
+    const buttonEl = this;
+    const inputEl = document.getElementById('column-rename-input');
+    const value = inputEl.value;
+    const columnId = buttonEl.getAttribute('columnId');
 
+    const params = new URLSearchParams();
+    params.append('columnId', columnId);
+    params.append('columnName', value);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/?' + params.toString());
+    xhr.send();
+}
+
+function editSingleRoutineName() {
+   const thEl = this;
+   const columnId = thEl.getAttribute('columnId');
+   const trEl = document.getElementById('header-row-' + columnId);
+
+   const buttonEl = document.createElement('button');
+   buttonEl.setAttribute('class', 'schedule-button-small-padding');
+   buttonEl.setAttribute('columnId', columnId);
+   buttonEl.addEventListener('click', sendRenameColumn);
+   buttonEl.textContent = "Save";
+
+   const inputEl = document.createElement('input');
+   inputEl.setAttribute('id', 'column-rename-input');
+   inputEl.setAttribute('class', 'schedule-input-small-padding');
+
+   inputEl.placeholder = thEl.textContent;
+
+   removeAllChildren(trEl);
+
+   trEl.appendChild(inputEl);
+   trEl.appendChild(buttonEl);
 }
 
 function addColumn() {
@@ -116,10 +152,12 @@ function createHeaderRow(mainDiv, schedule) {
         tableEl.setAttribute('id', column.id);
 
         const trEl = document.createElement('tr');
+        trEl.setAttribute('id', 'header-row-' + column.id);
 
         const thEl = document.createElement('th');
         thEl.addEventListener('click', editSingleRoutineName);
         thEl.textContent = column.name;
+        thEl.setAttribute('columnId', column.id);
 
         trEl.appendChild(thEl);
         tableEl.appendChild(trEl);
@@ -188,12 +226,12 @@ function noColumnMessage(mainDiv, scheduleId){
 
     const buttonCreateEl = document.createElement('button');
     buttonCreateEl.setAttribute('id', 'schedule-new-column-button');
-    buttonCreateEl.setAttribute('class', 'schedule-button-empty-schedule');
+    buttonCreateEl.setAttribute('class', 'schedule-button-bigger');
     buttonCreateEl.addEventListener('click', addColumnToEmptySchedule);
     buttonCreateEl.innerHTML = "<h4 class=schedule-small-margin> Add one! </h4>";
 
     const buttonDeleteSchedule = document.createElement('button');
-    buttonDeleteSchedule.setAttribute('class', 'schedule-button-empty-schedule');
+    buttonDeleteSchedule.setAttribute('class', 'schedule-button-bigger');
     buttonDeleteSchedule.setAttribute('schedule-id', scheduleId);
     buttonDeleteSchedule.addEventListener('click', deleteSchedule);
     buttonDeleteSchedule.innerHTML = "<h4 class=schedule-small-margin> Delete this schedule </h4>";
