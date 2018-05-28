@@ -9,7 +9,6 @@ import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleColumnDto;
 import com.codecool.web.dto.ScheduleDto;
-import com.codecool.web.dto.ScheduleTaskDto;
 import com.codecool.web.model.Column;
 import com.codecool.web.model.Schedule;
 import com.codecool.web.model.Task;
@@ -54,23 +53,21 @@ public class JsScheduleService implements ScheduleService {
         ScheduleDto scheduleDto = new ScheduleDto(schedId);
         Schedule schedule = scheduleDao.findById(schedId);
         scheduleDto.setPublic(schedule.isPublic());
-
         ScheduleColumnDto columnDto;
-        ScheduleTaskDto taskDto;
 
         for (Column column : getColumnsByScheduleId(schedId)) {
             columnDto = new ScheduleColumnDto(column.getId(), column.getName());
             scheduleDto.addColumns(columnDto);
         }
         for (Task task : getTasksByScheduleId(schedId)) {
-            taskDto = new ScheduleTaskDto(task);
 
             for (ScheduleColumnDto column : scheduleDto.getColumns()) {
                 if (task.getColId() == column.getId()) {
-                    column.addTask(taskDto);
+                    column.addTask(task);
                 }
             }
         }
+
         scheduleDto.sortColumnsById();
         return scheduleDto;
     }

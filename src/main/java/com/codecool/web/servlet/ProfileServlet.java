@@ -24,8 +24,9 @@ public class ProfileServlet extends AbstractServlet {
         try (Connection connection = getConnection(req.getServletContext())) {
             UserDao userDao = new UserDaoImpl(connection);
             JsProfileService profileService = new JsProfileService(userDao);
-            profileService.showDataByUserId(userId);
-            sendMessage(resp, HttpServletResponse.SC_OK, user);
+            User getUser = profileService.showDataByUserId(userId);
+            req.getSession().setAttribute("user", getUser);
+            sendMessage(resp, HttpServletResponse.SC_OK, getUser);
 
         } catch (SQLException e) {
             handleSqlError(resp, e);
@@ -43,8 +44,15 @@ public class ProfileServlet extends AbstractServlet {
 
             int userId = user.getId();
             String name = req.getParameter("name");
+            String email = req.getParameter("email");
 
-            profileService.changeUserName(userId, name);
+            if (name != null) {
+                profileService.changeUserName(userId, name);
+            }
+            if (email != null) {
+                profileService.changeUserEmail(userId, email);
+            }
+
             resp.setStatus(HttpServletResponse.SC_OK);
 
         } catch (SQLException e) {
