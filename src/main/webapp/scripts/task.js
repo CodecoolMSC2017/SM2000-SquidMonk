@@ -41,7 +41,10 @@ function createTaskAvailableScheduleTable(task) {
 
         tableEl.appendChild(trEl);
     } else {
-        for (let scheduleId in task.schedules) {
+        const ids = Object.keys(task.schedules);
+        ids.sort(function(a, b) {return b - a});
+        for (let id in ids) {
+            const scheduleId = ids[id];
             const scheduleName = task.schedules[scheduleId];
 
             const tdEl = document.createElement('td');
@@ -76,11 +79,9 @@ function onAvailableSchedulesReceived() {
 }
 
 function onScheduleButtonClicked() {
-    const user = JSON.parse(localStorage.getItem('user'));
-
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onAvailableSchedulesReceived);
-    xhr.open('GET', 'protected/tasks/user/' + user.id + '?taskId=' + currentTask.id);
+    xhr.open('GET', 'protected/tasks/' + currentTask.id + '/availableSchedules');
     xhr.send();
 }
 
