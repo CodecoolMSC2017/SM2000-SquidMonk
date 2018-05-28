@@ -1,7 +1,6 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dto.DashboardTaskDto;
-import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
@@ -25,21 +24,12 @@ public class TaskUserServlet extends AbstractServlet {
             TaskService service = new JsTaskService(connection);
 
             int userId = getUserId(req.getRequestURI());
-            String taskIdAsString = req.getParameter("taskId");
-            if (taskIdAsString == null) {
-                List<DashboardTaskDto> tasks = service.getDtos(userId);
-                sendMessage(resp, HttpServletResponse.SC_OK, tasks);
-            } else {
-                int taskId = Integer.parseInt(taskIdAsString);
-                TaskDto taskDto = service.getDtoWithAvailableSchedules(userId, taskId);
-                sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
-            }
+            List<DashboardTaskDto> tasks = service.getDtos(userId);
+            sendMessage(resp, HttpServletResponse.SC_OK, tasks);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Task id is not a valid number");
         }
     }
 
@@ -61,7 +51,11 @@ public class TaskUserServlet extends AbstractServlet {
     }
 
     private int getUserId(String uri) throws ServiceException {
-        String userIdAsString = uri.substring(uri.lastIndexOf("/") + 1);
+        String[] splitUri = uri.split("/");
+        if (uri.length() < 6) {
+            throw new ServiceException("Missing user id");
+        }
+        String userIdAsString = splitUri[5];
         try {
             return Integer.parseInt(userIdAsString);
         } catch (NumberFormatException e) {
