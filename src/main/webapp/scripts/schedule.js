@@ -1,8 +1,5 @@
 let shareDivEl;
 
-function addTask(mainDiv) {
-}
-
 function addTask() {
 
 }
