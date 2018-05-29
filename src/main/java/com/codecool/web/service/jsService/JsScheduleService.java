@@ -13,6 +13,8 @@ import com.codecool.web.model.Column;
 import com.codecool.web.model.Schedule;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ScheduleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsScheduleService implements ScheduleService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsScheduleService.class);
 
     private ColumnDao columnDao;
     private TskColSchedConnectorDao controlTable;
@@ -35,11 +39,13 @@ public class JsScheduleService implements ScheduleService {
 
     @Override
     public List<Column> getColumnsByScheduleId(int schedId) throws SQLException {
+        logger.info("getting columns of schedule with id " + schedId);
         return columnDao.findAllByScheduleId(schedId);
     }
 
     @Override
     public List<Task> getTasksByScheduleId(int schedId) throws SQLException {
+        logger.info("getting tasks of schedule with id " + schedId);
         List<Task> tasks = new ArrayList<>();
         List<Integer> taskIds = controlTable.queryTaskIdsByScheduleId(schedId);
         for (int taskId : taskIds) {
@@ -50,6 +56,7 @@ public class JsScheduleService implements ScheduleService {
 
     @Override
     public ScheduleDto fillScheduleDto(int schedId) throws SQLException {
+        logger.debug("fetching dto of schedule with id " + schedId);
         ScheduleDto scheduleDto = new ScheduleDto(schedId);
         Schedule schedule = scheduleDao.findById(schedId);
         scheduleDto.setPublic(schedule.isPublic());
@@ -60,14 +67,12 @@ public class JsScheduleService implements ScheduleService {
             scheduleDto.addColumns(columnDto);
         }
         for (Task task : getTasksByScheduleId(schedId)) {
-
             for (ScheduleColumnDto column : scheduleDto.getColumns()) {
                 if (task.getColId() == column.getId()) {
                     column.addTask(task);
                 }
             }
         }
-
         scheduleDto.sortColumnsById();
         return scheduleDto;
     }
@@ -79,21 +84,25 @@ public class JsScheduleService implements ScheduleService {
 
     @Override
     public void updateVisibility(int schedId) throws SQLException {
+        logger.info("updating visibility of schedule with id " + schedId);
         scheduleDao.updateVisibility(schedId);
     }
 
     @Override
     public void addNewColumnToSchedule(int schedId, String columnName) throws SQLException {
+        logger.info("adding new column to schedule with id " + schedId);
         columnDao.insertColumn(schedId, columnName);
     }
 
     @Override
     public void updateColumnName(int columnId, String columnName) throws SQLException {
+        logger.info("updating name of column with id " + columnId);
         columnDao.updateName(columnId, columnName);
     }
 
     @Override
     public void deleteSchedule(int schedId) throws SQLException {
+        logger.info("deleting schedule with id " + schedId);
         scheduleDao.deleteSchedule(schedId);
     }
 }

@@ -1,9 +1,14 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Task;
+import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
+import com.codecool.web.service.jsService.JsScheduleService;
 import com.codecool.web.service.jsService.JsTaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,14 +21,39 @@ import java.sql.SQLException;
 @WebServlet("/protected/schedule/task/*")
 public class ScheduleTaskServlet extends AbstractServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleTaskServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
 
             int taskId = getTaskId(req.getRequestURI());
             Task task = taskService.getById(taskId);
             sendMessage(resp, HttpServletResponse.SC_OK, task);
+            logger.debug("get method successful");
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            TaskService taskService = new JsTaskService(connection);
+            ScheduleService scheduleService = new JsScheduleService(connection);
+
+            int taskId = getTaskId(req.getRequestURI());
+            Task task = taskService.getById(taskId);
+            int scheduleId = task.getSchedId();
+
+            taskService.deleteTask(taskId);
+
+            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
+            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -38,6 +68,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
         }
         String idAsString = splitUri[5];
         try {
+            logger.debug("getting task id from url: " + idAsString);
             return Integer.parseInt(idAsString);
         } catch (NumberFormatException e) {
             throw new ServiceException("Schedule id is not a valid number");

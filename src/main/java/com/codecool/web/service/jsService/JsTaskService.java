@@ -36,11 +36,13 @@ public class JsTaskService implements TaskService {
 
     @Override
     public List<Task> findAllByUserId(int userId) throws SQLException {
+        logger.info("fetching all tasks of user with id " + userId);
         return taskDao.findAllByUserId(userId);
     }
 
     @Override
     public void insertTask(int userId, String name, String content) throws SQLException, ServiceException {
+        logger.info("inserting task for user with id " + userId);
         if (name == null || name.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
@@ -52,14 +54,17 @@ public class JsTaskService implements TaskService {
         if (newName == null || newName.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
+        logger.info("updating name of task with id " + taskId);
         taskDao.updateName(taskId, newName);
         if (newContent != null) {
+            logger.info("updating content of task with id " + taskId);
             taskDao.updateContent(taskId, newContent);
         }
     }
 
     @Override
     public void deleteTask(int taskId) throws SQLException {
+        logger.info("deleting task with id " + taskId);
         taskDao.deleteTask(taskId);
     }
 
@@ -76,6 +81,7 @@ public class JsTaskService implements TaskService {
 
     @Override
     public List<DashboardTaskDto> getDtos(int userId) throws SQLException {
+        logger.info("fetching tasks for user with id " + userId);
         return taskDao.findTaskUsages(userId);
     }
 

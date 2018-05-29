@@ -27,17 +27,16 @@ public class TaskServlet extends AbstractServlet {
         logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService service = new JsTaskService(connection);
-            logger.trace("created service");
 
             int taskId = getTaskId(req.getRequestURI());
             User user = (User) req.getSession().getAttribute("user");
 
             TaskDto taskDto;
             if (req.getRequestURI().endsWith("/availableSchedules")) {
-                logger.info("getting available schedules for task with id " + taskId);
+                logger.debug("getting available schedules for task with id " + taskId);
                 taskDto = service.getDtoWithAvailableSchedules(user.getId(), taskId);
             } else {
-                logger.info("getting task with id " + taskId);
+                logger.debug("getting task with id " + taskId);
                 taskDto = service.getDtoById(taskId);
             }
             sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
@@ -45,7 +44,7 @@ public class TaskServlet extends AbstractServlet {
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
@@ -65,7 +64,7 @@ public class TaskServlet extends AbstractServlet {
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
@@ -83,7 +82,7 @@ public class TaskServlet extends AbstractServlet {
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
