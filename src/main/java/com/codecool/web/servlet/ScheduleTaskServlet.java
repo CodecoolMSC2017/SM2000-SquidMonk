@@ -61,6 +61,31 @@ public class ScheduleTaskServlet extends AbstractServlet {
         }
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            TaskService taskService = new JsTaskService(connection);
+            ScheduleService scheduleService = new JsScheduleService(connection);
+
+            int taskId = getTaskId(req.getRequestURI());
+            String title = req.getParameter("title");
+            String description = req.getParameter("description");
+            int start = Integer.parseInt(req.getParameter("start"));
+            int end = Integer.parseInt(req.getParameter("end"));
+            Task task = taskService.getById(taskId);
+            int scheduleId = task.getSchedId();
+
+            taskService.updateTask(taskId, title, description, start, end);
+
+            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
+            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
+    }
+
     private int getTaskId(String uri) throws ServiceException {
         String[] splitUri = uri.split("/");
         if (splitUri.length < 6) {

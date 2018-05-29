@@ -12,8 +12,24 @@ function scheduleDeleteTask() {
     xhr.send();
 }
 
-function sendNewTaskData() {
+function sendModifiedTaskData() {
+    const taskId = this.getAttribute('data-task-id');
+    const titleInputEl = document.getElementById('modify-task-title-input');
+    const descriptionInputEl = document.getElementById('modify-task-description-input');
+    const startInputEl = document.getElementById('modify-task-start-input');
+    const endInputEl = document.getElementById('modify-task-end-input');
 
+    const params = new URLSearchParams();
+    params.append('title', titleInputEl.value);
+    params.append('description', descriptionInputEl.value);
+    params.append('start', startInputEl.value);
+    params.append('end', endInputEl.value);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/task/' + taskId + '?' + params.toString(), true);
+    xhr.send();
 }
 
 function getTasksToView() {
@@ -85,7 +101,7 @@ function viewTaskOnReceive() {
     inputEndEl.value = task.end;
 
     const buttonSaveEl = document.createElement('button');
-    buttonSaveEl.addEventListener('click', sendNewTaskData);
+    buttonSaveEl.addEventListener('click', sendModifiedTaskData);
     buttonSaveEl.setAttribute('class', 'schedule-button-small-top-margin');
     buttonSaveEl.setAttribute('data-task-id', task.id);
     buttonSaveEl.textContent = "Save";

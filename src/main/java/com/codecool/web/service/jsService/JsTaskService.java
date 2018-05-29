@@ -63,6 +63,22 @@ public class JsTaskService implements TaskService {
     }
 
     @Override
+    public void updateTask(int taskId, String newName, String newContent, int start, int end) throws SQLException, ServiceException {
+        if (newName == null || newName.equals("")) {
+            throw new ServiceException("Task name can not be empty!");
+        }
+        logger.info("updating name of task with id " + taskId);
+        taskDao.updateName(taskId, newName);
+        if (newContent != null) {
+            logger.info("updating content of task with id " + taskId);
+            taskDao.updateContent(taskId, newContent);
+        }
+
+        logger.info("Updating start and end times for task " + taskId);
+        controlTable.updateTaskTime(taskId, start, end);
+    }
+
+    @Override
     public void deleteTask(int taskId) throws SQLException {
         logger.info("deleting task with id " + taskId);
         taskDao.deleteTask(taskId);
