@@ -22,7 +22,7 @@ public class JsRegisterService implements RegisterService {
 
     @Override
     public User registerUser(String name, String email, String password) throws SQLException, ServiceException {
-        logger.debug("registering user with email " + email);
+        logger.info("registering user with email " + email);
         return userDao.insertUser(name, email, password);
     }
 }

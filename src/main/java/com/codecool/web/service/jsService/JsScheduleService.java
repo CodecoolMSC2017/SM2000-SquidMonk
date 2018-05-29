@@ -39,13 +39,13 @@ public class JsScheduleService implements ScheduleService {
 
     @Override
     public List<Column> getColumnsByScheduleId(int schedId) throws SQLException {
-        logger.debug("getting columns of schedule with id " + schedId);
+        logger.info("getting columns of schedule with id " + schedId);
         return columnDao.findAllByScheduleId(schedId);
     }
 
     @Override
     public List<Task> getTasksByScheduleId(int schedId) throws SQLException {
-        logger.debug("getting tasks of schedule with id " + schedId);
+        logger.info("getting tasks of schedule with id " + schedId);
         List<Task> tasks = new ArrayList<>();
         List<Integer> taskIds = controlTable.queryTaskIdsByScheduleId(schedId);
         for (int taskId : taskIds) {
@@ -84,25 +84,25 @@ public class JsScheduleService implements ScheduleService {
 
     @Override
     public void updateVisibility(int schedId) throws SQLException {
-        logger.debug("updating visibility of schedule with id " + schedId);
+        logger.info("updating visibility of schedule with id " + schedId);
         scheduleDao.updateVisibility(schedId);
     }
 
     @Override
     public void addNewColumnToSchedule(int schedId, String columnName) throws SQLException {
-        logger.debug("adding new column to schedule with id " + schedId);
+        logger.info("adding new column to schedule with id " + schedId);
         columnDao.insertColumn(schedId, columnName);
     }
 
     @Override
     public void updateColumnName(int columnId, String columnName) throws SQLException {
-        logger.debug("updating name of column with id " + columnId);
+        logger.info("updating name of column with id " + columnId);
         columnDao.updateName(columnId, columnName);
     }
 
     @Override
     public void deleteSchedule(int schedId) throws SQLException {
-        logger.debug("deleting schedule with id " + schedId);
+        logger.info("deleting schedule with id " + schedId);
         scheduleDao.deleteSchedule(schedId);
     }
 }

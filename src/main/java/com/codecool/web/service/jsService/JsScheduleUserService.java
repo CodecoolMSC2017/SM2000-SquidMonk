@@ -28,7 +28,7 @@ public class JsScheduleUserService implements ScheduleUserService {
 
     @Override
     public void addSchedule(int userId, String name) throws SQLException, ServiceException {
-        logger.debug("adding schedule for user with id " + userId);
+        logger.info("adding schedule for user with id " + userId);
         if (name == null || name.equals("")) {
             throw new ServiceException("Schedule name can not be empty!");
         }

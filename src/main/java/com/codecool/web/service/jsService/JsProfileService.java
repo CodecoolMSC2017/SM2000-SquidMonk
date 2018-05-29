@@ -28,7 +28,7 @@ public class JsProfileService implements ProfileService {
 
     @Override
     public void changeUserName(int userId, String name) throws SQLException, ServiceException {
-        logger.debug("updating name of user with id " + userId);
+        logger.info("updating name of user with id " + userId);
         if (name == null || name.equals("")) {
             throw new ServiceException("Profile name can not be empty!");
         }
@@ -37,7 +37,7 @@ public class JsProfileService implements ProfileService {
 
     @Override
     public void changeUserEmail(int userId, String email) throws SQLException, ServiceException {
-        logger.debug("updating email of user with id " + userId);
+        logger.info("updating email of user with id " + userId);
         if (email == null || email.equals("")) {
             throw new ServiceException("Profile email can not be empty!");
         }
