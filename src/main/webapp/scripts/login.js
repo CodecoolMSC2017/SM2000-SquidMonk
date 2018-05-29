@@ -18,8 +18,12 @@ function onLoginResponse() {
         showDashboard();
 
         const user = JSON.parse(localStorage.getItem('user'));
+        const usersButtonEl = document.getElementById('menu-users');
         if (user.admin) {
-            onUsersMenu();
+            usersButtonEl.style.display = 'block';
+            usersButtonEl.addEventListener('click', onUsersMenuClick);
+        } else {
+            usersButtonEl.style.display = 'none';
         }
     } else {
         const messageEl = document.getElementById('message-content');
@@ -28,20 +32,8 @@ function onLoginResponse() {
     }
 }
 
-function onUsersMenu() {
-    const topDiv = document.getElementById('topnav-content');
+function onUsersMenuClick() {
 
-    const usersMenuAEl = document.createElement('a');
-    usersMenuAEl.href = 'javascript:void(0)';
-    usersMenuAEl.id = 'show-users-menu';
-    usersMenuAEl.textContent = 'Users';
-
-    const iEl = document.createElement('i');
-    iEl.className = 'fa fa-user-circle';
-    usersMenuAEl.appendChild(iEl);
-
-    topDiv.appendChild(usersMenuAEl);
-    return usersMenuAEl;
 }
 
 function onSchedMouseClick() {
