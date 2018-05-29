@@ -4,6 +4,7 @@ import com.codecool.web.model.User;
 import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface UserDao {
 
@@ -20,5 +21,7 @@ public interface UserDao {
     void changeEmail(int userId, String email) throws SQLException;
 
     void deleteUser(int userId) throws SQLException;
+
+    List<User> findAll() throws SQLException;
 
 }

@@ -418,7 +418,7 @@ function onSchedulePublishReceived() {
     const shareButton = document.getElementById('schedule-dialog-share-button');
     const shareUrl = document.getElementById('schedule-share-url');
     const shareTitle = document.getElementById('share-title-schedule');
-    const url = shareButton.getAttribute('url');
+    const url = document.getElementById('schedule-share-button').getAttribute('url');
 
     if (is_public.message === 'false') {
         shareButton.setAttribute('ispublic', false);
