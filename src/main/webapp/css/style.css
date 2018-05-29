@@ -830,7 +830,6 @@ div.table-title {
     transform: translateX(-50%);
 }
 
-<<<<<<< HEAD
 #schedule-share-url {
     width: 75%;
     background-color: white;
@@ -847,7 +846,6 @@ div.table-title {
 }
 
 #clipboard-button {
-    /*width: 10%;*/
     background-color: white;
     color: black;
     border: 2px solid #555555;
@@ -865,8 +863,7 @@ div.table-title {
 #clipboard-button:hover {
     background-color: #555555;
     color: white;
-=======
-/***Users Style***/
+}
 
 .users-table {
   background: white;
@@ -933,12 +930,11 @@ div.table-title {
 }
 
 .users-table tr:hover {
->>>>>>> 7105551d09a2d1860f1b1e53daebbf55e3d472ca
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
 }
 
-<<<<<<< HEAD
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -972,7 +968,7 @@ div.table-title {
 .tooltip div:hover .tooltiptext {
     visibility: visible;
 }
-=======
+
 .users-table tr:first-child {
   border-top:none;
 }
@@ -1019,4 +1015,3 @@ div.table-title {
 .users-table th.role {
     width: 10%;
 }
->>>>>>> 7105551d09a2d1860f1b1e53daebbf55e3d472ca

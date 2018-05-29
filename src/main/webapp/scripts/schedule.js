@@ -158,7 +158,6 @@ function sharePopupDialog() {
     const shareUrl = document.createElement('input');
     shareUrl.setAttribute('readonly', 'readonly');
     shareUrl.type = 'text';
-    //const shareUrl = document.createElement('h3');
     shareUrl.setAttribute('id', 'schedule-share-url');
     shareDiv.appendChild(shareUrl);
 
