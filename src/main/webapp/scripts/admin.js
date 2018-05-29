@@ -7,7 +7,7 @@ function onUsersMenuClick() {
 
     const divEl = document.createElement('div');
     divEl.id = 'welcome-text';
-    divEl.textContent = "Welcome, " + user.name + " (admin) " + "!";
+    divEl.textContent = "Welcome, " + user.name + " on the admin interface!";
 
     mainContentEl.appendChild(divEl);
 
