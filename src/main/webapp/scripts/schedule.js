@@ -3,7 +3,13 @@ function addTask() {
 }
 
 function scheduleDeleteTask() {
-
+    const taskId = this.getAttribute('data-task-id');
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/schedule/task/' + taskId);
+    xhr.send();
 }
 
 function sendNewTaskData() {
@@ -79,13 +85,15 @@ function viewTaskOnReceive() {
     inputEndEl.value = task.end;
 
     const buttonSaveEl = document.createElement('button');
-    buttonSaveEl.addEventListener('click', sendNewColumnData);
+    buttonSaveEl.addEventListener('click', sendNewTaskData);
     buttonSaveEl.setAttribute('class', 'schedule-button-small-top-margin');
+    buttonSaveEl.setAttribute('data-task-id', task.id);
     buttonSaveEl.textContent = "Save";
 
     const buttonDeleteEl = document.createElement('button');
-    buttonDeleteEl.addEventListener('click', sendNewColumnData);
+    buttonDeleteEl.addEventListener('click', scheduleDeleteTask);
     buttonDeleteEl.setAttribute('class', 'schedule-button-small-top-margin');
+    buttonDeleteEl.setAttribute('data-task-id', task.id);
     buttonDeleteEl.textContent = "Delete";
 
     pStartEl.appendChild(inputStartEl);
