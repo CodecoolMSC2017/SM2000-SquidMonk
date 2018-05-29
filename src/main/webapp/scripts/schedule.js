@@ -379,6 +379,7 @@ function createTimeslotRows(mainDiv, schedule) {
 
             if (typeof task == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
+                tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
                 tdEl.addEventListener('click', addTask);
