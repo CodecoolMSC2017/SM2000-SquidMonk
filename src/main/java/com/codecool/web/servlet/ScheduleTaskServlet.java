@@ -1,8 +1,11 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Task;
+import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
+import com.codecool.web.service.jsService.JsScheduleService;
 import com.codecool.web.service.jsService.JsTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,27 @@ public class ScheduleTaskServlet extends AbstractServlet {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            TaskService taskService = new JsTaskService(connection);
+            ScheduleService scheduleService = new JsScheduleService(connection);
+
+            int taskId = getTaskId(req.getRequestURI());
+            Task task = taskService.getById(taskId);
+            int scheduleId = task.getSchedId();
+
+            taskService.deleteTask(taskId);
+
+            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
+            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
