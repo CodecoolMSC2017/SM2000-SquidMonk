@@ -12,8 +12,24 @@ function scheduleDeleteTask() {
     xhr.send();
 }
 
-function sendNewTaskData() {
+function sendModifiedTaskData() {
+    const taskId = this.getAttribute('data-task-id');
+    const titleInputEl = document.getElementById('modify-task-title-input');
+    const descriptionInputEl = document.getElementById('modify-task-description-input');
+    const startInputEl = document.getElementById('modify-task-start-input');
+    const endInputEl = document.getElementById('modify-task-end-input');
 
+    const params = new URLSearchParams();
+    params.append('title', titleInputEl.value);
+    params.append('description', descriptionInputEl.value);
+    params.append('start', startInputEl.value);
+    params.append('end', endInputEl.value);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/task/' + taskId + '?' + params.toString(), true);
+    xhr.send();
 }
 
 function getTasksToView() {
@@ -71,6 +87,8 @@ function viewTaskOnReceive() {
 
     const inputStartEl = document.createElement('input');
     inputStartEl.setAttribute('type', 'number');
+    inputStartEl.setAttribute('min', '0');
+    inputStartEl.setAttribute('max', '23');
     inputStartEl.setAttribute('id', 'modify-task-start-input');
     inputStartEl.setAttribute('class', 'schedule-input-small-padding-small-size');
     inputStartEl.value = task.start;
@@ -80,12 +98,14 @@ function viewTaskOnReceive() {
 
     const inputEndEl = document.createElement('input');
     inputEndEl.setAttribute('type', 'number');
+    inputEndEl.setAttribute('min', '1');
+    inputEndEl.setAttribute('max', '24');
     inputEndEl.setAttribute('id', 'modify-task-end-input');
     inputEndEl.setAttribute('class', 'schedule-input-small-padding-small-size');
     inputEndEl.value = task.end;
 
     const buttonSaveEl = document.createElement('button');
-    buttonSaveEl.addEventListener('click', sendNewTaskData);
+    buttonSaveEl.addEventListener('click', sendModifiedTaskData);
     buttonSaveEl.setAttribute('class', 'schedule-button-small-top-margin');
     buttonSaveEl.setAttribute('data-task-id', task.id);
     buttonSaveEl.textContent = "Save";
@@ -359,6 +379,7 @@ function createTimeslotRows(mainDiv, schedule) {
 
             if (typeof task == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
+                tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
                 tdEl.addEventListener('click', addTask);
