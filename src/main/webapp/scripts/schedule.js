@@ -43,13 +43,14 @@ function sharePopupDialog() {
 
     const buttonPublish = document.createElement('button');
     buttonPublish.setAttribute('class', 'schedule-button');
+    buttonPublish.setAttribute('id', 'schedule-dialog-share-button');
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.setAttribute('data-sched-id', scheduleId);
     buttonPublish.setAttribute('ispublic', public);
 
     if (public === true) {
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + url;
+        shareUrl.textContent = document.URL + "schedules/public/" + url;
         buttonPublish.textContent = "Unpublish";
         buttonPublish.setAttribute('style', 'margin-top: 0px;');
     } else {
@@ -365,7 +366,7 @@ function onSchedulePublishClick() {
 
 function onSchedulePublishReceived() {
     const is_public = JSON.parse(this.responseText);
-    const shareButton = document.getElementById('schedule-share-button');
+    const shareButton = document.getElementById('schedule-dialog-share-button');
     const shareUrl = document.getElementById('schedule-share-url');
     const shareTitle = document.getElementById('share-title-schedule');
     const url = shareButton.getAttribute('url');
