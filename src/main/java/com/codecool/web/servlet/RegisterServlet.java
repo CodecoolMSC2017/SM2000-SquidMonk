@@ -5,6 +5,8 @@ import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsRegisterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +18,11 @@ import java.sql.SQLException;
 @WebServlet("/register")
 public final class RegisterServlet extends AbstractServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(RegisterServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             UserDao userDao = new UserDaoImpl(connection);
 
@@ -25,16 +30,16 @@ public final class RegisterServlet extends AbstractServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-
-            new JsRegisterService(userDao).registerUser(name, email, password);
-
             if (checkEmptyParameters(name, email, password)) {
                 sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Empty fields");
+                logger.debug("empty field found");
             }
 
+            new JsRegisterService(userDao).registerUser(name, email, password);
             sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
+            logger.debug("post method successful");
         } catch (ServiceException ex) {
-            sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex);
         } catch (SQLException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Email already exists");
         }
