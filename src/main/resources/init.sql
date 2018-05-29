@@ -295,7 +295,8 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (8, 'Wipe light switches', ''), --40
     (8, 'Clean closets', ''), --41
     (8, 'Deal with the mail', 'Got one from Grandma yesterday. Could be important!'), --42
-    (8, 'Read the news', 'Sooo much to catch up with'); --43
+    (8, 'Read the news', 'Sooo much to catch up with'), --43
+    (4, 'Do laundry', 'Really gotta do it'); --44
 
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
@@ -325,4 +326,5 @@ INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (25, 11, 5, 21, 22),
     (26, 11, 5, 22, 23),
     (27, 11, 5, 23, 24),
-    (30, 13, 7, 13, 15);
+    (30, 13, 7, 13, 15),
+    (44, 4, 4, 6, 7);
