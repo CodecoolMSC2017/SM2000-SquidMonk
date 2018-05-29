@@ -18,7 +18,6 @@ public class JsRegisterService implements RegisterService {
 
     @Override
     public User registerUser(String name, String email, String password) throws SQLException, ServiceException {
-        User user = userDao.insertUser(name, email, password);
-        return user;
+        return userDao.insertUser(name, email, password);
     }
 }

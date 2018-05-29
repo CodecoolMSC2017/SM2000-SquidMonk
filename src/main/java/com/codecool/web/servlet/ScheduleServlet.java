@@ -1,9 +1,5 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.ColumnDao;
-import com.codecool.web.dao.ScheduleDao;
-import com.codecool.web.dao.implementation.ColumnDaoImpl;
-import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dto.MessageDto;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.service.ScheduleService;

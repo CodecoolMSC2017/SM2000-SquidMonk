@@ -39,9 +39,4 @@ abstract class AbstractServlet extends HttpServlet {
         logger.error("sql error", ex);
         sendMessage(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
     }
-
-    void handleCryptError(HttpServletResponse resp, EncryptionOperationNotPossibleException ex) throws IOException {
-        logger.error("encryption error", ex);
-        sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-    }
 }
