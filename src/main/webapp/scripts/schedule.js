@@ -97,17 +97,16 @@ function sharePopupDialog() {
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.setAttribute('data-sched-id', scheduleId);
     buttonPublish.setAttribute('ispublic', public);
+    buttonPublish.style.position = 'absolute';
 
     if (public === true) {
         shareTitle.textContent = 'Share this schedule!';
         shareUrl.textContent = document.URL + "schedules/public/" + url;
         buttonPublish.textContent = "Unpublish";
-        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     } else {
         shareTitle.textContent = "You haven't shared this schedule yet!";
         shareUrl.textContent = "";
         buttonPublish.textContent = "Publish";
-        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     }
 
     aboveDivEl.appendChild(shareTitle);
@@ -426,10 +425,8 @@ function onSchedulePublishReceived() {
         shareUrl.textContent = "";
         shareTitle.textContent = "You haven't shared this schedule yet!";
         shareButton.textContent = "Publish";
-        shareButton.setAttribute('style', 'margin-top: 0px;');
     } else {
         shareButton.setAttribute('ispublic', true);
-        shareButton.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
         shareUrl.textContent = document.URL + "schedules/public/" + url;
         shareButton.textContent = "Unpublish";

@@ -775,3 +775,11 @@ div.table-title {
     text-align: center;
     color: red;
 }
+
+#schedule-dialog-share-button {
+    left: 50%;
+    bottom: 15px;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
