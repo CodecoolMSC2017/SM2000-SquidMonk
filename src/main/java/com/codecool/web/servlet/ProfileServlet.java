@@ -24,9 +24,9 @@ public class ProfileServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("get method start");
-        User user = (User) req.getSession().getAttribute("user");
-        int userId = user.getId();
+        //User user = (User) req.getSession().getAttribute("user");
         try (Connection connection = getConnection(req.getServletContext())) {
+            int userId = getUserId(req.getRequestURI());
             UserDao userDao = new UserDaoImpl(connection);
             JsProfileService profileService = new JsProfileService(userDao);
             User getUser = profileService.showDataByUserId(userId);
@@ -35,6 +35,8 @@ public class ProfileServlet extends AbstractServlet {
             logger.debug("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
@@ -63,6 +65,20 @@ public class ProfileServlet extends AbstractServlet {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
+        }
+    }
+
+    private int getUserId(String uri) throws ServiceException {
+        String[] splitUri = uri.split("/");
+        if (splitUri.length < 6) {
+            throw new ServiceException("Missing user id");
+        }
+        String userIdAsString = splitUri[5];
+        try {
+            logger.debug("getting user id from url: " + userIdAsString);
+            return Integer.parseInt(userIdAsString);
+        } catch (NumberFormatException e) {
+            throw new ServiceException("User id is not a valid number");
         }
     }
 }
