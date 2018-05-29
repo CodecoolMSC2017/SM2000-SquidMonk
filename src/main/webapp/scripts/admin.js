@@ -29,6 +29,7 @@ function createTableHead() {
     const tableHeadTh = document.createElement('th');
     tableHeadTh.colSpan = '5';
     tableHeadTh.textContent = 'Users';
+    tableHeadTh.className = 'table-head';
     tableHeadTr.appendChild(tableHeadTh);
     return tableHeadTr;
 }
@@ -38,6 +39,7 @@ function createUsersTableHead() {
 
     const usersTableIdTh = document.createElement('th');
     usersTableIdTh.textContent = 'Id';
+    usersTableIdTh.className = 'id';
 
     const usersTableNameTh = document.createElement('th');
     usersTableNameTh.textContent = 'Name';
@@ -50,6 +52,7 @@ function createUsersTableHead() {
 
     const usersTableRoleTh = document.createElement('th');
     usersTableRoleTh.textContent = 'Role';
+    usersTableRoleTh.className = 'role';
 
     usersTableHeaderTr.appendChild(usersTableIdTh);
     usersTableHeaderTr.appendChild(usersTableNameTh);
@@ -67,15 +70,19 @@ function createUserRow(user) {
 
     const userIdTd = document.createElement('td');
     userIdTd.textContent = user.id;
+    userIdTd.className = 'entry';
 
     const userNameTd = document.createElement('td');
     userNameTd.textContent = user.name;
+    userNameTd.className = 'entry';
 
     const userEmailTd = document.createElement('td');
     userEmailTd.textContent = user.email;
+    userEmailTd.className = 'entry';
 
     const userPasswordTd = document.createElement('td');
     userPasswordTd.textContent = user.password;
+    userPasswordTd.className = 'entry';
 
     const userRoleTd = document.createElement('td');
     if (user.admin) {
@@ -83,6 +90,7 @@ function createUserRow(user) {
     } else {
         userRoleTd.textContent = 'User';
     }
+    userRoleTd.className = 'entry';
 
     userTr.appendChild(userIdTd);
     userTr.appendChild(userNameTd);
@@ -100,6 +108,7 @@ function onUsersReceived() {
 
     const usersDiv = document.createElement('div');
     usersDiv.id = 'users-table';
+    usersDiv.className = 'users-table';
 
     const usersTable = document.createElement('table');
     usersTable.appendChild(createTableHead());
@@ -110,6 +119,7 @@ function onUsersReceived() {
         const messageTdEl = document.createElement('td');
         messageTdEl.colSpan = '5';
         messageTdEl.textContent = 'Users not exist!';
+        messageTdEl.className = 'entry';
 
         const messageTrEl = document.createElement('tr');
         messageTrEl.appendChild(messageTdEl);
