@@ -586,6 +586,7 @@ function onScheduleReceived() {
         darkBackgroundDiv.addEventListener('click', onScheduleClick);
 
         const aboveDivEl = document.createElement('div');
+        aboveDivEl.style.height = '80px';
         aboveDivEl.setAttribute('class', 'schedule-above-div');
         aboveDivEl.setAttribute('id', 'schedule-add-column');
         aboveDivEl.setAttribute('schedule-id', currSchedId);
