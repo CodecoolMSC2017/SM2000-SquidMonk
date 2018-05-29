@@ -188,7 +188,6 @@ function usersResponse() {
 }
 
 function showUserDashboard(user) {
-    clearMainContent();
 
     requestUserSchedules(user);
     requestUserTasks(user);
