@@ -380,10 +380,8 @@ function onSchedulePublishReceived() {
         shareButton.setAttribute('ispublic', true);
         shareButton.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + url;
-        shareButton.textContent = "Unpublish";
         shareUrl.textContent = document.URL + "schedules/public/" + url;
-        el.textContent = "Unpublish";
+        shareButton.textContent = "Unpublish";
     }
 }
 
