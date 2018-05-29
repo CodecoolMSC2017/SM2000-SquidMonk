@@ -3,9 +3,7 @@ package com.codecool.web.servlet;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
-import com.codecool.web.service.LoginService;
 import com.codecool.web.service.exception.ServiceException;
-import com.codecool.web.service.jsService.JsLoginService;
 import com.codecool.web.service.jsService.JsRegisterService;
 
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +26,7 @@ public final class RegisterServlet extends AbstractServlet {
             String password = req.getParameter("password");
 
 
-            User user = new JsRegisterService(userDao).registerUser(name, email, password);
+            new JsRegisterService(userDao).registerUser(name, email, password);
 
             if (checkEmptyParameters(name, email, password)) {
                 sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Empty fields");

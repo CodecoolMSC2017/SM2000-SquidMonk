@@ -6,14 +6,64 @@ function getTasksToView() {
     const taskId = this.getAttribute('data-task-id');
     
     const xhr = new XMLHttpRequest();
-    //xhr.addEventListener('load', showDashboard);
+    xhr.addEventListener('load', viewTaskOnReceive);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/schedule/task/' + taskId);
     xhr.send();
 }
 
-function viewTask() {
+function viewTaskOnReceive() {
+    const task = JSON.parse(this.responseText);
+
+    const mainDiv = document.getElementById('main-content');
+
+    const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
+    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
+
+    const darkBackgroundDiv = document.createElement('div');
+    darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+    darkBackgroundDiv.setAttribute('id', scheduleId);
+    darkBackgroundDiv.addEventListener('click', onScheduleClick);
+
+    const aboveDivEl = document.createElement('div');
+    aboveDivEl.setAttribute('class', 'schedule-above-div-250');
+    aboveDivEl.setAttribute('id', 'schedule-add-column');
+    aboveDivEl.setAttribute('schedule-id', scheduleId);
     
+    const h2El = document.createElement('h2');
+    h2El.textContent = task.name;
+
+    const h4El = document.createElement('h4');
+    h4El.textContent = "Description: <i>" + task.content + "</i>";
+
+    const pStartEl = document.createElement('p');
+    pStartEl.textContent = "Start time: ";
+
+    const inputStartEl = document.createElement('input');
+    inputStartEl.setAttribute('type', 'number');
+    inputStartEl.setAttribute('id', 'new-task-start-input');
+    inputStartEl.setAttribute('class', 'schedule-input-nosize');
+
+    const pEndEl = document.createElement('p');
+    pEndEl.textContent = "End time: ";
+
+    const inputEndEl = document.createElement('input');
+    inputEndEl.setAttribute('type', 'number');
+    inputEndEl.setAttribute('id', 'new-task-end-input');
+    inputEndEl.setAttribute('class', 'schedule-input-nosize');
+
+    const buttonEl = document.createElement('button');
+    buttonEl.addEventListener('click', sendNewColumnData);
+    buttonEl.setAttribute('class', 'schedule-button');
+    buttonEl.textContent = "Add";
+
+    aboveDivEl.appendChild(h2El);
+    aboveDivEl.appendChild(h4El);
+    aboveDivEl.appendChild(inputStartEl);
+    aboveDivEl.appendChild(buttonEl);
+    mainDiv.appendChild(darkBackgroundDiv);
+    mainDiv.appendChild(aboveDivEl);
+
 }
 
 function sharePopupDialog() {
@@ -43,20 +93,20 @@ function sharePopupDialog() {
 
     const buttonPublish = document.createElement('button');
     buttonPublish.setAttribute('class', 'schedule-button');
+    buttonPublish.setAttribute('id', 'schedule-dialog-share-button');
     buttonPublish.addEventListener('click', onSchedulePublishClick);
     buttonPublish.setAttribute('data-sched-id', scheduleId);
     buttonPublish.setAttribute('ispublic', public);
+    buttonPublish.style.position = 'absolute';
 
     if (public === true) {
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + url;
+        shareUrl.textContent = document.URL + "schedules/public/" + url;
         buttonPublish.textContent = "Unpublish";
-        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     } else {
         shareTitle.textContent = "You haven't shared this schedule yet!";
         shareUrl.textContent = "";
         buttonPublish.textContent = "Publish";
-        buttonPublish.setAttribute('style', 'margin-top: 0px;');
     }
 
     aboveDivEl.appendChild(shareTitle);
@@ -365,7 +415,7 @@ function onSchedulePublishClick() {
 
 function onSchedulePublishReceived() {
     const is_public = JSON.parse(this.responseText);
-    const shareButton = document.getElementById('schedule-share-button');
+    const shareButton = document.getElementById('schedule-dialog-share-button');
     const shareUrl = document.getElementById('schedule-share-url');
     const shareTitle = document.getElementById('share-title-schedule');
     const url = shareButton.getAttribute('url');
@@ -375,10 +425,8 @@ function onSchedulePublishReceived() {
         shareUrl.textContent = "";
         shareTitle.textContent = "You haven't shared this schedule yet!";
         shareButton.textContent = "Publish";
-        shareButton.setAttribute('style', 'margin-top: 0px;');
     } else {
         shareButton.setAttribute('ispublic', true);
-        shareButton.setAttribute('style', 'margin-top: 0px;');
         shareTitle.textContent = 'Share this schedule!';
         shareUrl.textContent = document.URL + "schedules/public/" + url;
         shareButton.textContent = "Unpublish";

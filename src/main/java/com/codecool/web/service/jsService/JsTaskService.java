@@ -4,6 +4,7 @@ import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
+import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.Schedule;
@@ -21,10 +22,12 @@ public class JsTaskService implements TaskService {
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
+    private TskColSchedConnectorDao controlTable;
 
     public JsTaskService(Connection connection) {
         this.taskDao = new TaskDaoImpl(connection);
         this.scheduleDao = new ScheduleDaoImpl(connection);
+        this.controlTable = new TskColSchedConnectorDao(connection);
     }
 
     @Override
@@ -58,7 +61,8 @@ public class JsTaskService implements TaskService {
 
     @Override
     public Task getById(int taskId) throws SQLException {
-        return taskDao.findById(taskId);
+        Task task = taskDao.findById(taskId);
+        return controlTable.queryTaskConnectionData(task);
     }
 
     @Override
