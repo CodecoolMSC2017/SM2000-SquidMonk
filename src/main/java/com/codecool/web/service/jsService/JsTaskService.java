@@ -11,6 +11,8 @@ import com.codecool.web.model.Schedule;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class JsTaskService implements TaskService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsTaskService.class);
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
@@ -32,11 +36,13 @@ public class JsTaskService implements TaskService {
 
     @Override
     public List<Task> findAllByUserId(int userId) throws SQLException {
+        logger.info("fetching all tasks of user with id " + userId);
         return taskDao.findAllByUserId(userId);
     }
 
     @Override
     public void insertTask(int userId, String name, String content) throws SQLException, ServiceException {
+        logger.info("inserting task for user with id " + userId);
         if (name == null || name.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
@@ -48,25 +54,50 @@ public class JsTaskService implements TaskService {
         if (newName == null || newName.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
+        logger.info("updating name of task with id " + taskId);
         taskDao.updateName(taskId, newName);
         if (newContent != null) {
+            logger.info("updating content of task with id " + taskId);
             taskDao.updateContent(taskId, newContent);
         }
     }
 
     @Override
+    public void updateTask(int taskId, String newName, String newContent, int start, int end) throws SQLException, ServiceException {
+        if (newName == null || newName.equals("")) {
+            throw new ServiceException("Task name can not be empty!");
+        }
+        logger.info("updating name of task with id " + taskId);
+        taskDao.updateName(taskId, newName);
+        if (newContent != null) {
+            logger.info("updating content of task with id " + taskId);
+            taskDao.updateContent(taskId, newContent);
+        }
+
+        logger.info("Updating start and end times for task " + taskId);
+        controlTable.updateTaskTime(taskId, start, end);
+    }
+
+    @Override
     public void deleteTask(int taskId) throws SQLException {
+        logger.info("deleting task with id " + taskId);
         taskDao.deleteTask(taskId);
     }
 
     @Override
     public Task getById(int taskId) throws SQLException {
         Task task = taskDao.findById(taskId);
+        if (task == null) {
+            logger.debug(String.format("task with id %s is not found", taskId));
+        } else {
+            logger.debug(String.format("task with id %s is found", taskId));
+        }
         return controlTable.queryTaskConnectionData(task);
     }
 
     @Override
     public List<DashboardTaskDto> getDtos(int userId) throws SQLException {
+        logger.info("fetching tasks for user with id " + userId);
         return taskDao.findTaskUsages(userId);
     }
 
@@ -75,7 +106,10 @@ public class JsTaskService implements TaskService {
         Task task = getById(taskId);
         Map<Integer, String> schedules = scheduleDao.findAllByTaskId(taskId);
 
-        return new TaskDto(task.getId(), task.getName(), task.getContent(), schedules);
+        String taskName = task.getName();
+        String taskContent = task.getContent();
+
+        return new TaskDto(taskId, taskName, taskContent, schedules);
     }
 
     @Override

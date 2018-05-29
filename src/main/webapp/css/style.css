@@ -273,6 +273,31 @@ div.table-title {
   color: #555555;
 }
 
+.schedule-input-small-padding-small-size {
+  width: 10%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: auto;
+}
+
+.schedule-input-small-padding-small-size:focus {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.schedule-input-small-padding-small-size input:focus::-webkit-input-placeholder {
+  color: #555555;
+}
+
 .schedule-input-nosize {
   background-color: white;
   color: black;
@@ -312,6 +337,27 @@ div.table-title {
 }
 
 .schedule-button:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.schedule-button-small-top-margin {
+  width: 32%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 15px 2px 4px 2px;
+  cursor: pointer;
+}
+
+.schedule-button-small-top-margin:hover {
   background-color: #555555;
   color: white;
   transition-duration: 300ms;
@@ -393,15 +439,15 @@ div.table-title {
   background-color: white;
 }
 
-.schedule-above-div-250 {
+.schedule-above-div-task {
   position: absolute;
   margin: auto;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  width: 800px;
-  height: 250px;
+  width: 600px;
+  height: 400px;
   border-radius: 3px;
   text-align: center;
   z-index: 10;
@@ -784,6 +830,7 @@ div.table-title {
     transform: translateX(-50%);
 }
 
+<<<<<<< HEAD
 #schedule-share-url {
     width: 75%;
     background-color: white;
@@ -818,10 +865,80 @@ div.table-title {
 #clipboard-button:hover {
     background-color: #555555;
     color: white;
+=======
+/***Users Style***/
+
+.users-table {
+  background: white;
+  border-radius:3px;
+  border-collapse: collapse;
+  margin: auto;
+  padding:5px;
+  width: 96%;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  animation: float 5s infinite;
+}
+
+.users-table th.table-head {
+  color:#D5DDE5;;
+  background:#1b1e24;
+  border-bottom:4px solid #9ea7af;
+  border-right: 1px solid #343a45;
+  font-size:28px;
+  font-weight: 100;
+  padding:18px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+.users-table table {
+    width: 100%;
+}
+
+.users-table th {
+  color:#D5DDE5;;
+  background:#1b1e24;
+  border-bottom:4px solid #9ea7af;
+  border-right: 1px solid #343a45;
+  font-size:20px;
+  font-weight: 100;
+  padding:13px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+.users-table th:first-child {
+  border-top-left-radius:3px;
+}
+
+.users-table th:last-child {
+  border-top-right-radius:3px;
+}
+
+.users-table tr {
+  border-top: 1px solid #C1C3D1;
+  border-bottom: 1px solid #C1C3D1;
+  color:#666B85;
+  font-size:16px;
+  font-weight:normal;
+  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}
+
+.users-table tr:hover td {
+  background:#4E5066;
+  color:#FFFFFF;
+  cursor: pointer;
+}
+
+.users-table tr:hover {
+>>>>>>> 7105551d09a2d1860f1b1e53daebbf55e3d472ca
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
 }
 
+<<<<<<< HEAD
 .tooltip {
     position: relative;
     display: inline-block;
@@ -855,3 +972,51 @@ div.table-title {
 .tooltip div:hover .tooltiptext {
     visibility: visible;
 }
+=======
+.users-table tr:first-child {
+  border-top:none;
+}
+
+.users-table tr:last-child {
+  border-bottom:none;
+}
+
+.users-table tr:nth-child(odd) td {
+  background:#EBEBEB;
+}
+
+.users-table tr:nth-child(odd):hover td {
+  background:#4E5066;
+}
+
+.users-table tr:last-child td:first-child {
+  border-bottom-left-radius:3px;
+}
+
+.users-table tr:last-child td:last-child {
+  border-bottom-right-radius:3px;
+}
+
+.users-table td {
+  background:#FFFFFF;
+  padding: 0px;
+  text-align: center;
+  vertical-align:middle;
+  font-weight:300;
+  font-size:18px;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #C1C3D1;
+}
+
+.users-table td.entry {
+    padding: 18px;
+}
+
+.users-table th.id {
+    width: 10%;
+}
+
+.users-table th.role {
+    width: 10%;
+}
+>>>>>>> 7105551d09a2d1860f1b1e53daebbf55e3d472ca

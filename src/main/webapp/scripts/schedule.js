@@ -2,6 +2,36 @@ function addTask() {
 
 }
 
+function scheduleDeleteTask() {
+    const taskId = this.getAttribute('data-task-id');
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/schedule/task/' + taskId);
+    xhr.send();
+}
+
+function sendModifiedTaskData() {
+    const taskId = this.getAttribute('data-task-id');
+    const titleInputEl = document.getElementById('modify-task-title-input');
+    const descriptionInputEl = document.getElementById('modify-task-description-input');
+    const startInputEl = document.getElementById('modify-task-start-input');
+    const endInputEl = document.getElementById('modify-task-end-input');
+
+    const params = new URLSearchParams();
+    params.append('title', titleInputEl.value);
+    params.append('description', descriptionInputEl.value);
+    params.append('start', startInputEl.value);
+    params.append('end', endInputEl.value);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/task/' + taskId + '?' + params.toString(), true);
+    xhr.send();
+}
+
 function getTasksToView() {
     const taskId = this.getAttribute('data-task-id');
     
@@ -26,41 +56,78 @@ function viewTaskOnReceive() {
     darkBackgroundDiv.addEventListener('click', onScheduleClick);
 
     const aboveDivEl = document.createElement('div');
-    aboveDivEl.setAttribute('class', 'schedule-above-div-250');
+    aboveDivEl.setAttribute('class', 'schedule-above-div-task');
     aboveDivEl.setAttribute('id', 'schedule-add-column');
     aboveDivEl.setAttribute('schedule-id', scheduleId);
+    aboveDivEl.setAttribute('style', 'background-color: lightblue')
     
     const h2El = document.createElement('h2');
-    h2El.textContent = task.name;
+    h2El.textContent = "Modify task";
 
-    const h4El = document.createElement('h4');
-    h4El.textContent = "Description: <i>" + task.content + "</i>";
+    const titleSpanEl = document.createElement('span');
+    titleSpanEl.setAttribute('style', 'font-style: italic');
+    titleSpanEl.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title: ";
+
+    const inputTitleEl = document.createElement('input');
+    inputTitleEl.setAttribute('id', 'modify-task-title-input');
+    inputTitleEl.setAttribute('class', 'schedule-input');
+    inputTitleEl.value = task.name;
+
+    const inputDescriptionEl = document.createElement('input');
+    inputDescriptionEl.setAttribute('id', 'modify-task-description-input');
+    inputDescriptionEl.setAttribute('class', 'schedule-input');
+    inputDescriptionEl.value = task.content;
+
+    const descSpanEl = document.createElement('span');
+    descSpanEl.setAttribute('style', 'font-style: italic');
+    descSpanEl.innerHTML = "<br>Description: ";
 
     const pStartEl = document.createElement('p');
     pStartEl.textContent = "Start time: ";
 
     const inputStartEl = document.createElement('input');
     inputStartEl.setAttribute('type', 'number');
-    inputStartEl.setAttribute('id', 'new-task-start-input');
-    inputStartEl.setAttribute('class', 'schedule-input-nosize');
+    inputStartEl.setAttribute('min', '0');
+    inputStartEl.setAttribute('max', '23');
+    inputStartEl.setAttribute('id', 'modify-task-start-input');
+    inputStartEl.setAttribute('class', 'schedule-input-small-padding-small-size');
+    inputStartEl.value = task.start;
 
-    const pEndEl = document.createElement('p');
-    pEndEl.textContent = "End time: ";
+    const spanEndEl = document.createElement('span');
+    spanEndEl.innerHTML = "&nbsp;&nbsp;End time: ";
 
     const inputEndEl = document.createElement('input');
     inputEndEl.setAttribute('type', 'number');
-    inputEndEl.setAttribute('id', 'new-task-end-input');
-    inputEndEl.setAttribute('class', 'schedule-input-nosize');
+    inputEndEl.setAttribute('min', '1');
+    inputEndEl.setAttribute('max', '24');
+    inputEndEl.setAttribute('id', 'modify-task-end-input');
+    inputEndEl.setAttribute('class', 'schedule-input-small-padding-small-size');
+    inputEndEl.value = task.end;
 
-    const buttonEl = document.createElement('button');
-    buttonEl.addEventListener('click', sendNewColumnData);
-    buttonEl.setAttribute('class', 'schedule-button');
-    buttonEl.textContent = "Add";
+    const buttonSaveEl = document.createElement('button');
+    buttonSaveEl.addEventListener('click', sendModifiedTaskData);
+    buttonSaveEl.setAttribute('class', 'schedule-button-small-top-margin');
+    buttonSaveEl.setAttribute('data-task-id', task.id);
+    buttonSaveEl.textContent = "Save";
+
+    const buttonDeleteEl = document.createElement('button');
+    buttonDeleteEl.addEventListener('click', scheduleDeleteTask);
+    buttonDeleteEl.setAttribute('class', 'schedule-button-small-top-margin');
+    buttonDeleteEl.setAttribute('data-task-id', task.id);
+    buttonDeleteEl.textContent = "Delete";
+
+    pStartEl.appendChild(inputStartEl);
+    spanEndEl.appendChild(inputEndEl);
+    pStartEl.appendChild(spanEndEl);
 
     aboveDivEl.appendChild(h2El);
-    aboveDivEl.appendChild(h4El);
-    aboveDivEl.appendChild(inputStartEl);
-    aboveDivEl.appendChild(buttonEl);
+    aboveDivEl.appendChild(titleSpanEl);
+    aboveDivEl.appendChild(inputTitleEl);
+    aboveDivEl.appendChild(descSpanEl);
+    aboveDivEl.appendChild(inputDescriptionEl);
+    aboveDivEl.appendChild(pStartEl);
+    aboveDivEl.appendChild(buttonSaveEl);
+    aboveDivEl.appendChild(buttonDeleteEl);
     mainDiv.appendChild(darkBackgroundDiv);
     mainDiv.appendChild(aboveDivEl);
 
@@ -348,6 +415,7 @@ function createTimeslotRows(mainDiv, schedule) {
 
             if (typeof task == 'undefined' && taskSpaceCounter <= 0) {
                 tdEl.setAttribute('class', 'no-task');
+                tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
                 tdEl.addEventListener('click', addTask);
