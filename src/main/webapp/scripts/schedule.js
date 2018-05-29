@@ -87,6 +87,8 @@ function viewTaskOnReceive() {
 
     const inputStartEl = document.createElement('input');
     inputStartEl.setAttribute('type', 'number');
+    inputStartEl.setAttribute('min', '0');
+    inputStartEl.setAttribute('max', '23');
     inputStartEl.setAttribute('id', 'modify-task-start-input');
     inputStartEl.setAttribute('class', 'schedule-input-small-padding-small-size');
     inputStartEl.value = task.start;
@@ -96,6 +98,8 @@ function viewTaskOnReceive() {
 
     const inputEndEl = document.createElement('input');
     inputEndEl.setAttribute('type', 'number');
+    inputEndEl.setAttribute('min', '1');
+    inputEndEl.setAttribute('max', '24');
     inputEndEl.setAttribute('id', 'modify-task-end-input');
     inputEndEl.setAttribute('class', 'schedule-input-small-padding-small-size');
     inputEndEl.value = task.end;
