@@ -49,7 +49,7 @@ function receiveUpdateProfile() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onProfileReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/profile/user/' + '?' + params.toString());
+    xhr.open('GET', 'protected/profile/user/' + user.id);
     xhr.send();
 }
 
