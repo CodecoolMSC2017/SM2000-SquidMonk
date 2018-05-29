@@ -11,6 +11,8 @@ import com.codecool.web.model.Schedule;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class JsTaskService implements TaskService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsTaskService.class);
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
@@ -62,6 +66,11 @@ public class JsTaskService implements TaskService {
     @Override
     public Task getById(int taskId) throws SQLException {
         Task task = taskDao.findById(taskId);
+        if (task == null) {
+            logger.debug(String.format("task with id %s is not found", taskId));
+        } else {
+            logger.debug(String.format("task with id %s is found", taskId));
+        }
         return controlTable.queryTaskConnectionData(task);
     }
 
@@ -75,7 +84,10 @@ public class JsTaskService implements TaskService {
         Task task = getById(taskId);
         Map<Integer, String> schedules = scheduleDao.findAllByTaskId(taskId);
 
-        return new TaskDto(task.getId(), task.getName(), task.getContent(), schedules);
+        String taskName = task.getName();
+        String taskContent = task.getContent();
+
+        return new TaskDto(taskId, taskName, taskContent, schedules);
     }
 
     @Override
