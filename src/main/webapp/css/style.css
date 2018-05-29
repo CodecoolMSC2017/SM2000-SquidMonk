@@ -838,8 +838,8 @@ div.table-title {
   border-collapse: collapse;
   margin: auto;
   padding:5px;
-  width: 95%;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  width: 96%;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
 
@@ -857,7 +857,7 @@ div.table-title {
 }
 
 .users-table table {
-    width: 95%;
+    width: 100%;
 }
 
 .users-table th {
@@ -879,7 +879,6 @@ div.table-title {
 
 .users-table th:last-child {
   border-top-right-radius:3px;
-  border-right:none;
 }
 
 .users-table tr {
@@ -946,5 +945,5 @@ div.table-title {
 }
 
 .users-table th.role {
-    width: 6%;
+    width: 10%;
 }
