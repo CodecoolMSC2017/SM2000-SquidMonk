@@ -32,10 +32,6 @@ function onLoginResponse() {
     }
 }
 
-function onUsersMenuClick() {
-
-}
-
 function onSchedMouseClick() {
     const currId = this.id;
     console.log(currId);
