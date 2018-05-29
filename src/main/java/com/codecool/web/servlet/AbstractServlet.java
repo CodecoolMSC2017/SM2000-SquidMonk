@@ -1,5 +1,6 @@
 package com.codecool.web.servlet;
 
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,5 +38,10 @@ abstract class AbstractServlet extends HttpServlet {
     void handleSqlError(HttpServletResponse resp, SQLException ex) throws IOException {
         logger.error("sql error", ex);
         sendMessage(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    void handleCryptError(HttpServletResponse resp, EncryptionOperationNotPossibleException ex) throws IOException {
+        logger.error("encryption error", ex);
+        sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
 }

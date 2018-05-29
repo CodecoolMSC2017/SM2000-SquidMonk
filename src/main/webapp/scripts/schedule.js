@@ -306,6 +306,7 @@ function noColumnMessage(mainDiv, scheduleId){
 }
 
 function createTitleButtons(mainDiv, schedule) {
+
     const buttonDivEl = document.createElement('div');
     buttonDivEl.setAttribute('class', 'h-centered-div');
 
@@ -381,6 +382,8 @@ function onSchedulePublishReceived() {
         shareTitle.textContent = 'Share this schedule!';
         shareUrl.textContent = document.URL + url;
         shareButton.textContent = "Unpublish";
+        shareUrl.textContent = document.URL + "schedules/public/" + url;
+        el.textContent = "Unpublish";
     }
 }
 
