@@ -393,6 +393,22 @@ div.table-title {
   background-color: white;
 }
 
+.schedule-above-div-250 {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 800px;
+  height: 250px;
+  border-radius: 3px;
+  text-align: center;
+  z-index: 10;
+  opacity: 1 !important; 
+  background-color: white;
+}
+
 /* General Schedule styling END */
 
 /* Schedule table style START */
