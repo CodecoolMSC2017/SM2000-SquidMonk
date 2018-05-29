@@ -229,48 +229,6 @@ function sendDeleteSchedule() {
     xhr.send();
 }
 
-function sendRenameColumn() {
-    const buttonEl = this;
-    const inputEl = document.getElementById('column-rename-input');
-    const value = inputEl.value;
-    const columnId = buttonEl.getAttribute('columnId');
-    const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
-    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
-
-    const params = new URLSearchParams();
-    params.append('columnId', columnId);
-    params.append('columnName', value);
-    
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onScheduleReceived);
-    xhr.addEventListener('error', onNetworkError);
-    xhr.open('PUT', 'protected/schedule/' + scheduleId + '?' + params.toString(), true);
-    xhr.send();
-}
-
-function editSingleRoutineName() {
-   const thEl = this;
-   const columnId = thEl.getAttribute('columnId');
-   const trEl = document.getElementById('header-row-' + columnId);
-
-   const buttonEl = document.createElement('button');
-   buttonEl.setAttribute('class', 'schedule-button-small-padding');
-   buttonEl.setAttribute('columnId', columnId);
-   buttonEl.addEventListener('click', sendRenameColumn);
-   buttonEl.textContent = "Save";
-
-   const inputEl = document.createElement('input');
-   inputEl.setAttribute('id', 'column-rename-input');
-   inputEl.setAttribute('class', 'schedule-input-small-padding');
-
-   inputEl.placeholder = thEl.textContent;
-
-   removeAllChildren(trEl);
-
-   trEl.appendChild(inputEl);
-   trEl.appendChild(buttonEl);
-}
-
 function addColumn() {
     const mainDiv = document.getElementById('main-content');
 
@@ -346,7 +304,17 @@ function addColumnToEmptySchedule() {
 }
 
 function onSaveColumnNameButtonClicked(columnId) {
+    const newName = document.getElementById('remane-column-input').value;
 
+    const params = new URLSearchParams();
+    params.append('columnId', columnId);
+    params.append('columnName', newName);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', requestCurrentSchedule);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/schedule/' + currentScheduleId + '?' + params.toString(), true);
+    xhr.send();
 }
 
 function onEditColumnButtonClicked(columnId) {
@@ -356,6 +324,7 @@ function onEditColumnButtonClicked(columnId) {
     thEl.textContent = '';
 
     const inputEl = document.createElement('input');
+    inputEl.id = 'remane-column-input';
     inputEl.value = title;
     thEl.appendChild(inputEl); 
 
@@ -371,16 +340,16 @@ function onEditColumnButtonClicked(columnId) {
 
     const backButtonEl = document.createElement('button');
     backButtonEl.textContent = 'Back';
-    backButtonEl.addEventListener('click', function() {
-        const xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', onScheduleReceived);
-        xhr.addEventListener('error', onNetworkError);
-        xhr.open('GET', 'protected/schedule/' + currentScheduleId);
-        xhr.send();
-    });
+    backButtonEl.addEventListener('click', requestCurrentSchedule);
 
-    trEl.appendChild(saveButtonEl);
-    trEl.appendChild(backButtonEl);
+    const saveTdEl = document.createElement('td');
+    saveTdEl.appendChild(saveButtonEl);
+
+    const backTdEl = document.createElement('td');
+    backTdEl.appendChild(backButtonEl);
+
+    trEl.appendChild(saveTdEl);
+    trEl.appendChild(backTdEl);
 }
 
 function onDeleteColumnButtonClicked(columnId) {
@@ -424,7 +393,7 @@ function createHeaderRow(mainDiv, schedule) {
         trEl.setAttribute('id', 'header-row-' + column.id);
 
         const thEl = document.createElement('th');
-        // thEl.addEventListener('click', editSingleRoutineName);
+        //thEl.addEventListener('click', editSingleRoutineName);
         thEl.textContent = column.name;
         thEl.setAttribute('columnId', column.id);
         thEl.setAttribute('colspan', '2');
@@ -650,13 +619,17 @@ function onScheduleReceived() {
     }
 }
 
-function onScheduleClick() {
-    const value = this.getAttribute('id');
-    currentScheduleId = value;
-    
+function requestCurrentSchedule() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/schedule/' + value);
+    xhr.open('GET', 'protected/schedule/' + currentScheduleId);
     xhr.send();
+}
+
+function onScheduleClick() {
+    const id = this.getAttribute('id');
+    currentScheduleId = id;
+    
+    requestCurrentSchedule();
 }
