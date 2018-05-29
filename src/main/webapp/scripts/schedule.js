@@ -19,7 +19,7 @@ function viewTask() {
 function sharePopupDialog() {
     const mainDiv = document.getElementById('main-content');
     const buttonEl = this;
-    const public = buttonEl.getAttribute('public-schedule');
+    const public = (buttonEl.getAttribute('public-schedule') == 'true');
     const url = buttonEl.getAttribute('url');
 
     const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
