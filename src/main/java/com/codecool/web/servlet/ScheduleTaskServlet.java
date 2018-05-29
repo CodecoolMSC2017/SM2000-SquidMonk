@@ -80,7 +80,8 @@ public class ScheduleTaskServlet extends AbstractServlet {
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
         } catch (SQLException e) {
-            handleSqlError(resp, e);
+            logger.error("sql error", e);
+            sendMessage(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }

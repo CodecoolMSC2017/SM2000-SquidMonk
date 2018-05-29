@@ -598,22 +598,53 @@ function onSchedulePublishReceived() {
 
 function onScheduleReceived() {
     const mainDiv = document.getElementById('main-content');
-    removeAllChildren(mainDiv);
-    const schedule = JSON.parse(this.responseText);
 
-    if (schedule.columns.length == 0) {
-        /* If no columns show this */
-        noColumnMessage(mainDiv, schedule.id);
+    if (this.status === 200) {
+        removeAllChildren(mainDiv);
+        const schedule = JSON.parse(this.responseText);
+        if (schedule.columns.length == 0) {
+            /* If no columns show this */
+            noColumnMessage(mainDiv, schedule.id);
 
-    } else {
-        /* Create Title buttons */
-        createTitleButtons(mainDiv, schedule);
+        } else {
+            /* Create Title buttons */
+            createTitleButtons(mainDiv, schedule);
 
-        /* Create first header row */
-        createHeaderRow(mainDiv, schedule);
+            /* Create first header row */
+            createHeaderRow(mainDiv, schedule);
 
-        /* Create timeslot rows with tasks */
-        createTimeslotRows(mainDiv, schedule);
+            /* Create timeslot rows with tasks */
+            createTimeslotRows(mainDiv, schedule);
+        }
+    } else if (this.status === 409) {
+        document.getElementById('schedule-add-column').remove();
+        let errorMessage;
+        const error = JSON.parse(this.responseText);
+        if (error.message.startsWith('ERROR: Task start')) {
+            errorMessage = 'Task start time intersects another task';
+        } else if (error.message.startsWith('ERROR: Task end')) {
+            errorMessage = 'Task end time intersects another task';
+        } else if (error.message.startsWith('ERROR: new row')) {
+            errorMessage = 'End time of task can\'t be before start time';
+        }
+        const darkBackgroundDiv = document.createElement('div');
+        darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+        darkBackgroundDiv.setAttribute('id', currentScheduleId);
+        darkBackgroundDiv.addEventListener('click', onScheduleClick);
+
+        const aboveDivEl = document.createElement('div');
+        aboveDivEl.style.height = '80px';
+        aboveDivEl.setAttribute('class', 'schedule-above-div');
+        aboveDivEl.setAttribute('id', 'schedule-add-column');
+        aboveDivEl.setAttribute('schedule-id', currentScheduleId);
+
+        const hEl = document.createElement('h1');
+        hEl.textContent = errorMessage;
+        aboveDivEl.appendChild(hEl);
+
+        mainDiv.appendChild(darkBackgroundDiv);
+        mainDiv.appendChild(aboveDivEl);
+        aboveDivEl.setAttribute('class', 'schedule-above-div');
     }
 }
 
