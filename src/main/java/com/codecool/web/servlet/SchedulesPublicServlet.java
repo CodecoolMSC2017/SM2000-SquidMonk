@@ -5,6 +5,7 @@ import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsScheduleService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,18 @@ public class SchedulesPublicServlet extends AbstractServlet {
             int scheduleId = getScheduleId(req.getRequestURI());
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
 
-            if (scheduleDto.isPublic()) {
-                resp.sendRedirect("../../guest.html");
+            if (scheduleDto != null) {
+                if (scheduleDto.isPublic()) {
+                    req.setAttribute("scheduleJSON", new ObjectMapper().writeValueAsString(scheduleDto));
+                    req.getRequestDispatcher("../../guest.jsp").forward(req, resp);
+                } else {
+                    sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "This schedule is not public.");
+                }
+                logger.debug("get method successful");
             } else {
-                sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "This schedule is not public.");
+                logger.debug("invalid schedule id");
+                sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "The schedule does not exist.");
             }
-            logger.debug("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

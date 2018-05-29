@@ -4,7 +4,6 @@ import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.comparator.ScheduleComlumnDtoComparator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ScheduleDto {
@@ -46,6 +45,6 @@ public class ScheduleDto {
     }
 
     public void sortColumnsById() {
-        Collections.sort(columns, new ScheduleComlumnDtoComparator());
+        columns.sort(new ScheduleComlumnDtoComparator());
     }
 }
