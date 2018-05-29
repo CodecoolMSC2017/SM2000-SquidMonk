@@ -6,6 +6,8 @@ import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
 
@@ -105,6 +107,20 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             executeInsert(statement);
+        }
+    }
+
+    @Override
+    public List<User> findAll() throws SQLException {
+        String sql = "SELECT id, name, email, password, is_admin FROM users";
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+             List<User> users = new ArrayList<>();
+             while (resultSet.next()) {
+                 users.add(fetchUser(resultSet));
+             }
+             return users;
         }
     }
 
