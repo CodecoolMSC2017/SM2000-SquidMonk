@@ -85,8 +85,29 @@ function sharePopupDialog() {
     aboveDivEl.setAttribute('id', 'schedule-add-column');
     aboveDivEl.setAttribute('schedule-id', scheduleId);
 
-    const shareUrl = document.createElement('h3');
+    const shareDiv = document.createElement('div');
+    shareDiv.id = 'share-div';
+    shareDiv.className = 'tooltip';
+    const shareUrl = document.createElement('input');
+    shareUrl.setAttribute('readonly', 'readonly');
+    shareUrl.type = 'text';
+    //const shareUrl = document.createElement('h3');
     shareUrl.setAttribute('id', 'schedule-share-url');
+    shareDiv.appendChild(shareUrl);
+
+    const clipboard = document.createElement('div');
+    clipboard.id = 'clipboard-button';
+    clipboard.innerHTML = '<i class="fa fa-copy"></i>';
+    clipboard.addEventListener('click', copyToClipBoard);
+    clipboard.addEventListener('mouseout', onClipboardMouseOut);
+    shareDiv.appendChild(clipboard);
+
+    const tooltip = document.createElement('span');
+    tooltip.id = 'tooltip';
+    tooltip.className = 'tooltiptext';
+    tooltip.textContent = 'Copy to clipboard';
+    clipboard.appendChild(tooltip);
+
 
     const shareTitle = document.createElement('h2');
     shareTitle.setAttribute('id', 'share-title-schedule')
@@ -99,21 +120,36 @@ function sharePopupDialog() {
     buttonPublish.setAttribute('ispublic', public);
     buttonPublish.style.position = 'absolute';
 
+    const finalUrl = document.URL + "schedules/public/" + url;
+
     if (public === true) {
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + "schedules/public/" + url;
+        shareDiv.style.display = 'block';
+        shareUrl.value = finalUrl;
+
         buttonPublish.textContent = "Unpublish";
     } else {
         shareTitle.textContent = "You haven't shared this schedule yet!";
-        shareUrl.textContent = "";
+        shareDiv.style.display = 'none';
         buttonPublish.textContent = "Publish";
     }
 
     aboveDivEl.appendChild(shareTitle);
-    aboveDivEl.appendChild(shareUrl);
+    aboveDivEl.appendChild(shareDiv);
     aboveDivEl.appendChild(buttonPublish);
     mainDiv.appendChild(darkBackgroundDiv);
     mainDiv.appendChild(aboveDivEl);
+}
+
+function copyToClipBoard() {
+    const url = document.getElementById('schedule-share-url');
+    url.select();
+    document.execCommand('copy');
+    document.getElementById('tooltip').textContent = 'Copied!';
+}
+
+function onClipboardMouseOut() {
+    document.getElementById('tooltip').textContent = 'Copy to clipboard';
 }
 
 function sendDeleteSchedule() {
@@ -419,16 +455,19 @@ function onSchedulePublishReceived() {
     const shareUrl = document.getElementById('schedule-share-url');
     const shareTitle = document.getElementById('share-title-schedule');
     const url = document.getElementById('schedule-share-button').getAttribute('url');
+    const shareDiv = document.getElementById('share-div');
+    shareDiv.appendChild(shareUrl);
 
     if (is_public.message === 'false') {
         shareButton.setAttribute('ispublic', false);
-        shareUrl.textContent = "";
+        shareDiv.style.display = 'none';
         shareTitle.textContent = "You haven't shared this schedule yet!";
         shareButton.textContent = "Publish";
     } else {
         shareButton.setAttribute('ispublic', true);
         shareTitle.textContent = 'Share this schedule!';
-        shareUrl.textContent = document.URL + "schedules/public/" + url;
+        shareDiv.style.display = 'block';
+        shareUrl.value = document.URL + "schedules/public/" + url;
         shareButton.textContent = "Unpublish";
     }
 }
