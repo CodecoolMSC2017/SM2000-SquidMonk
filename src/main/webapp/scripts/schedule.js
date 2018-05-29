@@ -400,6 +400,13 @@ function createTimeslotRows(mainDiv, schedule) {
                 tdEl.setAttribute('rowspan', slotsTaken);
                 tdEl.setAttribute('style', 'height: ' + tdHeight + 'px');
                 tdEl.setAttribute('class', 'ok-task');
+                const colors = new Array();
+                for (let i = 0; i < 3; i++) {
+                    const num = Math.floor((Math.random() * 120) + 60);
+                    colors.push(num);
+                }
+
+                tdEl.style.backgroundColor = 'rgb('+colors[0]+', '+colors[1]+', '+colors[2]+')';
                 tdEl.setAttribute('data-task-id', task.id);
 
                 taskSpaceCounter = slotsTaken;
