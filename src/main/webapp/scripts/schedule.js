@@ -352,8 +352,19 @@ function onEditColumnButtonClicked(columnId) {
     trEl.appendChild(backTdEl);
 }
 
-function onDeleteColumnButtonClicked(columnId) {
+function onDeleteColumnRespose() {
+    if (this.status == NO_CONTENT) {
+        requestCurrentSchedule();
+    } else {
+        console.log(this);
+    }
+}
 
+function onDeleteColumnButtonClicked(columnId) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteColumnRespose);
+    xhr.open('DELETE', 'protected/column/' + columnId);
+    xhr.send();
 }
 
 function createColumnEditButtons(columnId) {
