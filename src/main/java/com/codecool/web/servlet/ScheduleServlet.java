@@ -5,6 +5,8 @@ import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsScheduleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,23 +19,28 @@ import java.sql.SQLException;
 @WebServlet("/protected/schedule/*")
 public class ScheduleServlet extends AbstractServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
             int scheduleId = getScheduleId(req.getRequestURI());
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            logger.debug("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -42,19 +49,18 @@ public class ScheduleServlet extends AbstractServlet {
             scheduleService.addNewColumnToSchedule(scheduleId, columnName);
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
-            resp.setStatus(HttpServletResponse.SC_OK);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
-
+            logger.debug("post method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        logger.debug("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -62,15 +68,17 @@ public class ScheduleServlet extends AbstractServlet {
             scheduleService.deleteSchedule(scheduleId);
 
             resp.setStatus(HttpServletResponse.SC_OK);
+            logger.debug("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("put method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -91,10 +99,11 @@ public class ScheduleServlet extends AbstractServlet {
                 ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
                 sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
             }
+            logger.debug("put method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
@@ -105,6 +114,7 @@ public class ScheduleServlet extends AbstractServlet {
         }
         String idAsString = splitUri[4];
         try {
+            logger.debug("getting schedule id from url: " + idAsString);
             return Integer.parseInt(idAsString);
         } catch (NumberFormatException e) {
             throw new ServiceException("Schedule id is not a valid number");

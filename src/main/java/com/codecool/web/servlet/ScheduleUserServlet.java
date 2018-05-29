@@ -9,6 +9,8 @@ import com.codecool.web.service.ScheduleUserService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsScheduleService;
 import com.codecool.web.service.jsService.JsScheduleUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,8 +24,11 @@ import java.util.List;
 @WebServlet("/protected/schedules/user/*")
 public class ScheduleUserServlet extends AbstractServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleUserServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
             ScheduleUserService service = new JsScheduleUserService(scheduleDao);
@@ -31,17 +36,17 @@ public class ScheduleUserServlet extends AbstractServlet {
             int userId = getUserId(req.getRequestURI());
             List<DashboardScheduleDto> scheduleList = service.findAllByUserId(userId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleList);
+            logger.debug("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid user id");
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
             ScheduleUserService service = new JsScheduleUserService(scheduleDao);
@@ -50,22 +55,22 @@ public class ScheduleUserServlet extends AbstractServlet {
             User user = (User) req.getSession().getAttribute("user");
             service.addSchedule(user.getId(), name);
             resp.setStatus(HttpServletResponse.SC_OK);
+            logger.debug("post method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
-        } catch (NumberFormatException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid user id");
         } catch (ServiceException e) {
-            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
         }
     }
 
-    private int getUserId(String uri) throws NumberFormatException, ServiceException {
+    private int getUserId(String uri) throws ServiceException {
         String[] splitUri = uri.split("/");
         if (splitUri.length < 6) {
             throw new ServiceException("Missing user id");
         }
         String userIdAsString = splitUri[5];
         try {
+            logger.debug("getting user id from url: " + userIdAsString);
             return Integer.parseInt(userIdAsString);
         } catch (NumberFormatException e) {
             throw new ServiceException("User id is not a valid number");

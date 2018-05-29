@@ -1,6 +1,6 @@
 package com.codecool.web.servlet;
 
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import com.codecool.web.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,6 +25,11 @@ abstract class AbstractServlet extends HttpServlet {
     Connection getConnection(ServletContext sce) throws SQLException {
         DataSource dataSource = (DataSource) sce.getAttribute("dataSource");
         return dataSource.getConnection();
+    }
+
+    void sendMessage(HttpServletResponse resp, int status, ServiceException ex) throws IOException {
+        logger.debug("ServiceException: " + ex.getMessage());
+        sendMessage(resp, status, ex.getMessage());
     }
 
     void sendMessage(HttpServletResponse resp, int status, String message) throws IOException {

@@ -44,7 +44,7 @@ public class TskColSchedConnectorDao extends AbstractDao {
                 }
             }
         }
-        return null;
+        return task;
     }
 
     public List<Integer> queryTaskIdsByScheduleId(int schedId) throws SQLException {
