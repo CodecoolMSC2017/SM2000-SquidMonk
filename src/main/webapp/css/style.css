@@ -838,7 +838,7 @@ div.table-title {
   border-collapse: collapse;
   margin: auto;
   padding:5px;
-  width: 48.96%;
+  width: 95%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
@@ -848,16 +848,16 @@ div.table-title {
   background:#1b1e24;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
-  font-size:23px;
+  font-size:28px;
   font-weight: 100;
-  padding:24px;
+  padding:18px;
   text-align: center;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
 }
 
 .users-table table {
-    width: 100%;
+    width: 95%;
 }
 
 .users-table th {
@@ -865,9 +865,9 @@ div.table-title {
   background:#1b1e24;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
-  font-size:23px;
+  font-size:20px;
   font-weight: 100;
-  padding:24px;
+  padding:13px;
   text-align: center;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
@@ -938,7 +938,7 @@ div.table-title {
 }
 
 .users-table td.entry {
-    padding: 20px;
+    padding: 18px;
 }
 
 .users-table th.id {
