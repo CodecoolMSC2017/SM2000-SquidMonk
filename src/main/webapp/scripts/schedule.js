@@ -579,6 +579,8 @@ function onScheduleReceived() {
             errorMessage = 'Task end time intersects another task';
         } else if (error.message.startsWith('ERROR: new row')) {
             errorMessage = 'End time of task can\'t be before start time';
+        } else {
+            errorMessage = 'Something went wrong. Try again.';
         }
         const darkBackgroundDiv = document.createElement('div');
         darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
