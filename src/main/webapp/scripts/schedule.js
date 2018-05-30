@@ -8,9 +8,28 @@ function onEmptyRowClicked(columnId) {
     xhr.send();
 }
 
+function createAvailableTaskList(tasks) {
+    console.log(tasks);
+    const ulEl = document.createElement('ul');
+    ulEl.classList.add('task-list');
+
+    for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+
+        const liEl = document.createElement('li');
+        const aEl = document.createElement('a');
+        aEl.href = 'javascript:void(0)';
+        // aEl.addEventListener('click', );
+        aEl.textContent = task.name;
+
+        liEl.appendChild(aEl);
+        ulEl.appendChild(liEl);
+    }
+    return ulEl;
+}
+
 function onAvailableTasksReceived() {
-    console.log(currentScheduleId);
-    console.log(JSON.parse(this.responseText));
+    const tasks = JSON.parse(this.responseText);
     const mainDiv = document.getElementById('main-content');
 
     const darkBackgroundDiv = document.createElement('div');
@@ -20,6 +39,8 @@ function onAvailableTasksReceived() {
     const aboveDivEl = document.createElement('div');
     aboveDivEl.classList.add('schedule-above-div-task');
     aboveDivEl.id = 'column-add-task';
+
+    aboveDivEl.appendChild(createAvailableTaskList(tasks));
 
     mainDiv.appendChild(darkBackgroundDiv);
     mainDiv.appendChild(aboveDivEl);
@@ -495,7 +516,7 @@ function createTimeslotRows(mainDiv, schedule) {
 
             if (typeof task != 'undefined') {
                 const slotsTaken = task.end - task.start;
-                tdHeight = 39 * slotsTaken;
+                tdHeight = 37.6 * slotsTaken;
 
                 tdEl.innerHTML = "<b>" + task.name + "</b><br>" + task.start + ":00 to " + task.end +":00";
                 tdEl.setAttribute('rowspan', slotsTaken);
