@@ -1,3 +1,6 @@
+/***UsersMenu***/
+//let admin;
+
 function onUsersMenuClick() {
     showContents(['topnav-content', 'main-content', 'logout-content']);
     mainContentEl = document.getElementById('main-content');
@@ -24,7 +27,7 @@ function requestUsers() {
     xhr.send();
 }
 
-function createTableHead() {
+function createTableDivHead() {
     const tableHeadTr = document.createElement('tr');
     const tableHeadTh = document.createElement('th');
     tableHeadTh.colSpan = '4';
@@ -66,7 +69,7 @@ function createUsersTableHead() {
 function createUserRow(user) {
     const userTr = document.createElement('tr');
     userTr.id = user.id;
-    //userTr.addEventListener('click', ...);
+    userTr.addEventListener('click', onUserClick);
 
     const userIdTd = document.createElement('td');
     userIdTd.textContent = user.id;
@@ -112,7 +115,7 @@ function onUsersReceived() {
     usersDiv.style.float = 'center';
 
     const usersTable = document.createElement('table');
-    usersTable.appendChild(createTableHead());
+    usersTable.appendChild(createTableDivHead());
     usersTable.appendChild(createUsersTableHead());
     usersTable.className = 'style-users-table';
 
@@ -139,4 +142,79 @@ function onUsersReceived() {
     }
 
     mainDivEl.appendChild(usersDiv);
+}
+
+/***user click***/
+
+function onUserClick() {
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    admin = user;
+
+    const userId = this.getAttribute('id');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', usersResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/profile/user/' + userId);
+    xhr.send();
+}
+
+function usersResponse() {
+    const user = JSON.parse(this.responseText);
+    const admin = JSON.parse(localStorage.getItem('user'));
+    if (this.status === OK) {
+        showContents(['topnav-content', 'main-content', 'sound-content']);
+        mainContentEl = document.getElementById('main-content');
+        mainContentEl.textContent = '';
+        const divEl = document.createElement('div');
+        divEl.id = 'welcome-text';
+        divEl.textContent = "Welcome, "+ admin.name + " in " + user.name + " interface!";
+        mainContentEl.appendChild(divEl);
+        showUserDashboard(user);
+
+        const usersButtonEl = document.getElementById('menu-users');
+        if (admin.admin) {
+            usersButtonEl.style.display = 'block';
+            usersButtonEl.addEventListener('click', onUsersMenuClick);
+        } else {
+            usersButtonEl.style.display = 'none';
+        }
+    } else {
+        const messageEl = document.getElementById('message-content');
+        messageEl.innerHTML = json.message;
+        showContents(['login-content', 'message-content']);
+    }
+}
+
+function showUserDashboard(user) {
+
+    requestUserSchedules(user);
+    requestUserTasks(user);
+
+    showContents(['topnav-content', 'main-content', 'sound-content']);
+}
+
+function requestUserSchedules(user) {
+
+    const params = new URLSearchParams();
+    params.append('userId', user.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSchedulesReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/schedules/user/' + user.id);
+    xhr.send(params);
+}
+
+function requestUserTasks(user) {
+
+    const params = new URLSearchParams();
+    params.append('userId', user.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onTasksReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/tasks/user/' + user.id);
+    xhr.send(params);
 }
