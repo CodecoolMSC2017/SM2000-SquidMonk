@@ -1,5 +1,5 @@
 /***UsersMenu***/
-//let admin;
+
 
 function onUsersMenuClick() {
     showContents(['topnav-content', 'main-content', 'logout-content']);
@@ -486,112 +486,14 @@ function displayTaskByUser(task) {
         taskContentEl.textContent = 'Description: ' + task.content;
     }
 
-    const scheduleButton = document.createElement('button');
-    scheduleButton.id = 'schedule-task-button';
-    scheduleButton.className = 'task-button';
-    scheduleButton.textContent = 'Schedule task';
-    scheduleButton.addEventListener('click', onScheduleButtonClickedByUser);
-
-    /*const editButton = document.createElement('button');
-    editButton.textContent = 'Edit';
-    editButton.className = 'task-button';
-    editButton.addEventListener('click', onEditButtonClicked);
-
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.className = 'task-button';
-    deleteButton.addEventListener('click', onDeleteButtonClicked);*/
-
     clearMainContent();
 
     const mainContentEl = document.getElementById('main-content');
     mainContentEl.style.textAlign = 'center';
     mainContentEl.appendChild(taskNameEl);
     mainContentEl.appendChild(taskContentEl);
-    mainContentEl.appendChild(scheduleButton);
-    /*mainContentEl.appendChild(editButton);
-    mainContentEl.appendChild(deleteButton);*/
 
     mainContentEl.appendChild(createTaskScheduleTableByUser(task));
-}
-
-
-function onAvailableSchedulesReceivedByUser() {
-    if (this.status == OK) {
-        const task = JSON.parse(this.responseText);
-        const mainContentEl = document.getElementById('main-content');
-        mainContentEl.appendChild(createTaskAvailableScheduleTableByUser(task));
-    } else {
-        console.log(this.responseText);
-    }
-}
-
-function onScheduleButtonClickedByUser() {
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onAvailableSchedulesReceivedByUser);
-    xhr.open('GET', 'protected/tasks/' + currentTask.id + '/availableSchedules');
-    xhr.send();
-}
-
-function createTaskAvailableScheduleTableByUser(task) {
-    const otherTable = document.getElementById('task-schedule-table');
-    if (otherTable != null) {
-        otherTable.remove();
-    }
-    const tableEl = document.createElement('table');
-    tableEl.className = 'dash-table';
-    tableEl.align = 'center';
-    tableEl.style.marginTop = '20px';
-    tableEl.style.width = '45%';
-    tableEl.id = 'task-available-schedule-table';
-
-    const thEl = document.createElement('th');
-    thEl.textContent = 'Available schedules for this task';
-
-    const headTrEl = document.createElement('tr');
-    headTrEl.appendChild(thEl);
-
-    tableEl.appendChild(headTrEl);
-
-    if (Object.keys(task.schedules).length == 0) {
-        const tdEl = document.createElement('td');
-        tdEl.className = 'entry';
-        tdEl.textContent = 'There are no schedules available.';
-
-        const trEl = document.createElement('tr');
-        trEl.appendChild(tdEl);
-
-        tableEl.appendChild(trEl);
-    } else {
-        const ids = Object.keys(task.schedules);
-        ids.sort(function(a, b) {return b - a});
-        for (let id in ids) {
-            const scheduleId = ids[id];
-            const scheduleName = task.schedules[scheduleId];
-
-            const tdEl = document.createElement('td');
-            tdEl.className = 'entry';
-            tdEl.textContent = scheduleName;
-
-            const trEl = document.createElement('tr');
-            trEl.id = scheduleId;
-            trEl.addEventListener('click', onScheduleClickByUser);
-            trEl.appendChild(tdEl);
-
-            tableEl.appendChild(trEl);
-        }
-    }
-
-    const scheduleButton = document.getElementById('schedule-task-button');
-    scheduleButton.textContent = 'Show usages';
-    scheduleButton.removeEventListener('click', onScheduleButtonClickedByUser);
-    scheduleButton.addEventListener('click', onShowUsageButtonClickedByUser);
-
-    return tableEl;
-}
-
-function onShowUsageButtonClickedByUser() {
-    displayTaskByUser(currentTask);
 }
 
 function createTaskScheduleTableByUser(task) {
