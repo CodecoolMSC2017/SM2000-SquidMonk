@@ -22,7 +22,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.codecool" level="DEBUG">
+    <logger name="com.codecool" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
