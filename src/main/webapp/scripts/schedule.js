@@ -303,13 +303,17 @@ function addColumnToEmptySchedule() {
     messageDiv.appendChild(buttonEl);
 }
 
-function onSaveColumnNameButtonClicked(columnId) {
+function onSaveColumnNameButtonClicked(oldName, columnId) {
     const newName = document.getElementById('remane-column-input').value;
+
+    if (oldName === newName) {
+        requestCurrentSchedule();
+    }
 
     const params = new URLSearchParams();
     params.append('columnId', columnId);
     params.append('columnName', newName);
-    
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', requestCurrentSchedule);
     xhr.addEventListener('error', onNetworkError);
@@ -335,7 +339,7 @@ function onEditColumnButtonClicked(columnId) {
 
     const saveButtonEl = document.createElement('button');
     saveButtonEl.textContent = 'Save';
-    saveButtonEl.addEventListener('click', function() {onSaveColumnNameButtonClicked(columnId)});
+    saveButtonEl.addEventListener('click', function() {onSaveColumnNameButtonClicked(title, columnId)});
 
     const backButtonEl = document.createElement('button');
     backButtonEl.textContent = 'Back';
