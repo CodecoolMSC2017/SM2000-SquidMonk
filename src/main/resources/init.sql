@@ -474,7 +474,7 @@ INSERT INTO tasks (user_id, name, content) VALUES
     (9, 'Rainbow', 'Rainbow'),
     (9, 'Rainbow', 'Rainbow'),
     (9, 'Rainbow', 'Rainbow');
-    
+
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
     (2, 5, 4, 8, 10),

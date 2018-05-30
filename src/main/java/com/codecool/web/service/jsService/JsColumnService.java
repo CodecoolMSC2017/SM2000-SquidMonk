@@ -4,6 +4,7 @@ import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
+import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ColumnService;
@@ -21,10 +22,12 @@ public class JsColumnService implements ColumnService {
 
     private ColumnDao columnDao;
     private TaskDao taskDao;
+    private TskColSchedConnectorDao controlTable;
 
     public JsColumnService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
         taskDao = new TaskDaoImpl(connection);
+        controlTable = new TskColSchedConnectorDao(connection);
     }
 
     @Override
@@ -41,9 +44,12 @@ public class JsColumnService implements ColumnService {
         List<Task> availableTasks = new ArrayList<>();
 
         for (Task task : allTasks) {
-            // if ()
+            task = controlTable.queryTaskConnectionData(task, scheduleId);
+            logger.trace(task.getSchedId() + "|" + scheduleId);
+            if (task.getSchedId() != scheduleId) {
+                availableTasks.add(task);
+            }
         }
-
         return availableTasks;
     }
 }

@@ -1,5 +1,6 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ColumnService;
@@ -30,9 +31,11 @@ public class ColumnServlet extends AbstractServlet {
 
             User user = (User) req.getSession().getAttribute("user");
             int columnId = getColumnId(req.getRequestURI());
-            List<Task> tasks = service.getAvailableTasks(user.getId(), columnId);
-            sendMessage(resp, HttpServletResponse.SC_OK, tasks);
-            logger.debug("get method successful");
+            if (req.getRequestURI().endsWith("/availableTasks")) {
+                List<Task> tasks = service.getAvailableTasks(user.getId(), columnId);
+                sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+                logger.debug("get method successful");
+            }
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

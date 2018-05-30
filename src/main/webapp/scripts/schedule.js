@@ -9,6 +9,8 @@ function onEmptyRowClicked(columnId) {
 }
 
 function onAvailableTasksReceived() {
+    console.log(currentScheduleId);
+    console.log(JSON.parse(this.responseText));
     const mainDiv = document.getElementById('main-content');
 
     const darkBackgroundDiv = document.createElement('div');
@@ -30,7 +32,7 @@ function scheduleDeleteTask() {
     params.append('scheduleId', currentScheduleId);
     
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onScheduleReceived);
+    xhr.addEventListener('load', requestCurrentSchedule);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('DELETE', 'protected/schedule/task/' + taskId + '?' + params.toString());
     xhr.send();
@@ -139,7 +141,7 @@ function viewTaskOnReceive() {
     buttonDeleteEl.addEventListener('click', scheduleDeleteTask);
     buttonDeleteEl.setAttribute('class', 'schedule-button-small-top-margin');
     buttonDeleteEl.setAttribute('data-task-id', task.id);
-    buttonDeleteEl.textContent = "Delete";
+    buttonDeleteEl.textContent = "Remove";
 
     pStartEl.appendChild(inputStartEl);
     spanEndEl.appendChild(inputEndEl);

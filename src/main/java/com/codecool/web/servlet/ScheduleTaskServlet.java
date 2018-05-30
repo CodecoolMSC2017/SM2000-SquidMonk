@@ -46,17 +46,16 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskService taskService = new JsTaskService(connection);
-            ScheduleService scheduleService = new JsScheduleService(connection);
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
 
             int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
 
-            taskService.deleteTask(taskId);
-
-            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
-            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            controlTable.removeTaskFromSchedule(taskId, scheduleId);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            logger.debug("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -66,6 +65,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("put method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
             ScheduleService scheduleService = new JsScheduleService(connection);
@@ -81,6 +81,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            logger.debug("put method successful");
         } catch (SQLException e) {
             logger.error("sql error", e);
             sendMessage(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());

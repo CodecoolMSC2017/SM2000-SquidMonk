@@ -127,6 +127,15 @@ public class TskColSchedConnectorDao extends AbstractDao {
         }
     }
 
+    public void removeTaskFromSchedule(int taskId, int scheduleId) throws SQLException {
+        String sql = "DELETE FROM col_tsk WHERE task_id = ? AND schedule_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, taskId);
+            statement.setInt(2, scheduleId);
+            executeInsert(statement);
+        }
+    }
+
     private Task fillTask(Task task, int colId, int scheduleId, int taskStart, int taskEnd) {
         task.setColId(colId);
         task.setSchedId(scheduleId);
