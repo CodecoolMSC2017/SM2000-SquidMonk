@@ -325,6 +325,7 @@ function onEditColumnButtonClicked(columnId) {
 
     const inputEl = document.createElement('input');
     inputEl.id = 'remane-column-input';
+    inputEl.className = 'rename-column';
     inputEl.value = title;
     thEl.appendChild(inputEl); 
 
@@ -336,9 +337,11 @@ function onEditColumnButtonClicked(columnId) {
 
     const saveButtonEl = document.createElement('button');
     saveButtonEl.textContent = 'Save';
+    saveButtonEl.className = 'create-button';
     saveButtonEl.addEventListener('click', function() {onSaveColumnNameButtonClicked(columnId)});
 
     const backButtonEl = document.createElement('button');
+    backButtonEl.className = 'create-button';
     backButtonEl.textContent = 'Back';
     backButtonEl.addEventListener('click', requestCurrentSchedule);
 
@@ -373,12 +376,14 @@ function createColumnEditButtons(columnId) {
 
     const editTdEl = document.createElement('td');
     const editButton = document.createElement('button');
+    editButton.className = 'create-button';
     editButton.textContent = 'Edit';
     editButton.addEventListener('click', function() {onEditColumnButtonClicked(columnId)});
     editTdEl.appendChild(editButton);
 
     const deleteTdEl = document.createElement('td');
     const deleteButton = document.createElement('button');
+    deleteButton.className = 'create-button';
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', function() {onDeleteColumnButtonClicked(columnId)});
     deleteTdEl.appendChild(deleteButton);
