@@ -17,6 +17,13 @@ function createAvailableTaskList(tasks) {
     const ulEl = document.createElement('ul');
     ulEl.classList.add('task-list');
 
+    if (tasks.length === 0) {
+        const liEl = document.createElement('li');
+        liEl.textContent = 'There are no free tasks.';
+        ulEl.appendChild(liEl);
+        return ulEl;
+    }
+
     for (let i = 0; i < tasks.length; i++) {
         const task = tasks[i];
 
