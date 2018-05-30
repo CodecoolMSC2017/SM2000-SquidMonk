@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
 
-    private final String queryColumns = "SELECT id, name FROM columns ";
+    private final String queryColumns = "SELECT id, name, schedule_id FROM columns ";
 
     public ColumnDaoImpl(Connection connection) {
         super(connection);
@@ -80,7 +80,8 @@ public class ColumnDaoImpl extends AbstractDao implements ColumnDao {
     private Column fetchColumn(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
+        int scheduleId = resultSet.getInt("schedule_id");
 
-        return new Column(id, name);
+        return new Column(id, name, scheduleId);
     }
 }

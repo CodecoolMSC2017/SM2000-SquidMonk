@@ -92,7 +92,7 @@ public class JsTaskService implements TaskService {
         } else {
             logger.debug(String.format("task with id %s is found", taskId));
         }
-        return controlTable.queryTaskConnectionData(task);
+        return task;
     }
 
     @Override

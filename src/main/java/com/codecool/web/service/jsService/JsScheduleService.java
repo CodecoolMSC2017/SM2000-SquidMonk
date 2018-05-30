@@ -49,7 +49,7 @@ public class JsScheduleService implements ScheduleService {
         List<Task> tasks = new ArrayList<>();
         List<Integer> taskIds = controlTable.queryTaskIdsByScheduleId(schedId);
         for (int taskId : taskIds) {
-            tasks.add(controlTable.queryTaskConnectionData(taskDao.findById(taskId)));
+            tasks.add(controlTable.queryTaskConnectionData(taskDao.findById(taskId), schedId));
         }
         return tasks;
     }

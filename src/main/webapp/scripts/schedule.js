@@ -1,17 +1,38 @@
 
 let currentScheduleId;
 
-function addTask() {
+function onEmptyRowClicked(columnId) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onAvailableTasksReceived);
+    xhr.open('GET', 'protected/column/' + columnId + '/availableTasks');
+    xhr.send();
+}
 
+function onAvailableTasksReceived() {
+    const mainDiv = document.getElementById('main-content');
+
+    const darkBackgroundDiv = document.createElement('div');
+    darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+    darkBackgroundDiv.addEventListener('click', requestCurrentSchedule);
+
+    const aboveDivEl = document.createElement('div');
+    aboveDivEl.classList.add('schedule-above-div-task');
+    aboveDivEl.id = 'column-add-task';
+
+    mainDiv.appendChild(darkBackgroundDiv);
+    mainDiv.appendChild(aboveDivEl);
 }
 
 function scheduleDeleteTask() {
     const taskId = this.getAttribute('data-task-id');
+
+    const params = new URLSearchParams();
+    params.append('scheduleId', currentScheduleId);
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('DELETE', 'protected/schedule/task/' + taskId);
+    xhr.open('DELETE', 'protected/schedule/task/' + taskId + '?' + params.toString());
     xhr.send();
 }
 
@@ -27,6 +48,7 @@ function sendModifiedTaskData() {
     params.append('description', descriptionInputEl.value);
     params.append('start', startInputEl.value);
     params.append('end', endInputEl.value);
+    params.append('scheduleId', currentScheduleId);
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onScheduleReceived);
@@ -37,11 +59,14 @@ function sendModifiedTaskData() {
 
 function getTasksToView() {
     const taskId = this.getAttribute('data-task-id');
+
+    const params = new URLSearchParams();
+    params.append('scheduleId', currentScheduleId);
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', viewTaskOnReceive);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/schedule/task/' + taskId);
+    xhr.open('GET', 'protected/schedule/task/' + taskId + '?' + params.toString());
     xhr.send();
 }
 
@@ -51,19 +76,17 @@ function viewTaskOnReceive() {
     const mainDiv = document.getElementById('main-content');
 
     const buttonDeleteSchedule = document.getElementById('schedule-delete-button');
-    const scheduleId = buttonDeleteSchedule.getAttribute('schedule-id');
 
     const darkBackgroundDiv = document.createElement('div');
     darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
-    darkBackgroundDiv.setAttribute('id', scheduleId);
-    darkBackgroundDiv.addEventListener('click', onScheduleClick);
+    darkBackgroundDiv.addEventListener('click', requestCurrentSchedule);
 
     const aboveDivEl = document.createElement('div');
     aboveDivEl.setAttribute('class', 'schedule-above-div-task');
     aboveDivEl.setAttribute('id', 'schedule-add-column');
-    aboveDivEl.setAttribute('schedule-id', scheduleId);
-    aboveDivEl.setAttribute('style', 'background-color: lightblue')
-    
+    aboveDivEl.setAttribute('schedule-id', currentScheduleId);
+    aboveDivEl.setAttribute('style', 'background-color: lightblue');
+
     const h2El = document.createElement('h2');
     h2El.textContent = "Modify task";
 
@@ -494,7 +517,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
-                tdEl.addEventListener('click', addTask);
+                tdEl.addEventListener('click', function() {onEmptyRowClicked(column.id)});
                 trEl.appendChild(tdEl);
             }
 
