@@ -4,16 +4,23 @@ function onLogReceived() {
 
     removeAllChildren(mainDiv);
 
-    const textAreaEl = document.createElement('textarea');
-    
+    const divTextAreaEl = document.createElement('div');
+    divTextAreaEl.setAttribute('class', 'textarealike');
 
-    mainDiv.appendChild(textAreaEl);
+
+    for (let i = 0; i < log.logData.length; i++) {
+        const line = log.logData[i];
+        
+        divTextAreaEl.innerHTML = divTextAreaEl.innerHTML + line + "<br>";
+    }
+    
+    mainDiv.appendChild(divTextAreaEl);
 }
 
 function onMenuLogClick() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLogReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', '/protected/logview');
+    xhr.open('GET', 'protected/logview');
     xhr.send();
 }
