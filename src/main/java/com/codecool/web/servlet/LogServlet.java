@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/protected/logview")
 public class LogServlet extends AbstractServlet {
@@ -26,8 +25,7 @@ public class LogServlet extends AbstractServlet {
         LogDao logDao = new LogDaoLocal();
         LogService logService = new JsLogService(logDao);
 
-        List<String> log = logService.readLog();
-        LogDto logDto = new LogDto(log);
+        LogDto logDto = logService.readFullLog();
 
         sendMessage(resp, HttpServletResponse.SC_OK, logDto);
         logger.debug("get method successful");

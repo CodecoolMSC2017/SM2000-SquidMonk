@@ -218,8 +218,7 @@ div.table-title {
     width: 6%;
 }
 
-/* General Schedule styling START */
-
+/* LOG styling START */
 .textarealike {
   width: 1000px;
   height: 80%;
@@ -237,6 +236,25 @@ div.table-title {
   border-width: 1px;
 }
 
+.filterdivleft {
+  float: left;
+  width: 250px;
+  height: 400px;
+  position: absolute;
+  top: 30%;
+  margin-top: -50px;
+  margin-left: 20px;
+}
+
+.log-small-margin {
+  margin: 10px 5px 10px 5px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* LOG styling END */
+
+/* General Schedule styling START */
 .schedule-small-margin {
   margin: 5px 10px 5px 10px;
 }

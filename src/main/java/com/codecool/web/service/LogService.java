@@ -1,9 +1,13 @@
 package com.codecool.web.service;
 
+import com.codecool.web.dto.LogDto;
+
 import java.io.IOException;
 import java.util.List;
 
 public interface LogService {
 
-    List<String> readLog() throws IOException;
+    LogDto readFullLog() throws IOException;
+
+    LogDto readLastLinesFromLog(int numberOfLines) throws IOException;
 }
