@@ -303,13 +303,17 @@ function addColumnToEmptySchedule() {
     messageDiv.appendChild(buttonEl);
 }
 
-function onSaveColumnNameButtonClicked(columnId) {
+function onSaveColumnNameButtonClicked(oldName, columnId) {
     const newName = document.getElementById('remane-column-input').value;
+
+    if (oldName === newName) {
+        requestCurrentSchedule();
+    }
 
     const params = new URLSearchParams();
     params.append('columnId', columnId);
     params.append('columnName', newName);
-    
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', requestCurrentSchedule);
     xhr.addEventListener('error', onNetworkError);
@@ -332,13 +336,12 @@ function onEditColumnButtonClicked(columnId) {
     // setup buttons
 
     const trEl = document.querySelector('[tr-columnid="' + columnId + '"]');
-
     trEl.textContent = '';
 
     const saveButtonEl = document.createElement('button');
     saveButtonEl.textContent = 'Save';
     saveButtonEl.className = 'create-button';
-    saveButtonEl.addEventListener('click', function() {onSaveColumnNameButtonClicked(columnId)});
+    saveButtonEl.addEventListener('click', function() {onSaveColumnNameButtonClicked(title, columnId)});
 
     const backButtonEl = document.createElement('button');
     backButtonEl.className = 'create-button';
@@ -363,11 +366,36 @@ function onDeleteColumnRespose() {
     }
 }
 
-function onDeleteColumnButtonClicked(columnId) {
+function onDeleteColumnConfirmButtonClicked(columnId) {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onDeleteColumnRespose);
     xhr.open('DELETE', 'protected/column/' + columnId);
     xhr.send();
+}
+
+function onDeleteColumnButtonClicked(columnId) {
+    const thEl = document.querySelector('[columnid="' + columnId + '"]');
+    thEl.textContent = 'Are you sure?';
+
+    const trEl = document.querySelector('[tr-columnid="' + columnId + '"]');
+    trEl.textContent = '';
+
+    const deleteConfirmButtonEl = document.createElement('button');
+    deleteConfirmButtonEl.textContent = 'Delete';
+    deleteConfirmButtonEl.addEventListener('click', function() {onDeleteColumnConfirmButtonClicked(columnId)});
+
+    const backButtonEl = document.createElement('button');
+    backButtonEl.textContent = 'Back';
+    backButtonEl.addEventListener('click', requestCurrentSchedule);
+
+    const deleteConfirmTdEl = document.createElement('td');
+    deleteConfirmTdEl.appendChild(deleteConfirmButtonEl);
+
+    const backTdEl = document.createElement('td');
+    backTdEl.appendChild(backButtonEl);
+
+    trEl.appendChild(deleteConfirmTdEl);
+    trEl.appendChild(backTdEl);
 }
 
 function createColumnEditButtons(columnId) {
@@ -644,8 +672,6 @@ function requestCurrentSchedule() {
 }
 
 function onScheduleClick() {
-    const id = this.getAttribute('id');
-    currentScheduleId = id;
-    
+    currentScheduleId = this.getAttribute('id');
     requestCurrentSchedule();
 }
