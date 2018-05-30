@@ -221,9 +221,20 @@ div.table-title {
 /* General Schedule styling START */
 
 .textarealike {
-  margin: 0 auto;
-  width: 90%;
-  height: 90%;
+  width: 1000px;
+  height: 80%;
+
+  position: absolute;
+  left:0; right:0;
+  top:0; bottom:0;
+  margin: auto;
+
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+
+  border-style: solid;
+  border-width: 1px;
 }
 
 .schedule-small-margin {
@@ -490,8 +501,7 @@ div.table-title {
 
 .schedule-table th {
   font-size: 1.2em;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
 }
 
 .schedule-table td {
@@ -1021,4 +1031,28 @@ div.table-title {
 
 .users-table th.role {
     width: 10%;
+}
+
+.rename-column {
+    width: 84.5%;
+    height: 100%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 14px 32px;
+    margin-top: -40px;
+    margin-bottom: -15px;
+    margin-left: -15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: auto;
+}
+
+.rename-column:focus {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }

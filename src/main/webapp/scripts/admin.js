@@ -162,6 +162,7 @@ function onUserClick() {
 
 function usersResponse() {
     const user = JSON.parse(this.responseText);
+
     const admin = JSON.parse(localStorage.getItem('user'));
     if (this.status === OK) {
         showContents(['topnav-content', 'main-content', 'sound-content']);
@@ -201,7 +202,7 @@ function requestUserSchedules(user) {
     params.append('userId', user.id);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSchedulesReceived);
+    xhr.addEventListener('load', onSchedulesReceivedByUser);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/schedules/user/' + user.id);
     xhr.send(params);
@@ -217,4 +218,172 @@ function requestUserTasks(user) {
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/tasks/user/' + user.id);
     xhr.send(params);
+}
+
+function onSchedulesReceivedByUser() {
+
+    const schedules = JSON.parse(this.responseText);
+
+    const scheduleDiv = document.createElement('div');
+    scheduleDiv.className = 'dash-table';
+    scheduleDiv.style.float = 'left';
+    scheduleDiv.id = 'dashboard-schedule-table';
+
+    const scheduleTable = document.createElement('table');
+    scheduleTable.className = 'dashboard-table';
+    scheduleTable.appendChild(createTableHead('Schedules'));
+    scheduleTable.appendChild(createScheduleTableHead());
+
+    if (schedules.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '3';
+        messageTdEl.className = 'entry';
+        messageTdEl.textContent = 'You do not have any schedules.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        scheduleTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < schedules.length; i++) {
+            const schedule = schedules[i];
+            scheduleTable.appendChild(createScheduleRowByUser(schedule));
+        }
+    }
+    scheduleDiv.appendChild(scheduleTable);
+
+    const oldTable = document.getElementById('dashboard-schedule-table');
+    if (oldTable != null) {
+        oldTable.remove();
+    }
+
+    mainContentEl.appendChild(scheduleDiv);
+}
+
+function createScheduleRowByUser(schedule) {
+    const entryTr = document.createElement('tr');
+    entryTr.id = schedule.scheduleId;
+
+    const entryNameTd = document.createElement('td');
+    entryNameTd.textContent = schedule.scheduleName;
+    entryNameTd.className = 'entry';
+    entryNameTd.id = schedule.scheduleId;
+    entryNameTd.addEventListener('click', onScheduleClickByUser);
+
+    const entryNumTd = document.createElement('td');
+    entryNumTd.textContent = schedule.numOfTasks;
+    entryNumTd.className = 'entry';
+    entryNumTd.id = schedule.scheduleId;
+    entryNumTd.addEventListener('click', onScheduleClickByUser);
+
+    const entryPublicTd = document.createElement('td');
+    entryPublicTd.className = 'entry';
+    entryPublicTd.id = schedule.scheduleId;
+    entryPublicTd.setAttribute('isPublic', schedule.public);
+    entryPublicTd.addEventListener('mouseover', onPublicTdMouseHover);
+    entryPublicTd.addEventListener('mouseout', onPublicTdMouseOut);
+    if (schedule.public === true) {
+        entryPublicTd.innerHTML = '<i class="fa fa-check"></i>';
+    } else {
+        entryPublicTd.innerHTML = '<i class="fa fa-remove"></i>';
+    }
+
+    entryTr.appendChild(entryNameTd);
+    entryTr.appendChild(entryNumTd);
+    entryTr.appendChild(entryPublicTd);
+
+    //entryTr.addEventListener('click', onScheduleClick);
+
+    return entryTr;
+}
+
+function requestCurrentScheduleByUser() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onScheduleReceivedByUser);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/schedule/' + currentScheduleId);
+    xhr.send();
+}
+
+function onScheduleClickByUser() {
+    currentScheduleId = this.getAttribute('id');
+    requestCurrentScheduleByUser();
+}
+
+function onScheduleReceivedByUser() {
+    const mainDiv = document.getElementById('main-content');
+
+    if (this.status === 200) {
+        removeAllChildren(mainDiv);
+        const schedule = JSON.parse(this.responseText);
+        if (schedule.columns.length == 0) {
+            /* If no columns show this */
+            noColumnMessage(mainDiv, schedule.id);
+
+        } else {
+
+            /* Create first header row */
+            createHeaderRowByUser(mainDiv, schedule);
+
+            /* Create timeslot rows with tasks */
+            createTimeslotRows(mainDiv, schedule);
+        }
+    } else if (this.status === 409) {
+        document.getElementById('schedule-add-column').remove();
+        let errorMessage;
+        const error = JSON.parse(this.responseText);
+        if (error.message.startsWith('ERROR: Task start')) {
+            errorMessage = 'Task start time intersects another task';
+        } else if (error.message.startsWith('ERROR: Task end')) {
+            errorMessage = 'Task end time intersects another task';
+        } else if (error.message.startsWith('ERROR: new row')) {
+            errorMessage = 'End time of task can\'t be before start time';
+        } else {
+            errorMessage = 'Something went wrong. Try again.';
+        }
+        const darkBackgroundDiv = document.createElement('div');
+        darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');
+        darkBackgroundDiv.setAttribute('id', currentScheduleId);
+        darkBackgroundDiv.addEventListener('click', onScheduleClick);
+
+        const aboveDivEl = document.createElement('div');
+        aboveDivEl.style.height = '80px';
+        aboveDivEl.setAttribute('class', 'schedule-above-div');
+        aboveDivEl.setAttribute('id', 'schedule-add-column');
+        aboveDivEl.setAttribute('schedule-id', currentScheduleId);
+
+        const hEl = document.createElement('h1');
+        hEl.textContent = errorMessage;
+        aboveDivEl.appendChild(hEl);
+
+        mainDiv.appendChild(darkBackgroundDiv);
+        mainDiv.appendChild(aboveDivEl);
+        aboveDivEl.setAttribute('class', 'schedule-above-div');
+    }
+}
+
+function createHeaderRowByUser(mainDiv, schedule, isGuest) {
+    const tableDivEl = document.createElement('div');
+    tableDivEl.setAttribute('class', 'schedule-div-table');
+
+    for (let i = 0; i < schedule.columns.length; i++) {
+        const column = schedule.columns[i];
+
+        const tableEl = document.createElement('table');
+        tableEl.setAttribute('class', 'schedule-table');
+        tableEl.setAttribute('id', column.id);
+
+        const trEl = document.createElement('tr');
+        trEl.setAttribute('id', 'header-row-' + column.id);
+
+        const thEl = document.createElement('th');
+        //thEl.addEventListener('click', editSingleRoutineName);
+        thEl.textContent = column.name;
+        thEl.setAttribute('columnId', column.id);
+        thEl.setAttribute('colspan', '2');
+
+        trEl.appendChild(thEl);
+        tableEl.appendChild(trEl);
+        tableDivEl.appendChild(tableEl);
+        mainDiv.appendChild(tableDivEl);
+    }
 }
