@@ -15,7 +15,7 @@ public class ScheduleDto {
 
     public ScheduleDto(int id) {
         this.id = id;
-        this.url = new PassEncrypt().encrypt(String.valueOf(this.id));
+        createUrl();
         columns = new ArrayList<>();
     }
 
@@ -46,5 +46,14 @@ public class ScheduleDto {
 
     public void sortColumnsById() {
         columns.sort(new ScheduleComlumnDtoComparator());
+    }
+
+    private void createUrl() {
+        String tempUrl = new PassEncrypt().encrypt(String.valueOf(this.id));
+        if (tempUrl.contains("/")) {
+            createUrl();
+        } else {
+            url = tempUrl;
+        }
     }
 }

@@ -1,20 +1,21 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const mainDiv = document.getElementById('main-content');
-    const schedule = scheduleJSON;
 
-    if (schedule.columns.length == 0) {
-        /* If no columns show this */
-        guestNoColumnMessage(mainDiv, schedule);
+    if (rainbow) {
+        setInterval(() => {refreshRainbowPage(mainDiv, scheduleJSON)}, 10);
+        addMusic();
+    }
+
+    if (scheduleJSON.columns.length == 0) {
+        guestNoColumnMessage(mainDiv, scheduleJSON);
     } else {
-        /* Create first header row */
-        createHeaderRow(mainDiv, schedule, 'true');
+        createHeaderRow(mainDiv, scheduleJSON, 'true');
 
-        /* Create timeslot rows with tasks */
-        createTimeslotRows(mainDiv, schedule);
+        createTimeslotRows(mainDiv, scheduleJSON);
     }
 });
 
-function guestNoColumnMessage(mainDiv, schedule){
+function guestNoColumnMessage(mainDiv, schedule) {
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'hv-centered-div');
     messageDiv.setAttribute('id', 'schedule-add-column');
@@ -25,4 +26,27 @@ function guestNoColumnMessage(mainDiv, schedule){
 
     messageDiv.appendChild(hEl);
     mainDiv.appendChild(messageDiv);
+}
+
+function refreshRainbowPage(mainDiv, schedule) {
+    clearMainContent();
+
+    createHeaderRow(mainDiv, schedule, 'true');
+
+    createTimeslotRows(mainDiv, schedule);
+
+}
+
+function clearMainContent() {
+    const mainDivEl = document.getElementById('main-content');
+    mainDivEl.textContent = '';
+}
+
+function addMusic() {
+    const soundDivEl = document.getElementById('sound-content');
+    const embed = document.createElement('embed');
+    embed.id = 'embed';
+    embed.setAttribute('src', '../../sounds/initial.mp3');
+    embed.setAttribute('hidden', 'true');
+    soundDivEl.appendChild(embed);
 }

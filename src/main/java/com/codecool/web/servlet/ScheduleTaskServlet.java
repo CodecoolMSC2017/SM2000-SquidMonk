@@ -1,5 +1,6 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ScheduleService;
@@ -28,9 +29,12 @@ public class ScheduleTaskServlet extends AbstractServlet {
         logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
 
+            int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
             Task task = taskService.getById(taskId);
+            task = controlTable.queryTaskConnectionData(task, scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, task);
             logger.debug("get method successful");
         } catch (SQLException e) {
@@ -42,18 +46,16 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskService taskService = new JsTaskService(connection);
-            ScheduleService scheduleService = new JsScheduleService(connection);
+            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
 
+            int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
-            Task task = taskService.getById(taskId);
-            int scheduleId = task.getSchedId();
 
-            taskService.deleteTask(taskId);
-
-            ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
-            sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            controlTable.removeTaskFromSchedule(taskId, scheduleId);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            logger.debug("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -63,22 +65,23 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("put method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
             ScheduleService scheduleService = new JsScheduleService(connection);
 
+            int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
             String title = req.getParameter("title");
             String description = req.getParameter("description");
             int start = Integer.parseInt(req.getParameter("start"));
             int end = Integer.parseInt(req.getParameter("end"));
-            Task task = taskService.getById(taskId);
-            int scheduleId = task.getSchedId();
 
             taskService.updateTask(taskId, title, description, start, end);
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
+            logger.debug("put method successful");
         } catch (SQLException e) {
             logger.error("sql error", e);
             sendMessage(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());

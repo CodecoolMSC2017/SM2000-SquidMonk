@@ -34,6 +34,11 @@ public class SchedulesPublicServlet extends AbstractServlet {
 
             if (scheduleDto != null) {
                 if (scheduleDto.isPublic()) {
+                    if (scheduleDto.getId() == 15) {
+                        req.setAttribute("rainbow", true);
+                    } else {
+                        req.setAttribute("rainbow", false);
+                    }
                     req.setAttribute("scheduleJSON", new ObjectMapper().writeValueAsString(scheduleDto));
                     req.getRequestDispatcher("../../guest.jsp").forward(req, resp);
                 } else {
