@@ -221,12 +221,10 @@ div.table-title {
 /* LOG styling START */
 .textarealike {
   width: 65%;
-  height: 80%;
+  height: 550px;
 
-  position: absolute;
-  left:0; right:0;
-  top:0; bottom:0;
-  margin: auto;
+  float: right;
+  margin: 50px 50px auto auto;
 
   max-width: 100%;
   max-height: 100%;
@@ -237,8 +235,8 @@ div.table-title {
 }
 
 .filterdivleft {
-  display: inline-block;
-  width: 250px;
+  float: left;
+  width: 15%;
   height: 400px;
   position: absolute;
   top: 30%;
