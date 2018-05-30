@@ -559,6 +559,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 }
 
                 tdEl.addEventListener('click', getTasksToView);
+                tdEl.style.cursor = 'pointer';
                 trEl.appendChild(tdEl);
             }
 
