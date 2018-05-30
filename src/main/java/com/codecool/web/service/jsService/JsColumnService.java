@@ -38,6 +38,7 @@ public class JsColumnService implements ColumnService {
 
     @Override
     public List<Task> getAvailableTasks(int userId, int columnId) throws SQLException {
+        logger.debug("getting available tasks for column with id " + columnId);
         Column column = columnDao.findById(columnId);
         int scheduleId = column.getScheduleId();
         List<Task> allTasks = taskDao.findAllByUserId(userId);
@@ -45,7 +46,6 @@ public class JsColumnService implements ColumnService {
 
         for (Task task : allTasks) {
             task = controlTable.queryTaskConnectionData(task, scheduleId);
-            logger.trace(task.getSchedId() + "|" + scheduleId);
             if (task.getSchedId() != scheduleId) {
                 availableTasks.add(task);
             }
