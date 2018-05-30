@@ -214,7 +214,7 @@ function requestUserTasks(user) {
     params.append('userId', user.id);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onTasksReceived);
+    xhr.addEventListener('load', onTasksReceivedByUser);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/tasks/user/' + user.id);
     xhr.send(params);
@@ -386,4 +386,42 @@ function createHeaderRowByUser(mainDiv, schedule, isGuest) {
         tableDivEl.appendChild(tableEl);
         mainDiv.appendChild(tableDivEl);
     }
+}
+
+function onTasksReceivedByUser() {
+    const tasks = JSON.parse(this.responseText);
+
+    const taskDiv = document.createElement('div');
+    taskDiv.className = 'dash-table';
+    taskDiv.style.float = 'right';
+    taskDiv.id = 'dashboard-task-table';
+
+    const taskTable = document.createElement('table');
+    taskTable.className = 'dashboard-table';
+    taskTable.appendChild(createTableHead('Tasks'));
+    taskTable.appendChild(createTaskTableHead());
+
+    if (tasks.length == 0) {
+        const messageTdEl = document.createElement('td');
+        messageTdEl.colSpan = '2';
+        messageTdEl.className = 'entry';
+        messageTdEl.textContent = 'You do not have any tasks.';
+
+        const messageTrEl = document.createElement('tr');
+        messageTrEl.appendChild(messageTdEl);
+        taskTable.appendChild(messageTrEl);
+    } else {
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i];
+            taskTable.appendChild(createTaskRow(task));
+        }
+    }
+    taskDiv.appendChild(taskTable);
+
+    const oldTable = document.getElementById('dashboard-task-table');
+    if (oldTable != null) {
+        oldTable.remove();
+    }
+
+    mainContentEl.appendChild(taskDiv);
 }
