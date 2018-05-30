@@ -11,6 +11,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -22,6 +24,7 @@ public final class WebappContextListener implements ServletContextListener {
         registerCharacterEncodingFilter(sce);
         DataSource dataSource = putDataSourceToServletContext(sce);
         runDatabaseInitScript(dataSource);
+        emptyLogFile();
     }
 
     private void registerCharacterEncodingFilter(ServletContextEvent sce) {
@@ -48,6 +51,15 @@ public final class WebappContextListener implements ServletContextListener {
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new IllegalStateException(ex);
+        }
+    }
+
+    private void emptyLogFile() {
+        try {
+            new FileWriter("/tmp/squidmonk.log").close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
