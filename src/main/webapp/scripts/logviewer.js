@@ -14,6 +14,6 @@ function onMenuLogClick() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLogReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', '/protected/log');
+    xhr.open('GET', '/protected/logview');
     xhr.send();
 }

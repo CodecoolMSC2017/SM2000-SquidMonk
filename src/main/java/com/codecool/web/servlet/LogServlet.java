@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/protected/log")
+@WebServlet("/protected/logview")
 public class LogServlet extends AbstractServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(LogServlet.class);
