@@ -220,7 +220,7 @@ div.table-title {
 
 /* LOG styling START */
 .textarealike {
-  width: 1000px;
+  width: 65%;
   height: 80%;
 
   position: absolute;
@@ -237,7 +237,7 @@ div.table-title {
 }
 
 .filterdivleft {
-  float: left;
+  display: inline-block;
   width: 250px;
   height: 400px;
   position: absolute;
