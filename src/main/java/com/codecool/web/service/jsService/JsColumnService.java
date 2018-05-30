@@ -52,4 +52,11 @@ public class JsColumnService implements ColumnService {
         }
         return availableTasks;
     }
+
+    @Override
+    public void addTaskToColumn(int columnId, int taskId, int start) throws SQLException {
+        logger.debug("adding task with id " + taskId + "to column with id " + columnId);
+        Column column = columnDao.findById(columnId);
+        controlTable.insertTask(taskId, columnId, column.getScheduleId(), start, start + 1);
+    }
 }

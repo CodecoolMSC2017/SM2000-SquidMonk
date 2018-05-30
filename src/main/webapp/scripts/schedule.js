@@ -1,7 +1,12 @@
 
 let currentScheduleId;
+let currentColumnId;
+let startTime;
 
-function onEmptyRowClicked(columnId) {
+function onEmptyRowClicked(columnId, start) {
+    currentColumnId = columnId;
+    startTime = start;
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onAvailableTasksReceived);
     xhr.open('GET', 'protected/column/' + columnId + '/availableTasks');
@@ -9,7 +14,6 @@ function onEmptyRowClicked(columnId) {
 }
 
 function createAvailableTaskList(tasks) {
-    console.log(tasks);
     const ulEl = document.createElement('ul');
     ulEl.classList.add('task-list');
 
@@ -19,13 +23,28 @@ function createAvailableTaskList(tasks) {
         const liEl = document.createElement('li');
         const aEl = document.createElement('a');
         aEl.href = 'javascript:void(0)';
-        // aEl.addEventListener('click', );
+        aEl.addEventListener('click', function() {onAddTaskToColumnClicked(task.id)});
         aEl.textContent = task.name;
 
         liEl.appendChild(aEl);
         ulEl.appendChild(liEl);
     }
     return ulEl;
+}
+
+function onAddTaskToColumnClicked(taskId) {
+    const params = new URLSearchParams();
+    params.append('taskId', taskId);
+    params.append('start', startTime);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onAddTaskToColumnResponse);
+    xhr.open('POST', 'protected/column/' + currentColumnId);
+    xhr.send(params);
+}
+
+function onAddTaskToColumnResponse() {
+    requestCurrentSchedule();
 }
 
 function onAvailableTasksReceived() {
@@ -426,10 +445,12 @@ function onDeleteColumnButtonClicked(columnId) {
     trEl.textContent = '';
 
     const deleteConfirmButtonEl = document.createElement('button');
+    deleteConfirmButtonEl.classList.add('create-button');
     deleteConfirmButtonEl.textContent = 'Delete';
     deleteConfirmButtonEl.addEventListener('click', function() {onDeleteColumnConfirmButtonClicked(columnId)});
 
     const backButtonEl = document.createElement('button');
+    backButtonEl.classList.add('create-button');
     backButtonEl.textContent = 'Back';
     backButtonEl.addEventListener('click', requestCurrentSchedule);
 
@@ -546,7 +567,7 @@ function createTimeslotRows(mainDiv, schedule) {
                 tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
 
-                tdEl.addEventListener('click', function() {onEmptyRowClicked(column.id)});
+                tdEl.addEventListener('click', function() {onEmptyRowClicked(column.id, n)});
                 trEl.appendChild(tdEl);
             }
 

@@ -1,6 +1,5 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ColumnService;
@@ -53,6 +52,24 @@ public class ColumnServlet extends AbstractServlet {
             service.deleteColumn(columnId);
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             logger.debug("delete method successful");
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("post method start");
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ColumnService service = new JsColumnService(connection);
+
+            int columnId = getColumnId(req.getRequestURI());
+            int taskId = Integer.parseInt(req.getParameter("taskId"));
+            int start = Integer.parseInt(req.getParameter("start"));
+            service.addTaskToColumn(columnId, taskId, start);
+            logger.debug("post method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

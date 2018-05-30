@@ -10,4 +10,6 @@ public interface ColumnService {
     void deleteColumn(int columnId) throws SQLException;
 
     List<Task> getAvailableTasks(int userId, int columnId) throws SQLException;
+
+    void addTaskToColumn(int columnId, int taskId, int start) throws SQLException;
 }
