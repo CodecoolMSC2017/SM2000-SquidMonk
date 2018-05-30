@@ -62,7 +62,7 @@ function viewTaskOnReceive() {
     aboveDivEl.setAttribute('class', 'schedule-above-div-task');
     aboveDivEl.setAttribute('id', 'schedule-add-column');
     aboveDivEl.setAttribute('schedule-id', scheduleId);
-    aboveDivEl.setAttribute('style', 'background-color: lightblue')
+    aboveDivEl.setAttribute('style', 'background-color: white');
     
     const h2El = document.createElement('h2');
     h2El.textContent = "Modify task";
@@ -422,7 +422,7 @@ function createColumnEditButtons(columnId) {
     return trEl;
 }
 
-function createHeaderRow(mainDiv, schedule) {
+function createHeaderRow(mainDiv, schedule, isGuest) {
     const tableDivEl = document.createElement('div');
     tableDivEl.setAttribute('class', 'schedule-div-table');
     
@@ -444,7 +444,9 @@ function createHeaderRow(mainDiv, schedule) {
 
         trEl.appendChild(thEl);
         tableEl.appendChild(trEl);
-        tableEl.appendChild(createColumnEditButtons(column.id));
+        if (!isGuest) {
+            tableEl.appendChild(createColumnEditButtons(column.id));
+        }
         tableDivEl.appendChild(tableEl);
         mainDiv.appendChild(tableDivEl);   
     }

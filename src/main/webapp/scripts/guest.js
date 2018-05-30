@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         guestNoColumnMessage(mainDiv, schedule);
     } else {
         /* Create first header row */
-        createHeaderRow(mainDiv, schedule);
+        createHeaderRow(mainDiv, schedule, 'true');
 
         /* Create timeslot rows with tasks */
         createTimeslotRows(mainDiv, schedule);
