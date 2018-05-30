@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const mainDiv = document.getElementById('main-content');
 
     if (rainbow) {
-        setInterval(() => {refreshRainbowPage(mainDiv, scheduleJSON)}, 10);
         addMusic();
+        setTimeout(() => {startFlashing(mainDiv, scheduleJSON)}, 1350);
     }
 
     if (scheduleJSON.columns.length == 0) {
@@ -35,6 +35,10 @@ function refreshRainbowPage(mainDiv, schedule) {
 
     createTimeslotRows(mainDiv, schedule);
 
+}
+
+function startFlashing(mainDiv, schedule) {
+    setInterval(() => {refreshRainbowPage(mainDiv, scheduleJSON)}, 10);
 }
 
 function clearMainContent() {

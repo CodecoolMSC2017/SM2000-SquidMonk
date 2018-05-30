@@ -1074,3 +1074,28 @@ div.table-title {
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
 }
+
+.task-list {
+    width: 80%;
+    list-style-type: none;
+}
+
+.task-list a {
+  float: left;
+  display: block;
+  width: 100%;
+  color: white;
+  border: 2px solid #555555;
+  background-color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.task-list a:hover {
+  background-color: white;
+  color: black;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
+}
