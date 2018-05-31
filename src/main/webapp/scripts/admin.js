@@ -69,19 +69,24 @@ function createUsersTableHead() {
 function createUserRow(user) {
     const userTr = document.createElement('tr');
     userTr.id = user.id;
-    userTr.addEventListener('click', onUserClick);
 
     const userIdTd = document.createElement('td');
     userIdTd.textContent = user.id;
     userIdTd.className = 'entry';
+    userIdTd.id = user.id;
+    userIdTd.addEventListener('click', onUserClick);
 
     const userNameTd = document.createElement('td');
     userNameTd.textContent = user.name;
     userNameTd.className = 'entry';
+    userNameTd.id = user.id;
+    userNameTd.addEventListener('click', onUserClick);
 
     const userEmailTd = document.createElement('td');
     userEmailTd.textContent = user.email;
     userEmailTd.className = 'entry';
+    userEmailTd.id = user.id;
+    userEmailTd.addEventListener('click', onUserClick);
 
     /*const userPasswordTd = document.createElement('td');
     userPasswordTd.textContent = user.password;
