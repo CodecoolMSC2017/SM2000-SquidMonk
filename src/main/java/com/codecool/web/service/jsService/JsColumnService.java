@@ -41,6 +41,9 @@ public class JsColumnService implements ColumnService {
     public List<Task> getAvailableTasks(int userId, int columnId) throws SQLException {
         logger.debug("getting available tasks for column with id " + columnId);
         Column column = columnDao.findById(columnId);
+        if (column == null) {
+            return new ArrayList<>();
+        }
         int scheduleId = column.getScheduleId();
         List<Task> allTasks = taskDao.findAllByUserId(userId);
         List<Task> availableTasks = new ArrayList<>();

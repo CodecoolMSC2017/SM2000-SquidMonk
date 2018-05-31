@@ -29,6 +29,12 @@ public class TaskUserServlet extends AbstractServlet {
             TaskService service = new JsTaskService(connection);
 
             int userId = getUserId(req.getRequestURI());
+            User user = (User) req.getSession().getAttribute("user");
+            if (!user.isAdmin() && userId != user.getId()) {
+                sendMessage(resp, HttpServletResponse.SC_FORBIDDEN, "You are not permitted to access this content!");
+                logger.warn("user " + user.getId() + " requested tasks of user " + userId);
+                return;
+            }
             List<DashboardTaskDto> tasks = service.getDtos(userId);
             sendMessage(resp, HttpServletResponse.SC_OK, tasks);
             logger.debug("get method successful");

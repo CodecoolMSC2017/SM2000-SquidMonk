@@ -43,6 +43,8 @@ function onCreateScheduleResponse() {
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onScheduleBadRequestClick);
+    } else {
+        onOtherResponse(this);
     }
 }
 
@@ -61,6 +63,8 @@ function onCreateTaskResponse() {
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onTaskBadRequestClick);
+    } else {
+        onOtherResponse(this);
     }
 }
 
@@ -310,52 +314,56 @@ function onSchedulesReceived() {
 }
 
 function onTasksReceived() {
-    const tasks = JSON.parse(this.responseText);
+    if (this.status === OK) {
+        const tasks = JSON.parse(this.responseText);
 
-    const taskDiv = document.createElement('div');
-    taskDiv.className = 'dash-table';
-    taskDiv.style.float = 'right';
-    taskDiv.id = 'dashboard-task-table';
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'dash-table';
+        taskDiv.style.float = 'right';
+        taskDiv.id = 'dashboard-task-table';
 
-    const createButton = document.createElement('td');
-    createButton.className = 'entry';
-    createButton.colSpan = '2';
-    createButton.textContent = 'Create new task';
+        const createButton = document.createElement('td');
+        createButton.className = 'entry';
+        createButton.colSpan = '2';
+        createButton.textContent = 'Create new task';
 
-    const createButtonRow = document.createElement('tr');
-    createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
-    createButtonRow.id = 'task-create-button-row';
-    createButtonRow.appendChild(createButton);
+        const createButtonRow = document.createElement('tr');
+        createButtonRow.addEventListener('click', onCreateTaskButtonClicked);
+        createButtonRow.id = 'task-create-button-row';
+        createButtonRow.appendChild(createButton);
 
-    const taskTable = document.createElement('table');
-    taskTable.className = 'dashboard-table';
-    taskTable.appendChild(createTableHead('My Tasks'));
-    taskTable.appendChild(createButtonRow);
-    taskTable.appendChild(createTaskTableHead());
+        const taskTable = document.createElement('table');
+        taskTable.className = 'dashboard-table';
+        taskTable.appendChild(createTableHead('My Tasks'));
+        taskTable.appendChild(createButtonRow);
+        taskTable.appendChild(createTaskTableHead());
 
-    if (tasks.length == 0) {
-        const messageTdEl = document.createElement('td');
-        messageTdEl.colSpan = '2';
-        messageTdEl.className = 'entry';
-        messageTdEl.textContent = 'You do not have any tasks.';
+        if (tasks.length == 0) {
+            const messageTdEl = document.createElement('td');
+            messageTdEl.colSpan = '2';
+            messageTdEl.className = 'entry';
+            messageTdEl.textContent = 'You do not have any tasks.';
 
-        const messageTrEl = document.createElement('tr');
-        messageTrEl.appendChild(messageTdEl);
-        taskTable.appendChild(messageTrEl);
-    } else {
-        for (let i = 0; i < tasks.length; i++) {
-            const task = tasks[i];
-            taskTable.appendChild(createTaskRow(task));
+            const messageTrEl = document.createElement('tr');
+            messageTrEl.appendChild(messageTdEl);
+            taskTable.appendChild(messageTrEl);
+        } else {
+            for (let i = 0; i < tasks.length; i++) {
+                const task = tasks[i];
+                taskTable.appendChild(createTaskRow(task));
+            }
         }
-    }
-    taskDiv.appendChild(taskTable);
+        taskDiv.appendChild(taskTable);
 
-    const oldTable = document.getElementById('dashboard-task-table');
-    if (oldTable != null) {
-        oldTable.remove();
-    }
+        const oldTable = document.getElementById('dashboard-task-table');
+        if (oldTable != null) {
+            oldTable.remove();
+        }
 
-    mainDiv.appendChild(taskDiv);
+        mainDiv.appendChild(taskDiv);
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function requestSchedules() {

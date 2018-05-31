@@ -29,6 +29,12 @@ public class ScheduleUserServlet extends AbstractServlet {
             ScheduleUserService service = new JsScheduleUserService(connection);
 
             int userId = getUserId(req.getRequestURI());
+            User user = (User) req.getSession().getAttribute("user");
+            if (!user.isAdmin() && userId != user.getId()) {
+                sendMessage(resp, HttpServletResponse.SC_FORBIDDEN, "You are not permitted to access this content!");
+                logger.warn("user " + user.getId() + " requested schedules of user " + userId);
+                return;
+            }
             List<DashboardScheduleDto> scheduleList = service.findAllByUserId(userId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleList);
             logger.debug("get method successful");
