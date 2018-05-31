@@ -8,6 +8,15 @@ const INTERNAL_SERVER_ERROR = 500;
 
 let mainDiv;
 
+function onOtherResponse(response) {
+    if (response.status === UNAUTHORIZED) {
+        localStorage.removeItem('user');
+        showContents(['login-content']);
+    } else {
+        console.log(response);
+    }
+}
+
 function newMessage(targetEl, classes, message) {
     clearMessages();
 
@@ -65,6 +74,10 @@ function onLoad() {
     document.getElementById('menu-profile').addEventListener('click', onMenuProfileClick);
     document.getElementById('menu-log').addEventListener('click', onMenuLogClick);
     document.getElementById('sound-content').addEventListener('click', onSoundClicked);
+
+    if (localStorage.getItem('user') != null) {
+        showDashboard();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
