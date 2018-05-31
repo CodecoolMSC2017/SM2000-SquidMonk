@@ -14,7 +14,8 @@ class UserDaoImplTest extends AbstractTest {
 
     // execution order: 4 1 3 2
 
-    @Test // 1
+    @Test
+        // 1
     void findById() throws SQLException {
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
@@ -33,7 +34,8 @@ class UserDaoImplTest extends AbstractTest {
         }
     }
 
-    @Test // 2
+    @Test
+        // 2
     void findByEmail() throws SQLException, ServiceException {
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
@@ -55,7 +57,8 @@ class UserDaoImplTest extends AbstractTest {
         }
     }
 
-    @Test // 3
+    @Test
+        // 3
     void insertUser() throws SQLException, ServiceException {
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
@@ -69,12 +72,13 @@ class UserDaoImplTest extends AbstractTest {
             checkUser = userDao.findById(insertUser.getId());
             assertEquals(insertUser.getEmail(), checkUser.getEmail());
 
-            assertThrows(SQLException.class, ()-> userDao.insertUser(null, "kiskutya@farka.hu", ""));
-            assertThrows(SQLException.class, ()-> userDao.insertUser("valami", "bence@codecool.hu", "test"));
+            assertThrows(SQLException.class, () -> userDao.insertUser(null, "kiskutya@farka.hu", ""));
+            assertThrows(SQLException.class, () -> userDao.insertUser("valami", "bence@codecool.hu", "test"));
         }
     }
 
-    @Test // 4
+    @Test
+        // 4
     void changeRole() throws SQLException {
         resetDatabase();
         try (Connection connection = getConnection()) {
