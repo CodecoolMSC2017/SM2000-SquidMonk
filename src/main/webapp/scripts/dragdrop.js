@@ -1,4 +1,6 @@
+
 let needed;
+let dragColumnId;
 
 function onDragDropClick(columnId) {
     needed = true;
@@ -9,46 +11,49 @@ function onDragDropClick(columnId) {
 }
 
 function onDragDropTasksReceived() {
-    clearMainContent();
-    const mainDiv = document.getElementById('main-content');
+    if (this.status === OK) {
+        clearMainContent();
+        const mainDiv = document.getElementById('main-content');
 
-    const resp = this.responseText;
-    const tasks = JSON.parse(this.responseText);
+        const tasks = JSON.parse(this.responseText);
 
-    const sideBar = document.createElement('div');
-    sideBar.className = 'side-bar';
+        const sideBar = document.createElement('div');
+        sideBar.className = 'side-bar';
 
-    const hEl = document.createElement('h1');
-    hEl.style.color = 'white';
-    hEl.setAttribute('class', 'hv-centered-text')
-    hEl.textContent = 'Available tasks';
-    sideBar.appendChild(hEl);
+        const hEl = document.createElement('h1');
+        hEl.style.color = 'white';
+        hEl.setAttribute('class', 'hv-centered-text')
+        hEl.textContent = 'Available tasks';
+        sideBar.appendChild(hEl);
 
-    for (let i = 0; i < tasks.length; i++) {
-        const task = tasks[i];
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i];
 
-        const divEl = document.createElement('div');
-        divEl.className = 'dragdrop-task';
-        const colors = new Array();
-        for (let i = 0; i < 3; i++) {
-            const num = Math.floor((Math.random() * 120) + 60);
-            colors.push(num);
+            const divEl = document.createElement('div');
+            divEl.className = 'dragdrop-task';
+            const colors = new Array();
+            for (let i = 0; i < 3; i++) {
+                const num = Math.floor((Math.random() * 120) + 60);
+                colors.push(num);
+            }
+            divEl.setAttribute('task-id', task.id);
+            divEl.setAttribute('ondragstart', 'drag(event)');
+            divEl.setAttribute('draggable', 'true');
+            divEl.style.backgroundColor = 'rgb('+colors[0]+', '+colors[1]+', '+colors[2]+')';
+            divEl.innerHTML = '<b>'+task.name+'</b>';
+
+            sideBar.appendChild(divEl);
         }
-        divEl.setAttribute('task-id', task.id);
-        divEl.setAttribute('ondragstart', 'drag(event)');
-        divEl.setAttribute('draggable', 'true');
-        divEl.style.backgroundColor = 'rgb('+colors[0]+', '+colors[1]+', '+colors[2]+')';
-        divEl.innerHTML = '<b>'+task.name+'</b>';
 
-        sideBar.appendChild(divEl);
+        const dragDropMainEl = createDragDropMain();
+        dragDropMainEl.appendChild(createDragDropTableHeader());
+        mainDiv.appendChild(dragDropMainEl);
+        mainDiv.appendChild(sideBar);
+        createTimeslotRows();
+        tableFix();
+    } else {
+        onOtherResponse(this);
     }
-
-    const dragDropMainEl = createDragDropMain();
-    dragDropMainEl.appendChild(createDragDropTableHeader());
-    mainDiv.appendChild(dragDropMainEl);
-    mainDiv.appendChild(sideBar);
-    createTimeslotRows();
-    tableFix();
 }
 
 function tableFix() {
@@ -149,19 +154,19 @@ function drop(ev) {
     const task = document.getElementById('data-to-drop');
     const taskId = task.getAttribute('task-id');
     const startTime = ev.target.getAttribute('starttime');
-    const currentColumnId = ev.target.parentNode.parentNode.id;
-    onDragAddTaskToColumn(taskId, startTime, currentColumnId);
+    dragColumnId = ev.target.parentNode.parentNode.id;
+    onDragAddTaskToColumn(taskId, startTime);
     document.getElementById('data-to-drop').removeAttribute('data-to-drop');
 }
 
-function onDragAddTaskToColumn(taskId, startTime, currentColumnId) {
+function onDragAddTaskToColumn(taskId, startTime) {
     const params = new URLSearchParams();
     params.append('taskId', taskId);
     params.append('start', startTime);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', doRequestScheduleForDrag);
-    xhr.open('POST', 'protected/column/' + currentColumnId);
+    xhr.open('POST', 'protected/column/' + dragColumnId);
     xhr.send(params);
 }
 
@@ -174,9 +179,14 @@ function removeTdAttrs() {
     }
 }
 
+function onScheduleReceivedAfterDrag() {
+    currentSchedule = JSON.parse(this.responseText);
+    onDragDropClick(dragColumnId);
+}
+
 function doRequestScheduleForDrag() {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', () => {onDragDropClick(currentSchedule.columns[1].id)});
+    xhr.addEventListener('load', onScheduleReceivedAfterDrag);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/schedule/' + currentSchedule.id);
     xhr.send();
