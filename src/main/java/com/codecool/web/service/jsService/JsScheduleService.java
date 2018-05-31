@@ -5,8 +5,8 @@ import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
+import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
-import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.dto.ScheduleColumnDto;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Column;
@@ -26,13 +26,13 @@ public class JsScheduleService implements ScheduleService {
     private static final Logger logger = LoggerFactory.getLogger(JsScheduleService.class);
 
     private ColumnDao columnDao;
-    private TskColSchedConnectorDao controlTable;
+    private TaskAssignmentDao controlTable;
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
 
     public JsScheduleService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
-        controlTable = new TskColSchedConnectorDao(connection);
+        controlTable = new TaskAssignmentDao(connection);
         taskDao = new TaskDaoImpl(connection);
         scheduleDao = new ScheduleDaoImpl(connection);
     }

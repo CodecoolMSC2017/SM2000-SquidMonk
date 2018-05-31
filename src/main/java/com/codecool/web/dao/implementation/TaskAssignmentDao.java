@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TskColSchedConnectorDao extends AbstractDao {
+public class TaskAssignmentDao extends AbstractDao {
 
-    public TskColSchedConnectorDao(Connection connection) {
+    public TaskAssignmentDao(Connection connection) {
         super(connection);
     }
 
@@ -93,13 +93,14 @@ public class TskColSchedConnectorDao extends AbstractDao {
     /**
      * To be used when only the start/end time of a task changes
      */
-    public void updateTaskTime(int taskId, int taskStart, int taskEnd) throws SQLException {
-        String sql = "UPDATE col_tsk SET task_start=?, task_end=? WHERE task_id=?";
-
+    public void updateTaskTime(int taskId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
+        String sql = "UPDATE col_tsk SET task_start = ?, task_end = ? " +
+                "WHERE task_id = ? AND schedule_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(3, taskId);
             statement.setInt(1, taskStart);
             statement.setInt(2, taskEnd);
+            statement.setInt(3, taskId);
+            statement.setInt(4, scheduleId);
             executeInsert(statement);
         }
     }
@@ -107,19 +108,21 @@ public class TskColSchedConnectorDao extends AbstractDao {
     /**
      * To be used when the task stays in it's schedule, but moved to a different column
      */
-    public void updateTaskColumn(int taskId, int colId, int taskStart, int taskEnd) throws SQLException {
-        String sql = "UPDATE col_tsk SET col_id=?, task_start=?, task_end=? WHERE task_id=?";
+    public void updateTaskColumn(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
+        String sql = "UPDATE col_tsk SET col_id = ?, task_start = ?, task_end = ? " +
+                "WHERE task_id = ? AND schedule_id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(4, taskId);
             statement.setInt(1, colId);
             statement.setInt(2, taskStart);
             statement.setInt(3, taskEnd);
+            statement.setInt(4, taskId);
+            statement.setInt(5, scheduleId);
             executeInsert(statement);
         }
     }
 
-    public void deleteTask(int taskId) throws SQLException {
+    public void removeTaskFromAllSchedules(int taskId) throws SQLException {
         String sql = "DELETE FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);

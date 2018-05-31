@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TskColSchedConnectorDaoTest {
+class TaskAssignmentDaoTest {
 
     String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
 
@@ -23,7 +23,7 @@ class TskColSchedConnectorDaoTest {
     /*@Test
     void queryTaskPresent() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
             assertFalse(controlTable.queryTaskPresent(300));
             assertTrue(controlTable.queryTaskPresent(1));
         }
@@ -33,7 +33,7 @@ class TskColSchedConnectorDaoTest {
     void queryTaskConnectionData() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             Task task = new Task(1, 4, "Csba Task 1", "Content");
             task = controlTable.queryTaskConnectionData(task);
@@ -48,7 +48,7 @@ class TskColSchedConnectorDaoTest {
     @Test
     void insertTask() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             controlTable.insertTask(29, 12, 6, 6, 12);
 
@@ -65,7 +65,7 @@ class TskColSchedConnectorDaoTest {
     @Test
     void updateTaskSchedule() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             controlTable.updateTaskSchedule(30, 12, 6, 4, 5);
 
@@ -82,7 +82,7 @@ class TskColSchedConnectorDaoTest {
     @Test
     void updateTaskTime() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             controlTable.updateTaskTime(30, 4, 5);
 
@@ -97,7 +97,7 @@ class TskColSchedConnectorDaoTest {
     @Test
     void updateTaskColumn() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             controlTable.updateTaskColumn(2, 6, 4, 5);
 
@@ -113,7 +113,7 @@ class TskColSchedConnectorDaoTest {
     @Test
     void deleteTask() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
 
             controlTable.deleteTask(30);
 

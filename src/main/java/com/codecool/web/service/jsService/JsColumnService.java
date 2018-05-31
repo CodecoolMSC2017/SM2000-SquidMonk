@@ -3,8 +3,8 @@ package com.codecool.web.service.jsService;
 import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
+import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
-import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
 import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ColumnService;
@@ -22,12 +22,12 @@ public class JsColumnService implements ColumnService {
 
     private ColumnDao columnDao;
     private TaskDao taskDao;
-    private TskColSchedConnectorDao controlTable;
+    private TaskAssignmentDao controlTable;
 
     public JsColumnService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
         taskDao = new TaskDaoImpl(connection);
-        controlTable = new TskColSchedConnectorDao(connection);
+        controlTable = new TaskAssignmentDao(connection);
     }
 
     @Override

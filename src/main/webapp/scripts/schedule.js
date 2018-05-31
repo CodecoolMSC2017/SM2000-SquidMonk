@@ -717,6 +717,7 @@ function onScheduleReceived() {
             errorMessage = 'End time of task can\'t be before start time';
         } else {
             errorMessage = 'Something went wrong. Try again.';
+            console.log(this);
         }
         const darkBackgroundDiv = document.createElement('div');
         darkBackgroundDiv.setAttribute('class', 'schedule-above-div-dark');

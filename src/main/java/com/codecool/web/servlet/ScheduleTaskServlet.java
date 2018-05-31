@@ -1,6 +1,6 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
+import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ScheduleService;
@@ -29,7 +29,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
         logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(connection);
 
             int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
@@ -48,7 +48,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            TskColSchedConnectorDao controlTable = new TskColSchedConnectorDao(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDao(connection);
 
             int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
@@ -77,7 +77,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
             int start = Integer.parseInt(req.getParameter("start"));
             int end = Integer.parseInt(req.getParameter("end"));
 
-            taskService.updateTask(taskId, title, description, start, end);
+            taskService.updateTask(taskId, scheduleId, title, description, start, end);
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);

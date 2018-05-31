@@ -77,7 +77,7 @@ class TaskDaoImplTest {
             Task task = taskDao.findById(id);
             assertEquals("Bence Task 24", task.getName());
 
-            TskColSchedConnectorDao connectorDao = new TskColSchedConnectorDao(con);
+            TaskAssignmentDao connectorDao = new TaskAssignmentDao(con);
             connectorDao.deleteTask(id);
             taskDao.deleteTask(id);
             assertNull(taskDao.findById(id));
