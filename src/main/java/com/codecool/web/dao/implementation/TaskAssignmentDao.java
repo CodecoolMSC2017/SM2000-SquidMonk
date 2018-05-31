@@ -20,7 +20,7 @@ public class TaskAssignmentDao extends AbstractDao {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, taskId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     String id = resultSet.getString("task_id");
                     return id != null;
                 }

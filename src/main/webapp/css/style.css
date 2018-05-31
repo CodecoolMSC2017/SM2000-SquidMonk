@@ -446,7 +446,7 @@ div.table-title {
 }
 
 .schedule-above-div-dark { 
-  position   : absolute; 
+  position   : fixed; 
   top        : 0; 
   left       : 0; 
   width      : 100%; 
@@ -458,7 +458,7 @@ div.table-title {
 } 
 
 .schedule-above-div {
-  position: absolute;
+  position: fixed;
   margin: auto;
   top: 0;
   right: 0;
@@ -474,7 +474,7 @@ div.table-title {
 }
 
 .schedule-above-div-task {
-  position: absolute;
+  position: fixed;
   margin: auto;
   top: 0;
   right: 0;
