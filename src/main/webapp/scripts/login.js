@@ -19,11 +19,16 @@ function onLoginResponse() {
 
         const user = JSON.parse(localStorage.getItem('user'));
         const usersButtonEl = document.getElementById('menu-users');
+        const logButtonEl = document.getElementById('menu-log');
         if (user.admin) {
             usersButtonEl.style.display = 'block';
             usersButtonEl.addEventListener('click', onUsersMenuClick);
+
+            logButtonEl.style.display = 'block';
+            logButtonEl.addEventListener('click', onMenuLogClick);
         } else {
             usersButtonEl.style.display = 'none';
+            logButtonEl.style.display = 'none';
         }
     } else {
         const messageEl = document.getElementById('message-content');
