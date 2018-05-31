@@ -56,47 +56,42 @@ public class JsLogService implements LogService {
         StringBuilder logLevelSb = new StringBuilder();
         String matchAnyPattern = "(.*)";
 
-        //In case both is empty return empty
-        if ((servlets.length == 1 && servlets[0].equals("")) && (logLevels.length == 1 && logLevels[0].equals(""))) {
-            filteredLogText.add("");
+        //In case either is empty match everything
+        if (servlets.length == 1 && servlets[0].equals("")) {
+            servletSb.append(matchAnyPattern);
         } else {
-            //In case either is empty match everything
-            if (servlets.length == 1 && servlets[0].equals("")) {
+            //Otherwise build the words up as word1 or word2 .....
+            for (String s:servlets) {
                 servletSb.append(matchAnyPattern);
-            } else {
-                //Otherwise build the words up as word1 or word2 .....
-                for (String s:servlets) {
-                    servletSb.append(matchAnyPattern);
-                    servletSb.append(s);
-                    servletSb.append(matchAnyPattern);
-                    servletSb.append("|");
+                servletSb.append(s);
+                servletSb.append(matchAnyPattern);
+                servletSb.append("|");
 
-                    //Fill up checkbox checker list
-                    checkedServlets.add(s);
-                }
+                //Fill up checkbox checker list
+                checkedServlets.add(s);
             }
+        }
 
-            if (logLevels.length == 1 && logLevels[0].equals("")) {
+        if (logLevels.length == 1 && logLevels[0].equals("")) {
+            logLevelSb.append(matchAnyPattern);
+        } else {
+
+            for (String s:logLevels) {
                 logLevelSb.append(matchAnyPattern);
-            } else {
+                logLevelSb.append(s);
+                logLevelSb.append(matchAnyPattern);
+                logLevelSb.append("|");
 
-                for (String s:logLevels) {
-                    logLevelSb.append(matchAnyPattern);
-                    logLevelSb.append(s);
-                    logLevelSb.append(matchAnyPattern);
-                    logLevelSb.append("|");
-
-                    //Fill up checkbox checker list
-                    checkedLogLevels.add(s);
-                }
+                //Fill up checkbox checker list
+                checkedLogLevels.add(s);
             }
+        }
 
-            //logger.debug("Beginning to filter text based on these patterns: " + servletSb.toString() + ", " + logLevelSb.toString());
-            logger.debug("Beginning to filter text");
-            for (String s:logDto.getLogText()) {
-                if (s.matches(servletSb.toString()) && s.matches(logLevelSb.toString())) {
-                    filteredLogText.add(s);
-                }
+        //logger.debug("Beginning to filter text based on these patterns: " + servletSb.toString() + ", " + logLevelSb.toString());
+        logger.debug("Beginning to filter text");
+        for (String s:logDto.getLogText()) {
+            if (s.matches(servletSb.toString()) && s.matches(logLevelSb.toString())) {
+                filteredLogText.add(s);
             }
         }
 
