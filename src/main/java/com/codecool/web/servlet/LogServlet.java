@@ -31,7 +31,7 @@ public class LogServlet extends AbstractServlet {
             String mode = getRequestMode(req.getRequestURI());
 
             if (mode.equals("pageload")) {
-                logDto = logService.readFullLog();
+                logDto = logService.readLastLinesFromLog(100);
             }
             else if (mode.equals("filter")) {
                 String servlet = req.getParameter("servlet");
