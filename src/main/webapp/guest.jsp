@@ -8,6 +8,7 @@
     <script>
         const scheduleJSON = ${scheduleJSON};
         const rainbow = ${rainbow};
+        let needed = true;
     </script>
     <script src="../../scripts/guest.js"></script>
     <script src="../../scripts/schedule.js"></script>
