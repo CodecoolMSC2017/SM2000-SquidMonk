@@ -1,7 +1,6 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.UserDao;
-import com.codecool.web.dao.implementation.UserDaoImpl;
+import com.codecool.web.model.User;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsProfileService;
 import org.slf4j.Logger;
@@ -25,13 +24,14 @@ public class UserRoleServlet extends AbstractServlet {
         logger.debug("put method start");
 
         try (Connection connection = getConnection(req.getServletContext())) {
-            //UserDao userDao = new UserDaoImpl(connection);
+
             JsProfileService profileService = new JsProfileService(connection);
 
-            boolean isPublic = Boolean.parseBoolean(req.getParameter("isPublic"));
             int userId = getUserId(req.getRequestURI());
 
-            profileService.changeUserRole(userId, isPublic);
+            User user = profileService.showDataByUserId(userId);
+
+            profileService.changeUserRole(user);
 
             resp.setStatus(HttpServletResponse.SC_OK);
             logger.debug("put method successful");
