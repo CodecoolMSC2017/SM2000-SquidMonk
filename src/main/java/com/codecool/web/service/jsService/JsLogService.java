@@ -50,6 +50,8 @@ public class JsLogService implements LogService {
     public LogDto getFilteredData(String[] servlets, String[] logLevels) throws IOException {
         LogDto logDto = getLogDetails(readFullLogText());
         List<String> filteredLogText = new ArrayList<>();
+        List<String> checkedLogLevels = new ArrayList<>();
+        List<String> checkedServlets = new ArrayList<>();
         StringBuilder servletSb = new StringBuilder();
         StringBuilder logLevelSb = new StringBuilder();
         String matchAnyPattern = "(.*)";
@@ -68,6 +70,9 @@ public class JsLogService implements LogService {
                     servletSb.append(s);
                     servletSb.append(matchAnyPattern);
                     servletSb.append("|");
+
+                    //Fill up checkbox checker list
+                    checkedServlets.add(s);
                 }
             }
 
@@ -80,6 +85,9 @@ public class JsLogService implements LogService {
                     logLevelSb.append(s);
                     logLevelSb.append(matchAnyPattern);
                     logLevelSb.append("|");
+
+                    //Fill up checkbox checker list
+                    checkedLogLevels.add(s);
                 }
             }
 
@@ -91,8 +99,11 @@ public class JsLogService implements LogService {
             }
         }
 
+        logDto.setCheckedLogLevels(checkedLogLevels);
+        logDto.setCheckedServlets(checkedServlets);
         logDto.setLogText(filteredLogText);
         logger.debug("Successful filtering");
+
         return logDto;
     }
 

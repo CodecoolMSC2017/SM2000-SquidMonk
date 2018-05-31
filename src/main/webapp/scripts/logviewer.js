@@ -47,6 +47,7 @@ function onLogReceived() {
     const divTextAreaEl = document.createElement('div');
     divTextAreaEl.setAttribute('class', 'textarealike');
 
+    // Processing logtext
     for (let i = log.logText.length-1; i >= 0; i--) {
         const line = log.logText[i];
         
@@ -71,27 +72,55 @@ function onLogReceived() {
     formLogLevelFilter.setAttribute('id', 'level-filter');
     formLogLevelFilter.setAttribute('class', 'log-small-margin');
 
+    // Processing the levels part of left side filter
     for (let i = 0; i < log.logLevels.length; i++) {
         const level = log.logLevels[i];
 
         const inputEl = document.createElement('input');
         inputEl.setAttribute('type', 'checkbox');
         inputEl.setAttribute('name', 'level');
-        inputEl.setAttribute('checked', 'checked');
         inputEl.value = level;
+
+        //If this is an unfiltered page load then everything is checked
+        if (log.checkedLogLevels.length == 0) {
+            inputEl.setAttribute('checked', 'checked');
+        } else {
+            //If it's a filtered search only check the boxes which were filtered in the request
+            for (let n = 0; n < log.checkedLogLevels.length; n++) {
+                const checkedLevel = log.checkedLogLevels[n];
+
+                if (checkedLevel === level) {
+                    inputEl.setAttribute('checked', 'checked');
+                }
+            }
+        }
 
         formLogLevelFilter.appendChild(inputEl);
         formLogLevelFilter.innerHTML = formLogLevelFilter.innerHTML + level + "<br>";
     }
 
+    // Processing the servlet part of left side filter
     for (let i = 0; i < log.logServlets.length; i++) {
         const servlet = log.logServlets[i];
 
         const inputEl = document.createElement('input');
         inputEl.setAttribute('type', 'checkbox');
         inputEl.setAttribute('name', 'servlet');
-        inputEl.setAttribute('checked', 'checked');
         inputEl.value = servlet;
+
+        //If this is an unfiltered page load then everything is checked
+        if (log.checkedServlets.length == 0) {
+            inputEl.setAttribute('checked', 'checked');
+        }else {
+            //If it's a filtered search only check the boxes which were filtered in the request
+            for (let n = 0; n < log.checkedServlets.length; n++) {
+                const checkedServlet = log.checkedServlets[n];
+
+                if (checkedServlet === servlet) {
+                    inputEl.setAttribute('checked', 'checked');
+                }
+            }
+        }
 
         formServletFilter.appendChild(inputEl);
         formServletFilter.innerHTML = formServletFilter.innerHTML + servlet + "<br>";
