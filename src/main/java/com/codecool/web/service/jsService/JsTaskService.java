@@ -4,7 +4,7 @@ import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
-import com.codecool.web.dao.implementation.TskColSchedConnectorDao;
+import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.Schedule;
@@ -26,12 +26,12 @@ public class JsTaskService implements TaskService {
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
-    private TskColSchedConnectorDao controlTable;
+    private TaskAssignmentDao controlTable;
 
     public JsTaskService(Connection connection) {
         this.taskDao = new TaskDaoImpl(connection);
         this.scheduleDao = new ScheduleDaoImpl(connection);
-        this.controlTable = new TskColSchedConnectorDao(connection);
+        this.controlTable = new TaskAssignmentDao(connection);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class JsTaskService implements TaskService {
     }
 
     @Override
-    public void updateTask(int taskId, String newName, String newContent, int start, int end) throws SQLException, ServiceException {
+    public void updateTask(int taskId, int scheduleId, String newName, String newContent, int start, int end) throws SQLException, ServiceException {
         if (newName == null || newName.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
@@ -74,8 +74,8 @@ public class JsTaskService implements TaskService {
             taskDao.updateContent(taskId, newContent);
         }
 
-        logger.info("Updating start and end times for task " + taskId);
-        controlTable.updateTaskTime(taskId, start, end);
+        logger.info("Updating start and end times for task " + taskId + " in schedule " + scheduleId);
+        controlTable.updateTaskTime(taskId, scheduleId, start, end);
     }
 
     @Override

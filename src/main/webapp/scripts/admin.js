@@ -238,7 +238,7 @@ function onSchedulesReceivedByUser() {
         const messageTdEl = document.createElement('td');
         messageTdEl.colSpan = '3';
         messageTdEl.className = 'entry';
-        messageTdEl.textContent = 'You do not have any schedules.';
+        messageTdEl.textContent = "He/She doesn't have any schedules.";
 
         const messageTrEl = document.createElement('tr');
         messageTrEl.appendChild(messageTdEl);
@@ -317,7 +317,7 @@ function onScheduleReceivedByUser() {
         const schedule = JSON.parse(this.responseText);
         if (schedule.columns.length == 0) {
             /* If no columns show this */
-            noColumnMessage(mainDiv, schedule.id);
+            noColumnMessageByUser(mainDiv, schedule.id);
 
         } else {
 
@@ -359,6 +359,20 @@ function onScheduleReceivedByUser() {
         mainDiv.appendChild(aboveDivEl);
         aboveDivEl.setAttribute('class', 'schedule-above-div');
     }
+}
+
+function noColumnMessageByUser(mainDiv, scheduleId){
+    const messageDiv = document.createElement('div');
+    messageDiv.setAttribute('class', 'hv-centered-div');
+    messageDiv.setAttribute('id', 'schedule-add-column');
+    messageDiv.setAttribute('schedule-id', scheduleId);
+
+    const hEl = document.createElement('h1');
+    hEl.setAttribute('class', 'hv-centered-text');
+    hEl.textContent = "He/She doesn't have any routines defined!";
+
+    messageDiv.appendChild(hEl);
+    mainDiv.appendChild(messageDiv);
 }
 
 function createHeaderRowByUser(mainDiv, schedule, isGuest) {
@@ -405,7 +419,7 @@ function onTasksReceivedByUser() {
         const messageTdEl = document.createElement('td');
         messageTdEl.colSpan = '2';
         messageTdEl.className = 'entry';
-        messageTdEl.textContent = 'You do not have any tasks.';
+        messageTdEl.textContent = "He/She doesn't have any tasks.";
 
         const messageTrEl = document.createElement('tr');
         messageTrEl.appendChild(messageTdEl);
