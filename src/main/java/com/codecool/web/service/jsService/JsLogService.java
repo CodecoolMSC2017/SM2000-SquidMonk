@@ -31,7 +31,15 @@ public class JsLogService implements LogService {
 
     @Override
     public LogDto readLastLinesFromLog(int numberOfLines) throws IOException {
-        return null;
+        LogDto logDto = getLogDetails(readFullLogText());
+
+        List<String> fullLogText = logDto.getLogText();
+
+        if (fullLogText.size() > 110) {
+            logDto.setLogText(fullLogText.subList(fullLogText.size() - (numberOfLines - 1), fullLogText.size() - 1));
+        }
+
+        return logDto;
     }
 
     /***
