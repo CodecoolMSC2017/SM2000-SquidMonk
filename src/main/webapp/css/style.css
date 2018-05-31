@@ -231,8 +231,7 @@ div.table-title {
   height: 88%;
 
   position: absolute;
-  top: 15%;
-  margin-top: -50px;
+  margin-top: 25px;
   margin-left: 300px;
 
   min-width: 800px;
@@ -251,8 +250,8 @@ div.table-title {
   width: 250px;
   height: 500px;
   position: absolute;
-  top: 30%;
-  margin-top: -50px;
+  top: 25%;
+  margin-top: 25px;
   margin-left: 20px;
 }
 
