@@ -1,9 +1,6 @@
 package com.codecool.web.dao.implementation;
 
-import com.codecool.web.dao.ColumnDao;
-import com.codecool.web.dao.ScheduleDao;
-import com.codecool.web.dao.TaskDao;
-import com.codecool.web.dao.UserDao;
+import com.codecool.web.dao.*;
 import com.codecool.web.model.Task;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +9,15 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IntegrationTest extends AbstractTest {
-    /*
+class IntegrationTest extends AbstractTest {
+
+    // execution order: 2 6 5 7 3 1 4
+
     @Test
+        // 1
     void deleteSchedule() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
             ColumnDao columnDao = new ColumnDaoImpl(connection);
 
@@ -32,10 +32,11 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    void deleteColumn() throws SQLException, ClassNotFoundException {
+        // 2
+    void deleteColumn() throws SQLException {
         resetDatabase();
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
             ColumnDao columnDao = new ColumnDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
@@ -53,9 +54,10 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+        // 3
     void deleteTaskFromColumn() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
 
             controlTable.removeTaskFromSchedule(1, 4);
@@ -64,9 +66,10 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+        // 4
     void deleteUser() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
             ColumnDao columnDao = new ColumnDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
@@ -93,62 +96,63 @@ public class IntegrationTest extends AbstractTest {
             assertFalse(controlTable.queryTaskPresent(3));
         }
     }
-    /*
+
     @Test
-    void addTaskEqualStartTimeAsEndTime() throws SQLException, ClassNotFoundException {
-        resetDatabase();
+        // 5
+    void addTaskEqualStartTimeAsEndTime() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
 
-            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
-            Task newTask = taskDao.findById(44);
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:217
+            Task newTask = taskDao.findById(217);
             Task oldTask = taskDao.findById(29);
 
-            controlTable.insertTask(44, 19, 6, 12, 14);
-            controlTable.insertTask(29, 19, 6, 10, 12);
+            controlTable.insertTask(217, 13, 7, 20, 22);
+            controlTable.insertTask(29, 13, 7, 18, 20);
 
-            newTask = controlTable.queryTaskConnectionData(newTask, 0);
-            oldTask = controlTable.queryTaskConnectionData(oldTask, 0);
+            newTask = controlTable.queryTaskConnectionData(newTask, 7);
+            oldTask = controlTable.queryTaskConnectionData(oldTask, 7);
 
             assertTrue(controlTable.queryTaskPresent(44));
             assertTrue(controlTable.queryTaskPresent(29));
-            assertEquals(12, newTask.getColId());
-            assertEquals(12, oldTask.getColId());
-            assertEquals(12, newTask.getStart());
-            assertEquals(12, oldTask.getEnd());
+            assertEquals(13, newTask.getColId());
+            assertEquals(13, oldTask.getColId());
+            assertEquals(20, newTask.getStart());
+            assertEquals(20, oldTask.getEnd());
         }
     }
 
     @Test
-    void addIntersectingTasks() throws SQLException, ClassNotFoundException {
+        // 6
+    void addIntersectingTasks() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
 
-            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
-            taskDao.insertTask(7, "Csanád task 4", "Not much here"); // id:45
-            taskDao.insertTask(7, "Csanád task 5", "Not much here"); // id:46
-            taskDao.insertTask(7, "Csanád task 6", "Not much here"); // id:47
+            taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:213
+            taskDao.insertTask(7, "Csanád task 4", "Not much here"); // id:214
+            taskDao.insertTask(7, "Csanád task 5", "Not much here"); // id:215
+            taskDao.insertTask(7, "Csanád task 6", "Not much here"); // id:216
 
             controlTable.insertTask(29, 12, 6, 10, 12);
-            assertThrows(SQLException.class, () -> controlTable.insertTask(44, 12, 6, 10, 12));
-            assertThrows(SQLException.class, () -> controlTable.insertTask(45, 12, 6, 11, 11));
-            assertThrows(SQLException.class, () -> controlTable.insertTask(46, 12, 6, 11, 12));
+            assertThrows(SQLException.class, () -> controlTable.insertTask(213, 12, 6, 10, 12));
+            assertThrows(SQLException.class, () -> controlTable.insertTask(214, 12, 6, 11, 11));
+            assertThrows(SQLException.class, () -> controlTable.insertTask(215, 12, 6, 11, 12));
         }
     }
 
     @Test
-    void addDifferentUserTaskToAnotherUsersTask() throws SQLException, ClassNotFoundException {
-        resetDatabase();
+        // 7
+    void addDifferentUserTaskToAnotherUsersTask() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
             TaskDao taskDao = new TaskDaoImpl(connection);
 
             taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
 
             assertThrows(SQLException.class, () -> controlTable.insertTask(44, 8, 4, 2, 4));
         }
-    }*/
+    }
 
 }

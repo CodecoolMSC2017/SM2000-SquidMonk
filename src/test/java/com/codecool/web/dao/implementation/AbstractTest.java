@@ -9,17 +9,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 abstract class AbstractTest {
-    /*
-    private DataSource dataSource;
 
-    AbstractTest() {
+    private static final DataSource dataSource = setDataSource();
+
+    private static DataSource setDataSource() {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setServerName("localhost");
         ds.setPortNumber(5432);
         ds.setDatabaseName("sm2000_test");
         ds.setUser("test");
         ds.setPassword("test");
-        dataSource = ds;
+        return ds;
     }
 
     Connection getConnection() throws SQLException {
@@ -33,5 +33,5 @@ abstract class AbstractTest {
             ex.printStackTrace();
             throw new IllegalStateException(ex);
         }
-    }*/
+    }
 }

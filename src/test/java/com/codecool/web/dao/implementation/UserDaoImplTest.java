@@ -3,25 +3,22 @@ package com.codecool.web.dao.implementation;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.User;
 import com.codecool.web.service.exception.ServiceException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoImplTest extends AbstractTest {
-    /*
-    @Test
+
+    // execution order: 4 1 3 2
+
+    @Test // 1
     void findById() throws SQLException {
         try (Connection connection = getConnection()) {
-            resetDatabase();
             UserDao userDao = new UserDaoImpl(connection);
+
             User user = userDao.findById(1);
             assertEquals("Admin", user.getName());
 
@@ -36,10 +33,11 @@ class UserDaoImplTest extends AbstractTest {
         }
     }
 
-    @Test
+    @Test // 2
     void findByEmail() throws SQLException, ServiceException {
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
+
             User user = userDao.findByEmail("admin@codecool.hu");
             assertEquals("Admin", user.getName());
 
@@ -57,7 +55,7 @@ class UserDaoImplTest extends AbstractTest {
         }
     }
 
-    @Test
+    @Test // 3
     void insertUser() throws SQLException, ServiceException {
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
@@ -76,8 +74,9 @@ class UserDaoImplTest extends AbstractTest {
         }
     }
 
-    @Test
+    @Test // 4
     void changeRole() throws SQLException {
+        resetDatabase();
         try (Connection connection = getConnection()) {
             UserDao userDao = new UserDaoImpl(connection);
 
@@ -89,5 +88,5 @@ class UserDaoImplTest extends AbstractTest {
             user = userDao.findById(2);
             assertTrue(user.isAdmin());
         }
-    }*/
+    }
 }

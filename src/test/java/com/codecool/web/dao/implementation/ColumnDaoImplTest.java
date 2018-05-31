@@ -1,5 +1,6 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.model.Column;
 import org.junit.jupiter.api.Test;
 
@@ -11,14 +12,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ColumnDaoImplTest extends AbstractTest {
-    /*
+
+    // execution order: 5 2 1 4 3
+
     @Test
+        // 1
     void findById() throws SQLException {
         try (Connection connection = getConnection()) {
-            resetDatabase();
-            Column column1 = new ColumnDaoImpl(connection).findById(1);
-            Column column2 = new ColumnDaoImpl(connection).findById(2);
-            Column column3 = new ColumnDaoImpl(connection).findById(7);
+            ColumnDao columnDao = new ColumnDaoImpl(connection);
+
+            Column column1 = columnDao.findById(1);
+            Column column2 = columnDao.findById(2);
+            Column column3 = columnDao.findById(7);
 
             assertEquals("Alexa Column 1", column1.getName());
             assertEquals("Alexa Column 2", column2.getName());
@@ -27,9 +32,12 @@ class ColumnDaoImplTest extends AbstractTest {
     }
 
     @Test
+        // 2
     void findAllByScheduleId() throws SQLException {
         try (Connection connection = getConnection()) {
-            List<Column> columns = new ColumnDaoImpl(connection).findAllByScheduleId(2);
+            ColumnDao columnDao = new ColumnDaoImpl(connection);
+
+            List<Column> columns = columnDao.findAllByScheduleId(2);
 
             assertEquals(3, columns.size());
             assertEquals("Alexa Column 1", columns.get(0).getName());
@@ -39,9 +47,11 @@ class ColumnDaoImplTest extends AbstractTest {
     }
 
     @Test
+        // 3
     void insertColumn() throws SQLException {
         try (Connection connection = getConnection()) {
-            ColumnDaoImpl columnDao = new ColumnDaoImpl(connection);
+            ColumnDao columnDao = new ColumnDaoImpl(connection);
+
             int scheduleId = 1;
             String name = "InsertColumn";
 
@@ -61,12 +71,14 @@ class ColumnDaoImplTest extends AbstractTest {
     }
 
     @Test
+        // 4
     void updateName() throws SQLException {
         try (Connection connection = getConnection()) {
+            ColumnDao columnDao = new ColumnDaoImpl(connection);
+
             int id = 4;
             String name = "ColumnNameTest";
 
-            ColumnDaoImpl columnDao = new ColumnDaoImpl(connection);
             Column column = columnDao.findById(id);
             assertEquals("Csba Column 1", column.getName());
 
@@ -75,5 +87,11 @@ class ColumnDaoImplTest extends AbstractTest {
             assertEquals(name, columnUpdateName.getName());
 
         }
-    }*/
+    }
+
+    @Test
+        // 5
+    void deleteColumn() {
+        resetDatabase();
+    }
 }

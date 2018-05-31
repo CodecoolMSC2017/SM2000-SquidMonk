@@ -1,36 +1,38 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.TaskAssignmentDao;
 import com.codecool.web.model.Task;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskAssignmentDaoTest extends AbstractTest {
-    /*
+
+    // execution order: 2 6 5 3 4 1 7
+
     @Test
+        // 1
     void queryTaskPresent() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
+
             assertFalse(controlTable.queryTaskPresent(300));
             assertTrue(controlTable.queryTaskPresent(1));
         }
     }
-    /*
+
     @Test
-    void queryTaskConnectionData() throws SQLException, ClassNotFoundException {
+        // 2
+    void queryTaskConnectionData() throws SQLException {
         resetDatabase();
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
-            Task task = new Task(1, 4, "Csba Task 1", "Content");
-            task = controlTable.queryTaskConnectionData(task, 0);
+            Task task = new Task(1, 4, "Clean toilet", "It really needs cleaning!");
+            task = controlTable.queryTaskConnectionData(task, 4);
 
             assertEquals(4, task.getColId());
             assertEquals(4, task.getSchedId());
@@ -40,14 +42,15 @@ class TaskAssignmentDaoTest extends AbstractTest {
     }
 
     @Test
+        // 3
     void insertTask() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
             controlTable.insertTask(29, 12, 6, 6, 12);
 
             Task task = new Task(29, 7, "Csanád Task 1", "Content");
-            task = controlTable.queryTaskConnectionData(task, 0);
+            task = controlTable.queryTaskConnectionData(task, 6);
 
             assertEquals(12, task.getColId());
             assertEquals(6, task.getSchedId());
@@ -57,31 +60,33 @@ class TaskAssignmentDaoTest extends AbstractTest {
     }
 
     @Test
+        // 4
     void updateTaskSchedule() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.updateTaskSchedule(30, 12, 6, 4, 5);
+            controlTable.updateTaskSchedule(30, 13, 7, 4, 5);
 
             Task task = new Task(30, 7, "Csanád Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task, 0);
+            task = controlTable.queryTaskConnectionData(task, 7);
 
-            assertEquals(12, task.getColId());
-            assertEquals(6, task.getSchedId());
+            assertEquals(13, task.getColId());
+            assertEquals(7, task.getSchedId());
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
         }
     }
 
     @Test
+        // 5
     void updateTaskTime() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.updateTaskTime(30, 0, 4, 5);
+            controlTable.updateTaskTime(30, 7, 4, 5);
 
             Task task = new Task(30, 7, "Csanád Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task, 0);
+            task = controlTable.queryTaskConnectionData(task, 7);
 
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
@@ -89,29 +94,31 @@ class TaskAssignmentDaoTest extends AbstractTest {
     }
 
     @Test
+        // 6
     void updateTaskColumn() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.updateTaskColumn(2, 0, 6, 4, 5);
+            controlTable.updateTaskColumn(2, 5, 4, 4, 5);
 
             Task task = new Task(2, 4, "Csba Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task, 0);
+            task = controlTable.queryTaskConnectionData(task, 4);
 
-            assertEquals(6, task.getColId());
+            assertEquals(5, task.getColId());
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
         }
     }
 
     @Test
+        // 7
     void deleteTask() throws SQLException {
         try (Connection connection = getConnection()) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
+            TaskAssignmentDao controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.removeTaskFromSchedule(30, 0);
+            controlTable.removeTaskFromSchedule(30, 7);
 
             assertFalse(controlTable.queryTaskPresent(30));
         }
-    }*/
+    }
 }
