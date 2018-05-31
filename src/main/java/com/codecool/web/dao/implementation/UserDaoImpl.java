@@ -112,7 +112,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public List<User> findAll() throws SQLException {
-        String sql = "SELECT id, name, email, password, is_admin FROM users";
+        String sql = "SELECT id, name, email, password, is_admin FROM users ORDER BY id";
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {

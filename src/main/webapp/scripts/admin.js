@@ -67,6 +67,8 @@ function createUsersTableHead() {
 }
 
 function createUserRow(user) {
+    const admin = JSON.parse(localStorage.getItem('user'));
+
     const userTr = document.createElement('tr');
     userTr.id = user.id;
 
@@ -93,6 +95,7 @@ function createUserRow(user) {
     userPasswordTd.className = 'entry';*/
 
     const userRoleTd = document.createElement('td');
+    userRoleTd.id = user.id;
     if (user.admin) {
         userRoleTd.textContent = 'Admin';
     } else {
@@ -101,6 +104,9 @@ function createUserRow(user) {
     userRoleTd.className = 'entry';
     userRoleTd.addEventListener('mouseover', onRoleTdMouseHover);
     userRoleTd.addEventListener('mouseout', onRoleTdMouseOut);
+    if (admin.id != user.id) {
+        userRoleTd.addEventListener('click', onRoleClick);
+    }
 
     userTr.appendChild(userIdTd);
     userTr.appendChild(userNameTd);
@@ -118,6 +124,31 @@ function onRoleTdMouseHover() {
 
 function onRoleTdMouseOut() {
     this.removeAttribute('style');
+}
+
+function onRoleClick() {
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    admin = user;
+
+    const userId = this.getAttribute('id');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', roleResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/role/user/' + userId);
+    xhr.send();
+}
+
+function roleResponse() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (this.status === OK) {
+        onUsersMenuClick();
+    } else {
+        const messageEl = document.getElementById('message-content');
+        messageEl.innerHTML = user.message;
+        showContents(['login-content', 'message-content']);
+    }
 }
 
 function onUsersReceived() {
@@ -163,9 +194,6 @@ function onUsersReceived() {
 /***user click***/
 
 function onUserClick() {
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    admin = user;
 
     const userId = this.getAttribute('id');
 

@@ -13,5 +13,5 @@ public interface ProfileService {
 
     void changeUserEmail(int userId, String email) throws SQLException, ServiceException;
 
-    void changeUserRole(int userId, boolean isAdmin) throws SQLException, ServiceException;
+    void changeUserRole(User user) throws SQLException, ServiceException;
 }

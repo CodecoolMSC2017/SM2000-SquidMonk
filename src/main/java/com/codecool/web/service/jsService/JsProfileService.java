@@ -2,6 +2,7 @@ package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.dao.implementation.UserDaoImpl;
+import com.codecool.web.dto.UserDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ProfileService;
 import com.codecool.web.service.exception.ServiceException;
@@ -16,9 +17,12 @@ public class JsProfileService implements ProfileService {
     private static final Logger logger = LoggerFactory.getLogger(JsProfileService.class);
 
     private UserDao userDao;
+    private UserDto userDto;
 
     public JsProfileService(Connection connection) {
+
         userDao = new UserDaoImpl(connection);
+        userDto = new UserDto();
     }
 
     @Override
@@ -46,8 +50,10 @@ public class JsProfileService implements ProfileService {
     }
 
     @Override
-    public void changeUserRole(int userId, boolean isAdmin) throws SQLException {
-        logger.info("updating role of user with id " + userId);
-        userDao.changeRole(userId, isAdmin);
+    public void changeUserRole(User user) throws SQLException {
+        logger.info("updating role of user with id " + user.getId());
+
+        boolean isAdmin = userDto.setAdmin(user);
+        userDao.changeRole(user.getId(), isAdmin);
     }
 }
