@@ -43,4 +43,10 @@ public class JsProfileService implements ProfileService {
         }
         userDao.changeEmail(userId, email);
     }
+
+    @Override
+    public void changeUserRole(int userId, boolean isAdmin) throws SQLException {
+        logger.info("updating role of user with id " + userId);
+        userDao.changeRole(userId, isAdmin);
+    }
 }
