@@ -100,6 +100,7 @@ function nameProfileRow(user) {
     profUpdateNameTd.addEventListener('click', onChangeProfileNameClicked);
     profUpdateNameTd.id = 'profile-name-change-button-td';
     profUpdateNameTd.textContent = 'Change';
+    profUpdateNameTd.className = 'change-button';
 
     profTableNameTr.appendChild(profTableNameTd);
     profTableNameTr.appendChild(profEntryNameTd);
@@ -165,6 +166,7 @@ function emailProfileRow(user) {
     profUpdateEmailTd.addEventListener('click', onChangeProfileEmailClicked);
     profUpdateEmailTd.id = 'profile-email-change-button-td';
     profUpdateEmailTd.textContent = 'Change';
+    profUpdateEmailTd.className = 'change-button';
 
     profTableEmailTr.appendChild(profTableEmailTd);
     profTableEmailTr.appendChild(profEntryEmailTd);
@@ -217,7 +219,7 @@ function roleProfileRow(user) {
     }
 
     const profUpdateRoleTd = document.createElement('td');
-    profUpdateRoleTd.textContent = 'Change';
+    profUpdateRoleTd.textContent = 'Can not change';
 
     profTableRoleTr.appendChild(profTableRoleTd);
     profTableRoleTr.appendChild(profEntryRoleTd);
