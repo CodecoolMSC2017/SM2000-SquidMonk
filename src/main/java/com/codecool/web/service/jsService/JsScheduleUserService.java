@@ -1,12 +1,14 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.service.ScheduleUserService;
 import com.codecool.web.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class JsScheduleUserService implements ScheduleUserService {
 
     private ScheduleDao scheduleDao;
 
-    public JsScheduleUserService(ScheduleDao scheduleDao) {
-        this.scheduleDao = scheduleDao;
+    public JsScheduleUserService(Connection connection) {
+        scheduleDao = new ScheduleDaoImpl(connection);
     }
 
     @Override

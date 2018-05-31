@@ -1,8 +1,7 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.UserDao;
-import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
+import com.codecool.web.service.ProfileService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsProfileService;
 import org.slf4j.Logger;
@@ -27,8 +26,7 @@ public class ProfileServlet extends AbstractServlet {
         //User user = (User) req.getSession().getAttribute("user");
         try (Connection connection = getConnection(req.getServletContext())) {
             int userId = getUserId(req.getRequestURI());
-            UserDao userDao = new UserDaoImpl(connection);
-            JsProfileService profileService = new JsProfileService(userDao);
+            ProfileService profileService = new JsProfileService(connection);
             User getUser = profileService.showDataByUserId(userId);
             req.getSession().setAttribute("user", getUser);
             sendMessage(resp, HttpServletResponse.SC_OK, getUser);
@@ -45,8 +43,7 @@ public class ProfileServlet extends AbstractServlet {
         logger.debug("put method start");
         //User user = (User) req.getSession().getAttribute("user");
         try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new UserDaoImpl(connection);
-            JsProfileService profileService = new JsProfileService(userDao);
+            ProfileService profileService = new JsProfileService(connection);
 
             int userId = getUserId(req.getRequestURI());
             String name = req.getParameter("name");
