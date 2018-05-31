@@ -157,7 +157,7 @@ function onDragAddTaskToColumn(taskId, startTime, currentColumnId) {
     params.append('start', startTime);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', () => {onDragDropClick(currentColumnId)});
+    xhr.addEventListener('load', doRequestScheduleForDrag);
     xhr.open('POST', 'protected/column/' + currentColumnId);
     xhr.send(params);
 }
@@ -169,4 +169,14 @@ function removeTdAttrs() {
     for (let i = 0; i < tdEls.length; i++) {
         tdEls[i].setAttribute('drop-active', 'false');
     }
+}
+
+function doRequestScheduleForDrag() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', () => {onDragDropClick(currentSchedule.columns[1].id)});
+    console.log(currentSchedule.id);
+    console.log(currentSchedule.columns[1].id);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/schedule/' + currentSchedule.id);
+    xhr.send();
 }
