@@ -91,7 +91,8 @@ public class JsLogService implements LogService {
                 }
             }
 
-            logger.debug("Beginning to filter text based on these patterns: " + servletSb.toString() + ", " + logLevelSb.toString());
+            //logger.debug("Beginning to filter text based on these patterns: " + servletSb.toString() + ", " + logLevelSb.toString());
+            logger.debug("Beginning to filter text");
             for (String s:logDto.getLogText()) {
                 if (s.matches(servletSb.toString()) && s.matches(logLevelSb.toString())) {
                     filteredLogText.add(s);
@@ -120,6 +121,11 @@ public class JsLogService implements LogService {
         logger.debug("Getting servlets and log levels from log text");
 
         for (String s:logDto.getLogText()){
+
+            //So it skips the last line
+            if (s.equals(" ") || s.equals("")) {
+                break;
+            }
 
             //Gets the servlet's name
             String[] stringParts = s.split("\\s+");
