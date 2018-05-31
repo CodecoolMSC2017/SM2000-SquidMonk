@@ -3,7 +3,10 @@ const NO_CONTENT = 204;
 const BAD_REQUEST = 400;
 const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
+const CONFLICT = 409;
 const INTERNAL_SERVER_ERROR = 500;
+
+let mainDiv;
 
 function newMessage(targetEl, classes, message) {
     clearMessages();
@@ -16,7 +19,7 @@ function newMessage(targetEl, classes, message) {
 }
 
 function onNetWorkError() {
-    
+    console.log(this);
 }
 
 function clearMessages() {
@@ -28,8 +31,7 @@ function clearMessages() {
 }
 
 function clearMainContent() {
-    const mainDivEl = document.getElementById('main-content');
-    mainDivEl.textContent = '';
+    mainDiv.textContent = '';
 }
 
 function showContents(ids) {
@@ -54,6 +56,8 @@ function removeAllChildren(el) {
 }
 
 function onLoad() {
+    mainDiv = document.getElementById('main-content');
+
     document.getElementById('register-button').addEventListener('click', onRegisterClick);
     document.getElementById('login-button').addEventListener('click', onLoginClick);
     document.getElementById('logout-button').addEventListener('click', onLogoutClick);
