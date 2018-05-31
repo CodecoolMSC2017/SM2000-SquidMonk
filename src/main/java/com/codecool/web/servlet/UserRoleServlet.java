@@ -25,8 +25,8 @@ public class UserRoleServlet extends AbstractServlet {
         logger.debug("put method start");
 
         try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new UserDaoImpl(connection);
-            JsProfileService profileService = new JsProfileService(userDao);
+            //UserDao userDao = new UserDaoImpl(connection);
+            JsProfileService profileService = new JsProfileService(connection);
 
             boolean isPublic = Boolean.parseBoolean(req.getParameter("isPublic"));
             int userId = getUserId(req.getRequestURI());
