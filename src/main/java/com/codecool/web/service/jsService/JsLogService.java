@@ -47,27 +47,52 @@ public class JsLogService implements LogService {
      * Like this the user can always use the filter and can get data that he currently doesn't see.
      */
     @Override
-    public LogDto getFilteredData(String servlet, String logLevel) throws IOException {
+    public LogDto getFilteredData(String[] servlets, String[] logLevels) throws IOException {
         LogDto logDto = getLogDetails(readFullLogText());
         List<String> filteredLogText = new ArrayList<>();
+        StringBuilder servletSb = new StringBuilder();
+        StringBuilder logLevelSb = new StringBuilder();
+        String matchAnyPattern = "(.*)";
 
-        //In case either is null match everything
-        if (servlet.equals("undefined")) {
-            servlet = ".*";
-        }
+        //In case both is empty return empty
+        if ((servlets.length == 1 && servlets[0].equals("")) && (logLevels.length == 1 && logLevels[0].equals(""))) {
+            filteredLogText.add("");
+        } else {
+            //In case either is empty match everything
+            if (servlets.length == 1 && servlets[0].equals("")) {
+                servletSb.append(matchAnyPattern);
+            } else {
+                //Otherwise build the words up as word1 or word2 .....
+                for (String s:servlets) {
+                    servletSb.append(matchAnyPattern);
+                    servletSb.append(s);
+                    servletSb.append(matchAnyPattern);
+                    servletSb.append("|");
+                }
+            }
 
-        if (logLevel.equals("undefined")) {
-            logLevel = ".*";
-        }
+            if (logLevels.length == 1 && logLevels[0].equals("")) {
+                logLevelSb.append(matchAnyPattern);
+            } else {
 
-        logger.debug("Beginning to filter text based on these keywords: " + servlet + ", " + logLevel);
-        for (String s:logDto.getLogText()) {
-            if (s.matches("(.*)" + servlet + "(.*)") && s.matches("(.*)" + logLevel + "(.*)")) {
-                filteredLogText.add(s);
+                for (String s:logLevels) {
+                    logLevelSb.append(matchAnyPattern);
+                    logLevelSb.append(s);
+                    logLevelSb.append(matchAnyPattern);
+                    logLevelSb.append("|");
+                }
+            }
+
+            logger.debug("Beginning to filter text based on these patterns: " + servletSb.toString() + ", " + logLevelSb.toString());
+            for (String s:logDto.getLogText()) {
+                if (s.matches(servletSb.toString()) && s.matches(logLevelSb.toString())) {
+                    filteredLogText.add(s);
+                }
             }
         }
-        logDto.setLogText(filteredLogText);
 
+        logDto.setLogText(filteredLogText);
+        logger.debug("Successful filtering");
         return logDto;
     }
 
