@@ -42,6 +42,7 @@ function addMusic() {
 }
 
 function onLoad() {
+    needed = true;
     mainDiv = document.getElementById('main-content');
     currentSchedule = scheduleJSON;
 
