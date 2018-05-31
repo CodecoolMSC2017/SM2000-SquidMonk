@@ -67,7 +67,7 @@ public class ScheduleServlet extends AbstractServlet {
             int scheduleId = getScheduleId(req.getRequestURI());
             scheduleService.deleteSchedule(scheduleId);
 
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             logger.debug("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
