@@ -1,12 +1,14 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.UserDao;
+import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ProfileService;
 import com.codecool.web.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JsProfileService implements ProfileService {
@@ -15,9 +17,8 @@ public class JsProfileService implements ProfileService {
 
     private UserDao userDao;
 
-    public JsProfileService(UserDao userDao) {
-
-        this.userDao = userDao;
+    public JsProfileService(Connection connection) {
+        userDao = new UserDaoImpl(connection);
     }
 
     @Override

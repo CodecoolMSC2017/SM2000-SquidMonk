@@ -2,10 +2,11 @@ package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.ColumnDao;
 import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.dao.TaskAssignmentDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
-import com.codecool.web.dao.implementation.TaskAssignmentDao;
+import com.codecool.web.dao.implementation.TaskAssignmentDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.dto.ScheduleColumnDto;
 import com.codecool.web.dto.ScheduleDto;
@@ -32,7 +33,7 @@ public class JsScheduleService implements ScheduleService {
 
     public JsScheduleService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
-        controlTable = new TaskAssignmentDao(connection);
+        controlTable = new TaskAssignmentDaoImpl(connection);
         taskDao = new TaskDaoImpl(connection);
         scheduleDao = new ScheduleDaoImpl(connection);
     }

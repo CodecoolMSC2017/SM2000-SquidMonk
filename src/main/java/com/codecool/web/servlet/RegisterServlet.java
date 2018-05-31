@@ -1,8 +1,6 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.UserDao;
-import com.codecool.web.dao.implementation.UserDaoImpl;
-import com.codecool.web.model.User;
+import com.codecool.web.service.RegisterService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsRegisterService;
 import org.slf4j.Logger;
@@ -24,7 +22,7 @@ public final class RegisterServlet extends AbstractServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new UserDaoImpl(connection);
+            RegisterService service = new JsRegisterService(connection);
 
             String name = req.getParameter("name");
             String email = req.getParameter("email");
@@ -35,7 +33,7 @@ public final class RegisterServlet extends AbstractServlet {
                 logger.debug("empty field found");
             }
 
-            new JsRegisterService(userDao).registerUser(name, email, password);
+            service.registerUser(name, email, password);
             sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
             logger.debug("post method successful");
         } catch (ServiceException ex) {

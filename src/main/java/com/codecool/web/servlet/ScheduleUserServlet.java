@@ -1,13 +1,9 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.ScheduleDao;
-import com.codecool.web.dao.implementation.ScheduleDaoImpl;
 import com.codecool.web.dto.DashboardScheduleDto;
 import com.codecool.web.model.User;
-import com.codecool.web.service.ScheduleService;
 import com.codecool.web.service.ScheduleUserService;
 import com.codecool.web.service.exception.ServiceException;
-import com.codecool.web.service.jsService.JsScheduleService;
 import com.codecool.web.service.jsService.JsScheduleUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +26,7 @@ public class ScheduleUserServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
-            ScheduleUserService service = new JsScheduleUserService(scheduleDao);
+            ScheduleUserService service = new JsScheduleUserService(connection);
 
             int userId = getUserId(req.getRequestURI());
             List<DashboardScheduleDto> scheduleList = service.findAllByUserId(userId);
@@ -48,8 +43,7 @@ public class ScheduleUserServlet extends AbstractServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
-            ScheduleUserService service = new JsScheduleUserService(scheduleDao);
+            ScheduleUserService service = new JsScheduleUserService(connection);
 
             String name = req.getParameter("name");
             User user = (User) req.getSession().getAttribute("user");

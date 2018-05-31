@@ -1,11 +1,13 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.UserDao;
+import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,8 +17,8 @@ public class JsUsersService implements UsersService {
 
     private UserDao userDao;
 
-    public JsUsersService(UserDao userDao) {
-        this.userDao = userDao;
+    public JsUsersService(Connection connection) {
+        userDao = new UserDaoImpl(connection);
     }
 
     @Override

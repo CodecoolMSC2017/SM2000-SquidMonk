@@ -1,9 +1,10 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.ColumnDao;
+import com.codecool.web.dao.TaskAssignmentDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ColumnDaoImpl;
-import com.codecool.web.dao.implementation.TaskAssignmentDao;
+import com.codecool.web.dao.implementation.TaskAssignmentDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
 import com.codecool.web.model.Column;
 import com.codecool.web.model.Task;
@@ -27,7 +28,7 @@ public class JsColumnService implements ColumnService {
     public JsColumnService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
         taskDao = new TaskDaoImpl(connection);
-        controlTable = new TaskAssignmentDao(connection);
+        controlTable = new TaskAssignmentDaoImpl(connection);
     }
 
     @Override

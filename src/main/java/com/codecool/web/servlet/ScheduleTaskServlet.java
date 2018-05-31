@@ -1,12 +1,13 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dto.ScheduleDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.service.ScheduleService;
+import com.codecool.web.service.ScheduleTaskService;
 import com.codecool.web.service.TaskService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.jsService.JsScheduleService;
+import com.codecool.web.service.jsService.JsScheduleTaskService;
 import com.codecool.web.service.jsService.JsTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +29,11 @@ public class ScheduleTaskServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskService taskService = new JsTaskService(connection);
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(connection);
+            ScheduleTaskService service = new JsScheduleTaskService(connection);
 
             int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
-            Task task = taskService.getById(taskId);
-            task = controlTable.queryTaskConnectionData(task, scheduleId);
+            Task task = service.getFilledTask(taskId, scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, task);
             logger.debug("get method successful");
         } catch (SQLException e) {
@@ -48,12 +47,12 @@ public class ScheduleTaskServlet extends AbstractServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(connection);
+            ScheduleTaskService service = new JsScheduleTaskService(connection);
 
             int scheduleId = Integer.parseInt(req.getParameter("scheduleId"));
             int taskId = getTaskId(req.getRequestURI());
 
-            controlTable.removeTaskFromSchedule(taskId, scheduleId);
+            service.removeTaskFromSchedule(taskId, scheduleId);
             resp.setStatus(HttpServletResponse.SC_OK);
             logger.debug("delete method successful");
         } catch (SQLException e) {
