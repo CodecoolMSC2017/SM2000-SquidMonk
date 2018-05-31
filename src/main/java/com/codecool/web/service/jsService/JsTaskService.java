@@ -27,12 +27,12 @@ public class JsTaskService implements TaskService {
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
-    private TaskAssignmentDao controlTable;
+    private TaskAssignmentDao taskAssignmentDao;
 
     public JsTaskService(Connection connection) {
         this.taskDao = new TaskDaoImpl(connection);
         this.scheduleDao = new ScheduleDaoImpl(connection);
-        this.controlTable = new TaskAssignmentDaoImpl(connection);
+        this.taskAssignmentDao = new TaskAssignmentDaoImpl(connection);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class JsTaskService implements TaskService {
         }
 
         logger.info("Updating start and end times for task " + taskId + " in schedule " + scheduleId);
-        controlTable.updateTaskTime(taskId, scheduleId, start, end);
+        taskAssignmentDao.updateTaskTime(taskId, scheduleId, start, end);
     }
 
     @Override
