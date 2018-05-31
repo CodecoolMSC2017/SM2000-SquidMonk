@@ -10,4 +10,6 @@ public interface LogService {
     LogDto readFullLog() throws IOException;
 
     LogDto readLastLinesFromLog(int numberOfLines) throws IOException;
+
+    LogDto getFilteredData(String servlet, String logLevel) throws IOException;
 }

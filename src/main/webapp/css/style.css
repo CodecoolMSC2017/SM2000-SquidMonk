@@ -221,7 +221,7 @@ div.table-title {
 /* LOG styling START */
 .textarealike {
   width: 65%;
-  height: 550px;
+  height: 90%;
 
   float: right;
   margin: 50px 50px auto auto;
@@ -236,7 +236,7 @@ div.table-title {
 
 .filterdivleft {
   float: left;
-  width: 15%;
+  width: 200px;
   height: 400px;
   position: absolute;
   top: 30%;
