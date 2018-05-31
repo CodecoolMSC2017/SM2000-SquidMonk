@@ -1,10 +1,11 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.ScheduleDao;
+import com.codecool.web.dao.TaskAssignmentDao;
 import com.codecool.web.dao.TaskDao;
 import com.codecool.web.dao.implementation.ScheduleDaoImpl;
+import com.codecool.web.dao.implementation.TaskAssignmentDaoImpl;
 import com.codecool.web.dao.implementation.TaskDaoImpl;
-import com.codecool.web.dao.implementation.TaskAssignmentDao;
 import com.codecool.web.dto.DashboardTaskDto;
 import com.codecool.web.dto.TaskDto;
 import com.codecool.web.model.Schedule;
@@ -26,12 +27,12 @@ public class JsTaskService implements TaskService {
 
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
-    private TaskAssignmentDao controlTable;
+    private TaskAssignmentDao taskAssignmentDao;
 
     public JsTaskService(Connection connection) {
         this.taskDao = new TaskDaoImpl(connection);
         this.scheduleDao = new ScheduleDaoImpl(connection);
-        this.controlTable = new TaskAssignmentDao(connection);
+        this.taskAssignmentDao = new TaskAssignmentDaoImpl(connection);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class JsTaskService implements TaskService {
         }
 
         logger.info("Updating start and end times for task " + taskId + " in schedule " + scheduleId);
-        controlTable.updateTaskTime(taskId, scheduleId, start, end);
+        taskAssignmentDao.updateTaskTime(taskId, scheduleId, start, end);
     }
 
     @Override

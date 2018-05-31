@@ -1,7 +1,5 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.UserDao;
-import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.UsersService;
 import com.codecool.web.service.exception.ServiceException;
@@ -23,8 +21,7 @@ public class UsersServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new UserDaoImpl(connection);
-            UsersService usersService = new JsUsersService(userDao);
+            UsersService usersService = new JsUsersService(connection);
 
             List<User> users = usersService.getUsers();
             sendMessage(resp, HttpServletResponse.SC_OK, users);

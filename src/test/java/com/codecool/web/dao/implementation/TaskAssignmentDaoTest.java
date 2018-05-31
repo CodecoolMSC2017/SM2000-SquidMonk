@@ -23,7 +23,7 @@ class TaskAssignmentDaoTest {
     /*@Test
     void queryTaskPresent() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             assertFalse(controlTable.queryTaskPresent(300));
             assertTrue(controlTable.queryTaskPresent(1));
         }
@@ -33,7 +33,7 @@ class TaskAssignmentDaoTest {
     void queryTaskConnectionData() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             Task task = new Task(1, 4, "Csba Task 1", "Content");
             task = controlTable.queryTaskConnectionData(task);
@@ -48,7 +48,7 @@ class TaskAssignmentDaoTest {
     @Test
     void insertTask() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             controlTable.insertTask(29, 12, 6, 6, 12);
 
@@ -65,7 +65,7 @@ class TaskAssignmentDaoTest {
     @Test
     void updateTaskSchedule() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             controlTable.updateTaskSchedule(30, 12, 6, 4, 5);
 
@@ -82,7 +82,7 @@ class TaskAssignmentDaoTest {
     @Test
     void updateTaskTime() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             controlTable.updateTaskTime(30, 4, 5);
 
@@ -97,7 +97,7 @@ class TaskAssignmentDaoTest {
     @Test
     void updateTaskColumn() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             controlTable.updateTaskColumn(2, 6, 4, 5);
 
@@ -113,7 +113,7 @@ class TaskAssignmentDaoTest {
     @Test
     void deleteTask() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
 
             controlTable.deleteTask(30);
 

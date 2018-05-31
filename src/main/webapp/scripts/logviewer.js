@@ -46,8 +46,7 @@ function onLogReceived() {
     const divTextAreaEl = document.createElement('div');
     divTextAreaEl.setAttribute('class', 'textarealike');
 
-
-    for (let i = 0; i < log.logText.length; i++) {
+    for (let i = log.logText.length-1; i >= 0; i--) {
         const line = log.logText[i];
         
         divTextAreaEl.innerHTML = divTextAreaEl.innerHTML + line + "<br>";

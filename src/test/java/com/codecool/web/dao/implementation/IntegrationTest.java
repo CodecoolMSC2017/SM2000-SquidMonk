@@ -28,7 +28,7 @@ public class IntegrationTest {
     /*@Test
     void deleteSchedule() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
             ColumnDao columnDao = new ColumnDaoImpl(con);
 
@@ -46,7 +46,7 @@ public class IntegrationTest {
     void deleteColumn() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
             ColumnDao columnDao = new ColumnDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
@@ -66,7 +66,7 @@ public class IntegrationTest {
     @Test
     void deleteTaskFromColumn() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
 
             controlTable.deleteTask(1);
@@ -77,7 +77,7 @@ public class IntegrationTest {
     @Test
     void deleteUser() throws SQLException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
             ColumnDao columnDao = new ColumnDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
@@ -109,7 +109,7 @@ public class IntegrationTest {
     void addTaskEqualStartTimeAsEndTime() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
 
             taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
@@ -134,7 +134,7 @@ public class IntegrationTest {
     @Test
     void addIntersectingTasks() throws SQLException, ClassNotFoundException {
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
 
             taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44
@@ -153,7 +153,7 @@ public class IntegrationTest {
     void addDifferentUserTaskToAnotherUsersTask() throws SQLException, ClassNotFoundException {
         resetDb();
         try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDao controlTable = new TaskAssignmentDao(con);
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
             TaskDao taskDao = new TaskDaoImpl(con);
 
             taskDao.insertTask(7, "Csanád task 3", "Not much here"); // id:44

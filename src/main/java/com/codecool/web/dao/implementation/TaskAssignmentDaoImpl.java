@@ -1,5 +1,6 @@
 package com.codecool.web.dao.implementation;
 
+import com.codecool.web.dao.TaskAssignmentDao;
 import com.codecool.web.model.Task;
 
 import java.sql.Connection;
@@ -9,12 +10,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskAssignmentDao extends AbstractDao {
+public class TaskAssignmentDaoImpl extends AbstractDao implements TaskAssignmentDao {
 
-    public TaskAssignmentDao(Connection connection) {
+    public TaskAssignmentDaoImpl(Connection connection) {
         super(connection);
     }
 
+    @Override
     public boolean queryTaskPresent(int taskId) throws SQLException {
         String sql = "SELECT task_id FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -29,6 +31,7 @@ public class TaskAssignmentDao extends AbstractDao {
         return false;
     }
 
+    @Override
     public Task queryTaskConnectionData(Task task, int scheduleId) throws SQLException {
         String sql = "SELECT task_id, col_id, schedule_id, task_start, task_end FROM col_tsk WHERE task_id = ? AND schedule_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -47,6 +50,7 @@ public class TaskAssignmentDao extends AbstractDao {
         return task;
     }
 
+    @Override
     public List<Integer> queryTaskIdsByScheduleId(int schedId) throws SQLException {
         String sql = "SELECT task_id FROM col_tsk WHERE schedule_id = ?";
         List<Integer> taskIds = new ArrayList<>();
@@ -62,6 +66,7 @@ public class TaskAssignmentDao extends AbstractDao {
         }
     }
 
+    @Override
     public void insertTask(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES (?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -77,6 +82,7 @@ public class TaskAssignmentDao extends AbstractDao {
     /**
      * To be used when a task is moved to a new schedule
      */
+    @Override
     public void updateTaskSchedule(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id=?, schedule_id=?, task_start=?, task_end=? WHERE task_id=?";
 
@@ -93,6 +99,7 @@ public class TaskAssignmentDao extends AbstractDao {
     /**
      * To be used when only the start/end time of a task changes
      */
+    @Override
     public void updateTaskTime(int taskId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET task_start = ?, task_end = ? " +
                 "WHERE task_id = ? AND schedule_id = ?";
@@ -108,6 +115,7 @@ public class TaskAssignmentDao extends AbstractDao {
     /**
      * To be used when the task stays in it's schedule, but moved to a different column
      */
+    @Override
     public void updateTaskColumn(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
         String sql = "UPDATE col_tsk SET col_id = ?, task_start = ?, task_end = ? " +
                 "WHERE task_id = ? AND schedule_id = ?";
@@ -122,6 +130,7 @@ public class TaskAssignmentDao extends AbstractDao {
         }
     }
 
+    @Override
     public void removeTaskFromAllSchedules(int taskId) throws SQLException {
         String sql = "DELETE FROM col_tsk WHERE task_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -130,6 +139,7 @@ public class TaskAssignmentDao extends AbstractDao {
         }
     }
 
+    @Override
     public void removeTaskFromSchedule(int taskId, int scheduleId) throws SQLException {
         String sql = "DELETE FROM col_tsk WHERE task_id = ? AND schedule_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -139,6 +149,7 @@ public class TaskAssignmentDao extends AbstractDao {
         }
     }
 
+    @Override
     public void clearColumn(int columnId) throws SQLException {
         String sql = "DELETE FROM col_tsk WHERE col_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

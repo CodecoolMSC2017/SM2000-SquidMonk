@@ -1,6 +1,7 @@
 package com.codecool.web.service.jsService;
 
 import com.codecool.web.dao.UserDao;
+import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.LoginService;
 import com.codecool.web.service.PassEncrypt;
@@ -8,6 +9,7 @@ import com.codecool.web.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JsLoginService implements LoginService {
@@ -16,8 +18,8 @@ public class JsLoginService implements LoginService {
 
     private final UserDao userDao;
 
-    public JsLoginService(UserDao userDao) {
-        this.userDao = userDao;
+    public JsLoginService(Connection connection) {
+        userDao = new UserDaoImpl(connection);
     }
 
     @Override

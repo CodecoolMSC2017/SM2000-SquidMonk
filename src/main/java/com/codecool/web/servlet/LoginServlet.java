@@ -1,7 +1,5 @@
 package com.codecool.web.servlet;
 
-import com.codecool.web.dao.UserDao;
-import com.codecool.web.dao.implementation.UserDaoImpl;
 import com.codecool.web.model.User;
 import com.codecool.web.service.LoginService;
 import com.codecool.web.service.exception.ServiceException;
@@ -25,8 +23,7 @@ public final class LoginServlet extends AbstractServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         logger.debug("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new UserDaoImpl(connection);
-            LoginService loginService = new JsLoginService(userDao);
+            LoginService loginService = new JsLoginService(connection);
 
             String username = req.getParameter("email");
             String password = req.getParameter("password");
