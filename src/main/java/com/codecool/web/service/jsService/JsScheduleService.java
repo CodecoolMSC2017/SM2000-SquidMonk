@@ -27,13 +27,13 @@ public class JsScheduleService implements ScheduleService {
     private static final Logger logger = LoggerFactory.getLogger(JsScheduleService.class);
 
     private ColumnDao columnDao;
-    private TaskAssignmentDao controlTable;
+    private TaskAssignmentDao taskAssignmentDao;
     private TaskDao taskDao;
     private ScheduleDao scheduleDao;
 
     public JsScheduleService(Connection connection) {
         columnDao = new ColumnDaoImpl(connection);
-        controlTable = new TaskAssignmentDaoImpl(connection);
+        taskAssignmentDao = new TaskAssignmentDaoImpl(connection);
         taskDao = new TaskDaoImpl(connection);
         scheduleDao = new ScheduleDaoImpl(connection);
     }
@@ -48,9 +48,9 @@ public class JsScheduleService implements ScheduleService {
     public List<Task> getTasksByScheduleId(int schedId) throws SQLException {
         logger.info("getting tasks of schedule with id " + schedId);
         List<Task> tasks = new ArrayList<>();
-        List<Integer> taskIds = controlTable.queryTaskIdsByScheduleId(schedId);
+        List<Integer> taskIds = taskAssignmentDao.queryTaskIdsByScheduleId(schedId);
         for (int taskId : taskIds) {
-            tasks.add(controlTable.queryTaskConnectionData(taskDao.findById(taskId), schedId));
+            tasks.add(taskAssignmentDao.queryTaskConnectionData(taskDao.findById(taskId), schedId));
         }
         return tasks;
     }
