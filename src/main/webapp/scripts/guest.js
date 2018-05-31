@@ -1,21 +1,7 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    const mainDiv = document.getElementById('main-content');
 
-    if (rainbow) {
-        addMusic();
-        setTimeout(() => {startFlashing(mainDiv, scheduleJSON)}, 1350);
-    }
+let mainDiv;
 
-    if (scheduleJSON.columns.length == 0) {
-        guestNoColumnMessage(mainDiv, scheduleJSON);
-    } else {
-        createHeaderRow(mainDiv, scheduleJSON, 'true');
-
-        createTimeslotRows(mainDiv, scheduleJSON);
-    }
-});
-
-function guestNoColumnMessage(mainDiv, schedule) {
+function guestNoColumnMessage() {
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'hv-centered-div');
     messageDiv.setAttribute('id', 'schedule-add-column');
@@ -28,17 +14,17 @@ function guestNoColumnMessage(mainDiv, schedule) {
     mainDiv.appendChild(messageDiv);
 }
 
-function refreshRainbowPage(mainDiv, schedule) {
+function refreshRainbowPage() {
     clearMainContent();
 
-    createHeaderRow(mainDiv, schedule, 'true');
+    createHeaderRow('true');
 
-    createTimeslotRows(mainDiv, schedule);
+    createTimeslotRows();
 
 }
 
-function startFlashing(mainDiv, schedule) {
-    setInterval(() => {refreshRainbowPage(mainDiv, scheduleJSON)}, 10);
+function startFlashing() {
+    setInterval(refreshRainbowPage, 10);
 }
 
 function clearMainContent() {
@@ -54,3 +40,23 @@ function addMusic() {
     embed.setAttribute('hidden', 'true');
     soundDivEl.appendChild(embed);
 }
+
+function onLoad() {
+    mainDiv = document.getElementById('main-content');
+    currentSchedule = scheduleJSON;
+
+    if (rainbow) {
+        addMusic();
+        setTimeout(startFlashing, 1350);
+    }
+
+    if (scheduleJSON.columns.length == 0) {
+        guestNoColumnMessage();
+    } else {
+        createHeaderRow('true');
+
+        createTimeslotRows();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', onLoad);
