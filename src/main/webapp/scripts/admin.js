@@ -54,7 +54,7 @@ function createUsersTableHead() {
     usersTablePasswordTh.textContent = 'Password';*/
 
     const usersTableRoleTh = document.createElement('th');
-    usersTableRoleTh.textContent = 'Role';
+    usersTableRoleTh.textContent = 'Role (click change)';;
     usersTableRoleTh.className = 'role';
 
     usersTableHeaderTr.appendChild(usersTableIdTh);
@@ -99,6 +99,8 @@ function createUserRow(user) {
         userRoleTd.textContent = 'User';
     }
     userRoleTd.className = 'entry';
+    userRoleTd.addEventListener('mouseover', onRoleTdMouseHover);
+    userRoleTd.addEventListener('mouseout', onRoleTdMouseOut);
 
     userTr.appendChild(userIdTd);
     userTr.appendChild(userNameTd);
@@ -107,6 +109,15 @@ function createUserRow(user) {
     userTr.appendChild(userRoleTd);
 
     return userTr;
+}
+
+function onRoleTdMouseHover() {
+    this.style.color = 'white';
+    this.style.backgroundColor = 'black';
+}
+
+function onRoleTdMouseOut() {
+    this.removeAttribute('style');
 }
 
 function onUsersReceived() {
