@@ -11,6 +11,8 @@
     </script>
     <script src="../../scripts/guest.js"></script>
     <script src="../../scripts/schedule.js"></script>
+    <script src="../../scripts/column.js"></script>
+    <script src="../../scripts/task.js"></script>
 </head>
 <body>
     <div id="main-content" class="content"></div>
