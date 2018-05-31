@@ -1,6 +1,14 @@
 
 let currentSchedule;
 
+function onDeleteScheduleTaskResponse() {
+    if (this.status === NO_CONTENT) {
+        requestCurrentSchedule();
+    } else {
+        onOtherResponse(this);
+    }
+}
+
 function scheduleDeleteTask() {
     const taskId = this.getAttribute('data-task-id');
 
@@ -8,7 +16,7 @@ function scheduleDeleteTask() {
     params.append('scheduleId', currentSchedule.id);
     
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', requestCurrentSchedule);
+    xhr.addEventListener('load', onDeleteScheduleTaskResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('DELETE', 'protected/schedule/task/' + taskId + '?' + params.toString());
     xhr.send();
@@ -116,9 +124,17 @@ function onClipboardMouseOut() {
     document.getElementById('tooltip').textContent = 'Copy to clipboard';
 }
 
+function onDeleteScheduleResponse() {
+    if (this.status === NO_CONTENT) {
+        showDashboard();
+    } else {
+        onOtherResponse(this);
+    }
+}
+
 function sendDeleteSchedule() {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', showDashboard);
+    xhr.addEventListener('load', onDeleteScheduleResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('DELETE', 'protected/schedule/' + this.getAttribute('schedule-id'));
     xhr.send();
@@ -175,25 +191,29 @@ function onSchedulePublishClick() {
 }
 
 function onSchedulePublishReceived() {
-    const is_public = JSON.parse(this.responseText);
-    const shareButton = document.getElementById('schedule-dialog-share-button');
-    const shareUrl = document.getElementById('schedule-share-url');
-    const shareTitle = document.getElementById('share-title-schedule');
-    const url = document.getElementById('schedule-share-button').getAttribute('url');
-    const shareDiv = document.getElementById('share-div');
-    shareDiv.appendChild(shareUrl);
+    if (this.status === OK) {
+        const is_public = JSON.parse(this.responseText);
+        const shareButton = document.getElementById('schedule-dialog-share-button');
+        const shareUrl = document.getElementById('schedule-share-url');
+        const shareTitle = document.getElementById('share-title-schedule');
+        const url = document.getElementById('schedule-share-button').getAttribute('url');
+        const shareDiv = document.getElementById('share-div');
+        shareDiv.appendChild(shareUrl);
 
-    if (is_public.message === 'false') {
-        shareButton.setAttribute('ispublic', false);
-        shareDiv.style.display = 'none';
-        shareTitle.textContent = "You haven't shared this schedule yet!";
-        shareButton.textContent = "Publish";
+        if (is_public.message === 'false') {
+            shareButton.setAttribute('ispublic', false);
+            shareDiv.style.display = 'none';
+            shareTitle.textContent = "You haven't shared this schedule yet!";
+            shareButton.textContent = "Publish";
+        } else {
+            shareButton.setAttribute('ispublic', true);
+            shareTitle.textContent = 'Share this schedule!';
+            shareDiv.style.display = 'block';
+            shareUrl.value = document.URL + "schedules/public/" + url;
+            shareButton.textContent = "Unpublish";
+        }
     } else {
-        shareButton.setAttribute('ispublic', true);
-        shareTitle.textContent = 'Share this schedule!';
-        shareDiv.style.display = 'block';
-        shareUrl.value = document.URL + "schedules/public/" + url;
-        shareButton.textContent = "Unpublish";
+        onOtherResponse(this);
     }
 }
 
@@ -233,7 +253,7 @@ function onScheduleReceived() {
     if (this.status === OK) {
         clearMainContent();
         currentSchedule = JSON.parse(this.responseText);
-        if (currentSchedule.columns.length == 0) {
+        if (currentSchedule.columns.length === 0) {
             noColumnMessage();
         } else {
             createTitleButtons();
@@ -242,6 +262,8 @@ function onScheduleReceived() {
         }
     } else if (this.status === CONFLICT) {
         onScheduleConflictResponse();
+    } else {
+        onOtherResponse(this);
     }
 }
 
