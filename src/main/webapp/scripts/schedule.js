@@ -496,6 +496,36 @@ function createColumnEditButtons(columnId) {
     return trEl;
 }
 
+function onClearColumnResponse() {
+    if (this.status == NO_CONTENT) {
+        requestCurrentSchedule();
+    } else {
+        console.log(this);
+    }
+}
+
+function onClearColumnButtonClicked(columnId) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onClearColumnResponse);
+    xhr.open('PUT', 'protected/column/' + columnId);
+    xhr.send();
+}
+
+function createClearColumnButton(columnId) {
+    const buttonEl = document.createElement('button');
+    buttonEl.className = 'create-button';
+    buttonEl.textContent = 'Clear column';
+    buttonEl.addEventListener('click', function() {onClearColumnButtonClicked(columnId)});
+
+    const tdEl = document.createElement('td');
+    tdEl.appendChild(buttonEl);
+    tdEl.colSpan = '2';
+
+    const trEl = document.createElement('tr');
+    trEl.appendChild(tdEl);
+    return trEl;
+}
+
 function createHeaderRow(mainDiv, schedule, isGuest) {
     const tableDivEl = document.createElement('div');
     tableDivEl.setAttribute('class', 'schedule-div-table');
@@ -511,7 +541,6 @@ function createHeaderRow(mainDiv, schedule, isGuest) {
         trEl.setAttribute('id', 'header-row-' + column.id);
 
         const thEl = document.createElement('th');
-        //thEl.addEventListener('click', editSingleRoutineName);
         thEl.textContent = column.name;
         thEl.setAttribute('columnId', column.id);
         thEl.setAttribute('colspan', '2');
@@ -520,6 +549,7 @@ function createHeaderRow(mainDiv, schedule, isGuest) {
         tableEl.appendChild(trEl);
         if (!isGuest) {
             tableEl.appendChild(createColumnEditButtons(column.id));
+            tableEl.appendChild(createClearColumnButton(column.id));
         }
         tableDivEl.appendChild(tableEl);
         mainDiv.appendChild(tableDivEl);   

@@ -54,7 +54,7 @@ function createUsersTableHead() {
     usersTablePasswordTh.textContent = 'Password';*/
 
     const usersTableRoleTh = document.createElement('th');
-    usersTableRoleTh.textContent = 'Role';
+    usersTableRoleTh.textContent = 'Role (click change)';;
     usersTableRoleTh.className = 'role';
 
     usersTableHeaderTr.appendChild(usersTableIdTh);
@@ -69,19 +69,24 @@ function createUsersTableHead() {
 function createUserRow(user) {
     const userTr = document.createElement('tr');
     userTr.id = user.id;
-    userTr.addEventListener('click', onUserClick);
 
     const userIdTd = document.createElement('td');
     userIdTd.textContent = user.id;
     userIdTd.className = 'entry';
+    userIdTd.id = user.id;
+    userIdTd.addEventListener('click', onUserClick);
 
     const userNameTd = document.createElement('td');
     userNameTd.textContent = user.name;
     userNameTd.className = 'entry';
+    userNameTd.id = user.id;
+    userNameTd.addEventListener('click', onUserClick);
 
     const userEmailTd = document.createElement('td');
     userEmailTd.textContent = user.email;
     userEmailTd.className = 'entry';
+    userEmailTd.id = user.id;
+    userEmailTd.addEventListener('click', onUserClick);
 
     /*const userPasswordTd = document.createElement('td');
     userPasswordTd.textContent = user.password;
@@ -94,6 +99,8 @@ function createUserRow(user) {
         userRoleTd.textContent = 'User';
     }
     userRoleTd.className = 'entry';
+    userRoleTd.addEventListener('mouseover', onRoleTdMouseHover);
+    userRoleTd.addEventListener('mouseout', onRoleTdMouseOut);
 
     userTr.appendChild(userIdTd);
     userTr.appendChild(userNameTd);
@@ -102,6 +109,15 @@ function createUserRow(user) {
     userTr.appendChild(userRoleTd);
 
     return userTr;
+}
+
+function onRoleTdMouseHover() {
+    this.style.color = 'white';
+    this.style.backgroundColor = 'black';
+}
+
+function onRoleTdMouseOut() {
+    this.removeAttribute('style');
 }
 
 function onUsersReceived() {
