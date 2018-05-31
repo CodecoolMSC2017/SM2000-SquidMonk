@@ -70,7 +70,11 @@ function viewTaskOnReceive() {
 
         const darkBackgroundDiv = document.createElement('div');
         darkBackgroundDiv.classList.add('schedule-above-div-dark');
-        darkBackgroundDiv.addEventListener('click', requestCurrentSchedule);
+        if (!needed) {
+            darkBackgroundDiv.addEventListener('click', requestCurrentSchedule);
+        } else {
+            darkBackgroundDiv.addEventListener('click', doRequestScheduleForDrag);
+        }
 
         const aboveDivEl = document.createElement('div');
         aboveDivEl.classList.add('schedule-above-div-task');
