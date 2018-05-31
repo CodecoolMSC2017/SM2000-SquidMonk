@@ -302,7 +302,7 @@ function onSchedulesReceived() {
         oldTable.remove();
     }
 
-    mainContentEl.appendChild(scheduleDiv);
+    mainDiv.appendChild(scheduleDiv);
 }
 
 function onTasksReceived() {
@@ -351,7 +351,7 @@ function onTasksReceived() {
         oldTable.remove();
     }
 
-    mainContentEl.appendChild(taskDiv);
+    mainDiv.appendChild(taskDiv);
 }
 
 function requestSchedules() {
@@ -387,8 +387,8 @@ function setupWelcomeDiv() {
     welcomeDiv.id = 'welcome-text';
     welcomeDiv.textContent = "Welcome, " + user.name + "!";
 
-    const mainDivEl = document.getElementById('main-content');
-    mainDivEl.appendChild(welcomeDiv);
+    const mainDiv = document.getElementById('main-content');
+    mainDiv.appendChild(welcomeDiv);
 }
 
 function showDashboard() {

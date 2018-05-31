@@ -24,7 +24,11 @@ function onAddTaskToColumnClicked(taskId) {
 }
 
 function onAddTaskToColumnResponse() {
-    requestCurrentSchedule();
+    if (this.status === OK) {
+        requestCurrentSchedule();
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function addColumn() {
@@ -76,7 +80,7 @@ function onDeleteColumnRespose() {
     if (this.status == NO_CONTENT) {
         requestCurrentSchedule();
     } else {
-        console.log(this);
+        onOtherResponse(this);
     }
 }
 
@@ -142,7 +146,7 @@ function onClearColumnResponse() {
     if (this.status == NO_CONTENT) {
         requestCurrentSchedule();
     } else {
-        console.log(this);
+        onOtherResponse(this);
     }
 }
 
@@ -202,10 +206,18 @@ function onSaveColumnNameButtonClicked(oldName, columnId) {
     params.append('columnName', newName);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', requestCurrentSchedule);
+    xhr.addEventListener('load', onUpdateColumnNameResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('PUT', 'protected/schedule/' + currentSchedule.id + '?' + params.toString(), true);
     xhr.send();
+}
+
+function onUpdateColumnNameResponse() {
+    if (this.status === OK) {
+        requestCurrentSchedule();
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function onEditColumnButtonClicked(columnId) {
