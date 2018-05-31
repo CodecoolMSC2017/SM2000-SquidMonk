@@ -139,6 +139,14 @@ public class TaskAssignmentDao extends AbstractDao {
         }
     }
 
+    public void clearColumn(int columnId) throws SQLException {
+        String sql = "DELETE FROM col_tsk WHERE col_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, columnId);
+            statement.executeUpdate();
+        }
+    }
+
     private Task fillTask(Task task, int colId, int scheduleId, int taskStart, int taskEnd) {
         task.setColId(colId);
         task.setSchedId(scheduleId);

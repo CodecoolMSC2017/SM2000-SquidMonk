@@ -12,4 +12,6 @@ public interface ColumnService {
     List<Task> getAvailableTasks(int userId, int columnId) throws SQLException;
 
     void addTaskToColumn(int columnId, int taskId, int start) throws SQLException;
+
+    void clearColumn(int columnId) throws SQLException;
 }

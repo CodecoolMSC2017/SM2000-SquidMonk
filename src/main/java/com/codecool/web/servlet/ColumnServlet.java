@@ -77,6 +77,23 @@ public class ColumnServlet extends AbstractServlet {
         }
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("put method start");
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ColumnService service = new JsColumnService(connection);
+
+            int columnId = getColumnId(req.getRequestURI());
+            service.clearColumn(columnId);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            logger.debug("put method successful");
+        } catch (SQLException e) {
+            handleSqlError(resp, e);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);
+        }
+    }
+
     private int getColumnId(String uri) throws ServiceException {
         String[] splitUri = uri.split("/");
         if (splitUri.length < 5) {

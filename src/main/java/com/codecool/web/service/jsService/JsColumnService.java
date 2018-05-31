@@ -59,4 +59,10 @@ public class JsColumnService implements ColumnService {
         Column column = columnDao.findById(columnId);
         controlTable.insertTask(taskId, columnId, column.getScheduleId(), start, start + 1);
     }
+
+    @Override
+    public void clearColumn(int columnId) throws SQLException {
+        logger.debug("clearing column " + columnId);
+        controlTable.clearColumn(columnId);
+    }
 }
