@@ -1111,7 +1111,7 @@ div.table-title {
 }
 
 .side-bar {
-    height: 92%;
+    height: 91.6%;
     width: 272px;
     position: fixed;
     z-index: 1;
@@ -1180,6 +1180,13 @@ div.table-title {
 .dragdrop-target[drop-active=true] {
     background-color: #555555;
     color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.side-bar[drop-active=true] {
+    background-color: #a0a0a0;
+    color: #555555;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
 }

@@ -314,7 +314,7 @@ function createTimeslotRows() {
 
             if (typeof task != 'undefined') {
                 const slotsTaken = task.end - task.start;
-                tdHeight = 37.6 * slotsTaken;
+                tdHeight = 32 * slotsTaken;
 
                 tdEl.innerHTML = "<b>" + task.name + "</b><br>" + task.start + ":00 to " + task.end +":00";
                 tdEl.setAttribute('rowspan', slotsTaken);
@@ -336,6 +336,10 @@ function createTimeslotRows() {
                 }
 
                 tdEl.addEventListener('click', getTasksToView);
+                if (needed) {
+                    tdEl.setAttribute('draggable', 'true');
+                    tdEl.setAttribute('ondragstart', 'onScheduledTaskDragStart(event)');
+                }
 
                 tdEl.style.cursor = 'pointer';
                 trEl.appendChild(tdEl);
