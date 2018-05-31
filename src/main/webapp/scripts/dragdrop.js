@@ -1,4 +1,4 @@
-
+let taskToDeleteId;
 let needed;
 let dragColumnId;
 
@@ -19,6 +19,10 @@ function onDragDropTasksReceived() {
 
         const sideBar = document.createElement('div');
         sideBar.className = 'side-bar';
+        sideBar.id = 'side-bar';
+        sideBar.setAttribute('ondragover', 'scheduledTaskAllowDrop(event)');
+        sideBar.setAttribute('ondragleave', 'scheduledTaskDenyDrop(event)');
+        sideBar.setAttribute('ondrop', 'onScheduledTaskDrop(event)');
 
         const hEl = document.createElement('h1');
         hEl.style.color = 'white';
@@ -144,6 +148,9 @@ function denyDrop(ev) {
 }
 
 function drag(ev) {
+    if (document.getElementById('data-to-drop') != null) {
+        document.getElementById('data-to-drop').removeAttribute('data-to-drop');
+    }
     ev.target.id = 'data-to-drop';
 }
 
@@ -156,7 +163,6 @@ function drop(ev) {
     const startTime = ev.target.getAttribute('starttime');
     dragColumnId = ev.target.parentNode.parentNode.id;
     onDragAddTaskToColumn(taskId, startTime);
-    document.getElementById('data-to-drop').removeAttribute('data-to-drop');
 }
 
 function onDragAddTaskToColumn(taskId, startTime) {
@@ -189,5 +195,36 @@ function doRequestScheduleForDrag() {
     xhr.addEventListener('load', onScheduleReceivedAfterDrag);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/schedule/' + currentSchedule.id);
+    xhr.send();
+}
+
+function onScheduledTaskDragStart(ev) {
+    taskToDeleteId = ev.target.getAttribute('data-task-id');
+}
+
+function scheduledTaskAllowDrop(ev) {
+    ev.preventDefault();
+    document.getElementById('side-bar').setAttribute('drop-active', 'true');
+}
+
+function scheduledTaskDenyDrop(ev) {
+    ev.preventDefault();
+    document.getElementById('side-bar').setAttribute('drop-active', 'false');
+}
+
+function onScheduledTaskDrop(ev) {
+    ev.preventDefault();
+    document.getElementById('side-bar').setAttribute('drop-active', 'false');
+    dragScheduleDeleteTask();
+}
+
+function dragScheduleDeleteTask() {
+    const params = new URLSearchParams();
+    params.append('scheduleId', currentSchedule.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteScheduleTaskResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/schedule/task/' + taskToDeleteId + '?' + params.toString());
     xhr.send();
 }
