@@ -43,6 +43,9 @@ function onLogReceived() {
 
     removeAllChildren(mainDiv);
 
+    const logViewDiv = document.createElement('div');
+    logViewDiv.setAttribute('class', 'logviewer');
+
     const divTextAreaEl = document.createElement('div');
     divTextAreaEl.setAttribute('class', 'textarealike');
 
@@ -98,8 +101,10 @@ function onLogReceived() {
     leftFilterDiv.appendChild(formServletFilter);
     leftFilterDiv.appendChild(buttonFilter);
 
-    mainDiv.appendChild(leftFilterDiv);
-    mainDiv.appendChild(divTextAreaEl);
+    logViewDiv.appendChild(leftFilterDiv);
+    logViewDiv.appendChild(divTextAreaEl);
+
+    mainDiv.appendChild(logViewDiv);
 }
 
 function onMenuLogClick() {
