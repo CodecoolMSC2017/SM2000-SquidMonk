@@ -257,52 +257,56 @@ function createTaskRow(task) {
 }
 
 function onSchedulesReceived() {
-    const schedules = JSON.parse(this.responseText);
+    if (this.status === OK) {
+        const schedules = JSON.parse(this.responseText);
 
-    const scheduleDiv = document.createElement('div');
-    scheduleDiv.className = 'dash-table';
-    scheduleDiv.style.float = 'left';
-    scheduleDiv.id = 'dashboard-schedule-table';
+        const scheduleDiv = document.createElement('div');
+        scheduleDiv.className = 'dash-table';
+        scheduleDiv.style.float = 'left';
+        scheduleDiv.id = 'dashboard-schedule-table';
 
-    const createButton = document.createElement('td');
-    createButton.colSpan = '3';
-    createButton.className = 'entry';
-    createButton.textContent = 'Create new schedule';
+        const createButton = document.createElement('td');
+        createButton.colSpan = '3';
+        createButton.className = 'entry';
+        createButton.textContent = 'Create new schedule';
 
-    const createButtonRow = document.createElement('tr');
-    createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
-    createButtonRow.id = 'schedule-create-button-row';
-    createButtonRow.appendChild(createButton);
+        const createButtonRow = document.createElement('tr');
+        createButtonRow.addEventListener('click', onCreateScheduleButtonClicked);
+        createButtonRow.id = 'schedule-create-button-row';
+        createButtonRow.appendChild(createButton);
 
-    const scheduleTable = document.createElement('table');
-    scheduleTable.className = 'dashboard-table';
-    scheduleTable.appendChild(createTableHead('My Schedules'));
-    scheduleTable.appendChild(createButtonRow);
-    scheduleTable.appendChild(createScheduleTableHead());
+        const scheduleTable = document.createElement('table');
+        scheduleTable.className = 'dashboard-table';
+        scheduleTable.appendChild(createTableHead('My Schedules'));
+        scheduleTable.appendChild(createButtonRow);
+        scheduleTable.appendChild(createScheduleTableHead());
 
-    if (schedules.length == 0) {
-        const messageTdEl = document.createElement('td');
-        messageTdEl.colSpan = '3';
-        messageTdEl.className = 'entry';
-        messageTdEl.textContent = 'You do not have any schedules.';
+        if (schedules.length == 0) {
+            const messageTdEl = document.createElement('td');
+            messageTdEl.colSpan = '3';
+            messageTdEl.className = 'entry';
+            messageTdEl.textContent = 'You do not have any schedules.';
 
-        const messageTrEl = document.createElement('tr');
-        messageTrEl.appendChild(messageTdEl);
-        scheduleTable.appendChild(messageTrEl);
-    } else {
-        for (let i = 0; i < schedules.length; i++) {
-            const schedule = schedules[i];
-            scheduleTable.appendChild(createScheduleRow(schedule));
+            const messageTrEl = document.createElement('tr');
+            messageTrEl.appendChild(messageTdEl);
+            scheduleTable.appendChild(messageTrEl);
+        } else {
+            for (let i = 0; i < schedules.length; i++) {
+                const schedule = schedules[i];
+                scheduleTable.appendChild(createScheduleRow(schedule));
+            }
         }
-    }
-    scheduleDiv.appendChild(scheduleTable);
+        scheduleDiv.appendChild(scheduleTable);
 
-    const oldTable = document.getElementById('dashboard-schedule-table');
-    if (oldTable != null) {
-        oldTable.remove();
-    }
+        const oldTable = document.getElementById('dashboard-schedule-table');
+        if (oldTable != null) {
+            oldTable.remove();
+        }
 
-    mainDiv.appendChild(scheduleDiv);
+        mainDiv.appendChild(scheduleDiv);
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function onTasksReceived() {
