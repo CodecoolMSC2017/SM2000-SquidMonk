@@ -3,7 +3,11 @@ let currentSchedule;
 
 function onDeleteScheduleTaskResponse() {
     if (this.status === NO_CONTENT) {
-        requestCurrentSchedule();
+        if (!needed) {
+            requestCurrentSchedule();
+        } else {
+            doRequestScheduleForDrag();
+        }
     } else {
         onOtherResponse(this);
     }
@@ -37,7 +41,11 @@ function sendModifiedTaskData() {
     params.append('scheduleId', currentSchedule.id);
     
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onScheduleReceived);
+    if (!needed) {
+        xhr.addEventListener('load', onScheduleReceived);
+    } else {
+        xhr.addEventListener('load', doRequestScheduleForDrag);
+    }
     xhr.addEventListener('error', onNetworkError);
     xhr.open('PUT', 'protected/schedule/task/' + taskId + '?' + params.toString(), true);
     xhr.send();
@@ -51,7 +59,11 @@ function sharePopupDialog() {
     const darkBackgroundDiv = document.createElement('div');
     darkBackgroundDiv.classList.add('schedule-above-div-dark');
     darkBackgroundDiv.setAttribute('id', currentSchedule.id);
-    darkBackgroundDiv.addEventListener('click', onScheduleClick);
+    if (!needed) {
+        darkBackgroundDiv.addEventListener('click', onScheduleClick);
+    } else {
+        darkBackgroundDiv.addEventListener('click', doRequestScheduleForDrag);
+    }
 
     const aboveDivEl = document.createElement('div');
     aboveDivEl.classList.add('schedule-above-div');
@@ -268,6 +280,7 @@ function onScheduleReceived() {
 }
 
 function requestCurrentSchedule() {
+    needed = false;
     doRequestSchedule(currentSchedule.id);
 }
 

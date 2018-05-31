@@ -1,4 +1,7 @@
+let needed;
+
 function onDragDropClick(columnId) {
+    needed = true;
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onDragDropTasksReceived);
     xhr.open('GET', 'protected/column/' + columnId + '/availableTasks');
@@ -44,7 +47,7 @@ function onDragDropTasksReceived() {
     dragDropMainEl.appendChild(createDragDropTableHeader());
     mainDiv.appendChild(dragDropMainEl);
     mainDiv.appendChild(sideBar);
-    createTimeslotRows('true');
+    createTimeslotRows();
     tableFix();
 }
 
@@ -174,8 +177,6 @@ function removeTdAttrs() {
 function doRequestScheduleForDrag() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', () => {onDragDropClick(currentSchedule.columns[1].id)});
-    console.log(currentSchedule.id);
-    console.log(currentSchedule.columns[1].id);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/schedule/' + currentSchedule.id);
     xhr.send();

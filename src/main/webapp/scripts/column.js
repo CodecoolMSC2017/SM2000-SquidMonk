@@ -70,7 +70,11 @@ function sendNewColumnData() {
     params.append('columnName', value);
     
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onScheduleReceived);
+    if (!needed) {
+        xhr.addEventListener('load', onScheduleReceived);
+    } else {
+        xhr.addEventListener('load', doRequestScheduleForDrag);
+    }
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'protected/schedule/' + currentSchedule.id + '?' + params.toString());
     xhr.send();
@@ -78,7 +82,11 @@ function sendNewColumnData() {
 
 function onDeleteColumnRespose() {
     if (this.status == NO_CONTENT) {
-        requestCurrentSchedule();
+        if (!needed) {
+            requestCurrentSchedule();
+        } else {
+            doRequestScheduleForDrag();
+        }
     } else {
         onOtherResponse(this);
     }
@@ -287,7 +295,7 @@ function createHeaderRow(isGuest) {
     }
 }
 
-function createTimeslotRows(needed) {
+function createTimeslotRows() {
     let taskSpaceCounter = 0;
     let tdHeight = 0;
 
@@ -326,9 +334,9 @@ function createTimeslotRows(needed) {
                 if (tdHeight >= 120) {
                     tdEl.innerHTML = "<b>" + task.name + "</b><br><i>" + task.content + "</i><br><br>" + task.start + ":00 to " + task.end +":00";
                 }
-                if (!needed) {
-                    tdEl.addEventListener('click', getTasksToView);
-                }
+
+                tdEl.addEventListener('click', getTasksToView);
+
                 tdEl.style.cursor = 'pointer';
                 trEl.appendChild(tdEl);
             }
