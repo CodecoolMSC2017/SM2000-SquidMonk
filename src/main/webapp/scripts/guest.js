@@ -1,7 +1,7 @@
 
 let mainDiv;
 
-function guestNoColumnMessage(mainDiv, schedule) {
+function guestNoColumnMessage() {
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'hv-centered-div');
     messageDiv.setAttribute('id', 'schedule-add-column');
