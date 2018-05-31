@@ -34,10 +34,10 @@ public class LogServlet extends AbstractServlet {
                 logDto = logService.readLastLinesFromLog(100);
             }
             else if (mode.equals("filter")) {
-                String servlet = req.getParameter("servlet");
-                String logLevel = req.getParameter("loglevel");
+                String servlets = req.getParameterValues("servlets")[0];
+                String logLevels = req.getParameterValues("loglevels")[0];
 
-                logDto = logService.getFilteredData(servlet, logLevel);
+                logDto = logService.getFilteredData(servlets.split(","), logLevels.split(","));
             }
 
             sendMessage(resp, HttpServletResponse.SC_OK, logDto);

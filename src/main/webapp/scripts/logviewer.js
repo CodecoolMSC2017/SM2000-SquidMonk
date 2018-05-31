@@ -5,15 +5,14 @@ function sendFilterData() {
     const servletElements = formServletFilter.elements;
     const logLevelElements = formLogLevelFilter.elements;
 
-    let servletToFilter;
-    let logLevelToFilter;
+    let servletToFilter = [];
+    let logLevelToFilter = [];
 
     for (let i = 0; i<servletElements.length; i++) {
         const element = servletElements[i];
 
         if (element.checked === true) {
-            servletToFilter = element.value;
-            break;
+            servletToFilter.push(element.value);
         }
     }
 
@@ -21,14 +20,13 @@ function sendFilterData() {
         const element = logLevelElements[i];
 
         if (element.checked === true) {
-            logLevelToFilter = element.value;
-            break;
+            logLevelToFilter.push(element.value);
         }
     }
 
     const params = new URLSearchParams();
-    params.append('servlet', servletToFilter);
-    params.append('loglevel', logLevelToFilter);
+    params.append('servlets', servletToFilter);
+    params.append('loglevels', logLevelToFilter);
     
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLogReceived);
@@ -77,8 +75,9 @@ function onLogReceived() {
         const level = log.logLevels[i];
 
         const inputEl = document.createElement('input');
-        inputEl.setAttribute('type', 'radio');
+        inputEl.setAttribute('type', 'checkbox');
         inputEl.setAttribute('name', 'level');
+        inputEl.setAttribute('checked', 'checked');
         inputEl.value = level;
 
         formLogLevelFilter.appendChild(inputEl);
@@ -89,8 +88,9 @@ function onLogReceived() {
         const servlet = log.logServlets[i];
 
         const inputEl = document.createElement('input');
-        inputEl.setAttribute('type', 'radio');
+        inputEl.setAttribute('type', 'checkbox');
         inputEl.setAttribute('name', 'servlet');
+        inputEl.setAttribute('checked', 'checked');
         inputEl.value = servlet;
 
         formServletFilter.appendChild(inputEl);

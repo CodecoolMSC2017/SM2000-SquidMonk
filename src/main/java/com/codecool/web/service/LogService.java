@@ -11,5 +11,5 @@ public interface LogService {
 
     LogDto readLastLinesFromLog(int numberOfLines) throws IOException;
 
-    LogDto getFilteredData(String servlet, String logLevel) throws IOException;
+    LogDto getFilteredData(String[] servlet, String[] logLevel) throws IOException;
 }
