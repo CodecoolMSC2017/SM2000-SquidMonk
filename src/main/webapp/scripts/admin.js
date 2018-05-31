@@ -54,7 +54,7 @@ function createUsersTableHead() {
     usersTablePasswordTh.textContent = 'Password';*/
 
     const usersTableRoleTh = document.createElement('th');
-    usersTableRoleTh.textContent = 'Role';
+    usersTableRoleTh.textContent = 'Role (click change)';;
     usersTableRoleTh.className = 'role';
 
     usersTableHeaderTr.appendChild(usersTableIdTh);
