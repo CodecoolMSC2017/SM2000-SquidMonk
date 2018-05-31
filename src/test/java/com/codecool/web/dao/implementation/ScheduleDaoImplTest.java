@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScheduleDaoImplTest extends AbstractTest {
-
+    /*
     @Test
     void findById() throws SQLException, ClassNotFoundException {
         resetDatabase();
@@ -60,7 +60,7 @@ class ScheduleDaoImplTest extends AbstractTest {
             assertFalse(schedules.get(1).isPublic());
         }
     }
-    */
+    
     @Test
     void updateVisibility() throws SQLException {
         try (Connection connection = getConnection()) {
@@ -96,5 +96,5 @@ class ScheduleDaoImplTest extends AbstractTest {
 
     @Test
     void deleteSchedule() {
-    }
+    }*/
 }

@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 abstract class AbstractTest {
-
+    /*
     private DataSource dataSource;
 
     AbstractTest() {
@@ -33,5 +33,5 @@ abstract class AbstractTest {
             ex.printStackTrace();
             throw new IllegalStateException(ex);
         }
-    }
+    }*/
 }

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ColumnDaoImplTest extends AbstractTest {
-
+    /*
     @Test
     void findById() throws SQLException {
         try (Connection connection = getConnection()) {
@@ -75,5 +75,5 @@ class ColumnDaoImplTest extends AbstractTest {
             assertEquals(name, columnUpdateName.getName());
 
         }
-    }
+    }*/
 }

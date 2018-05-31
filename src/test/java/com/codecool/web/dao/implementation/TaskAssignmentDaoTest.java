@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskAssignmentDaoTest extends AbstractTest {
-
+    /*
     @Test
     void queryTaskPresent() throws SQLException {
         try (Connection connection = getConnection()) {

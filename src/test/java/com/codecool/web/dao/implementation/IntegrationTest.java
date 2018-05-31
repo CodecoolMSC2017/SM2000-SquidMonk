@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegrationTest extends AbstractTest {
-
+    /*
     @Test
     void deleteSchedule() throws SQLException {
         try (Connection connection = getConnection()) {
@@ -119,7 +119,7 @@ public class IntegrationTest extends AbstractTest {
             assertEquals(12, oldTask.getEnd());
         }
     }
-    */
+
     @Test
     void addIntersectingTasks() throws SQLException, ClassNotFoundException {
         try (Connection connection = getConnection()) {
@@ -149,6 +149,6 @@ public class IntegrationTest extends AbstractTest {
 
             assertThrows(SQLException.class, () -> controlTable.insertTask(44, 8, 4, 2, 4));
         }
-    }
+    }*/
 
 }

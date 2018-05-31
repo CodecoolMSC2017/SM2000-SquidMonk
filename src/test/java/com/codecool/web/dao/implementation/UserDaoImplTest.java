@@ -16,9 +16,9 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoImplTest extends AbstractTest {
-
+    /*
     @Test
-    void findById() throws SQLException, ClassNotFoundException {
+    void findById() throws SQLException {
         try (Connection connection = getConnection()) {
             resetDatabase();
             UserDao userDao = new UserDaoImpl(connection);
@@ -89,5 +89,5 @@ class UserDaoImplTest extends AbstractTest {
             user = userDao.findById(2);
             assertTrue(user.isAdmin());
         }
-    }
+    }*/
 }
