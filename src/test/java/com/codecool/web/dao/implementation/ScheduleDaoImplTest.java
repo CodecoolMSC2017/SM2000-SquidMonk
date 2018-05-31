@@ -14,20 +14,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ScheduleDaoImplTest {
+class ScheduleDaoImplTest extends AbstractTest {
 
-    String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
-
-    @BeforeEach
-    void setUp() throws ClassNotFoundException, SQLException {
-
-    }
-
-    /*@Test
+    @Test
     void findById() throws SQLException, ClassNotFoundException {
-        resetDb();
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+        resetDatabase();
+        try (Connection connection = getConnection()) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
 
             Schedule schedule = scheduleDao.findById(1);
             assertEquals("Empty User sched", schedule.getName());
@@ -39,8 +32,8 @@ class ScheduleDaoImplTest {
 
     @Test
     void findAllByUserId() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScheduleDao scheduleDao = new ScheduleDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            ScheduleDao scheduleDao = new ScheduleDaoImpl(connection);
 
             List<Schedule> scheduleList = scheduleDao.findAllByUserId(1);
             assertEquals(0, scheduleList.size());
@@ -50,36 +43,36 @@ class ScheduleDaoImplTest {
             assertEquals("Empty User sched", scheduleList.get(0).getName());
         }
     }
-
+    /*
     @Test
     void insertSchedule() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int userId = 3;
             String name = "Alexa sched insert test";
 
-            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(con);
+            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(connection);
             scheduleDao.insertSchedule(userId, name);
 
-            List<Schedule> schedules = new ScheduleDaoImpl(con).findAllByUserId(3);
+            List<Schedule> schedules = new ScheduleDaoImpl(connection).findAllByUserId(3);
             assertEquals(2, schedules.size());
             assertEquals(15, schedules.get(1).getId());
             assertEquals(name, schedules.get(1).getName());
             assertFalse(schedules.get(1).isPublic());
         }
     }
-
+    */
     @Test
     void updateVisibility() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int scheduleId = 1;
             boolean isPublic = false;
 
-            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(con);
+            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(connection);
 
             Schedule schedule = scheduleDao.findById(scheduleId);
             assertTrue(schedule.isPublic());
 
-            scheduleDao.updateVisibility(scheduleId, isPublic);
+            scheduleDao.updateVisibility(scheduleId);
             Schedule scheduleUpdateVisibility = scheduleDao.findById(scheduleId);
             assertFalse(scheduleUpdateVisibility.isPublic());
         }
@@ -87,11 +80,11 @@ class ScheduleDaoImplTest {
 
     @Test
     void updateName() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int scheduleId = 4;
             String name = "Csba sched updateNameTest";
 
-            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(con);
+            ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl(connection);
             Schedule schedule = scheduleDao.findById(scheduleId);
             assertEquals("Csba sched #2", schedule.getName());
 
@@ -104,11 +97,4 @@ class ScheduleDaoImplTest {
     @Test
     void deleteSchedule() {
     }
-
-    void resetDb() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
-    }*/
 }

@@ -1,34 +1,24 @@
 package com.codecool.web.dao.implementation;
 
-import com.codecool.web.dao.ScheduleDao;
 import com.codecool.web.model.Column;
-import com.codecool.web.model.Schedule;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ColumnDaoImplTest {
+class ColumnDaoImplTest extends AbstractTest {
 
-    String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
-
-    @BeforeEach
-    void setUp() throws ClassNotFoundException, SQLException {
-
-    }
-
-    /*@Test
-    void findById() throws SQLException, ClassNotFoundException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            resetDb();
-            Column column1 = new ColumnDaoImpl(con).findById(1);
-            Column column2 = new ColumnDaoImpl(con).findById(2);
-            Column column3 = new ColumnDaoImpl(con).findById(7);
+    @Test
+    void findById() throws SQLException {
+        try (Connection connection = getConnection()) {
+            resetDatabase();
+            Column column1 = new ColumnDaoImpl(connection).findById(1);
+            Column column2 = new ColumnDaoImpl(connection).findById(2);
+            Column column3 = new ColumnDaoImpl(connection).findById(7);
 
             assertEquals("Alexa Column 1", column1.getName());
             assertEquals("Alexa Column 2", column2.getName());
@@ -38,8 +28,8 @@ class ColumnDaoImplTest {
 
     @Test
     void findAllByScheduleId() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            List<Column> columns = new ColumnDaoImpl(con).findAllByScheduleId(2);
+        try (Connection connection = getConnection()) {
+            List<Column> columns = new ColumnDaoImpl(connection).findAllByScheduleId(2);
 
             assertEquals(3, columns.size());
             assertEquals("Alexa Column 1", columns.get(0).getName());
@@ -50,14 +40,14 @@ class ColumnDaoImplTest {
 
     @Test
     void insertColumn() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ColumnDaoImpl columnDao = new ColumnDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            ColumnDaoImpl columnDao = new ColumnDaoImpl(connection);
             int scheduleId = 1;
             String name = "InsertColumn";
 
             columnDao.insertColumn(scheduleId, name);
-            Column column = columnDao.findById(14);
-            assertEquals(14, column.getId());
+            Column column = columnDao.findById(21);
+            assertEquals(21, column.getId());
             assertEquals(name, column.getName());
 
             columnDao.insertColumn(1, "new 2");
@@ -72,11 +62,11 @@ class ColumnDaoImplTest {
 
     @Test
     void updateName() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int id = 4;
             String name = "ColumnNameTest";
 
-            ColumnDaoImpl columnDao = new ColumnDaoImpl(con);
+            ColumnDaoImpl columnDao = new ColumnDaoImpl(connection);
             Column column = columnDao.findById(id);
             assertEquals("Csba Column 1", column.getName());
 
@@ -86,15 +76,4 @@ class ColumnDaoImplTest {
 
         }
     }
-
-    @Test
-    void deleteColumn() throws SQLException {
-    }
-
-    void resetDb() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
-    }*/
 }

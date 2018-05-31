@@ -12,31 +12,25 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskAssignmentDaoTest {
+class TaskAssignmentDaoTest extends AbstractTest {
 
-    String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    /*@Test
+    @Test
     void queryTaskPresent() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
             assertFalse(controlTable.queryTaskPresent(300));
             assertTrue(controlTable.queryTaskPresent(1));
         }
     }
-
+    /*
     @Test
     void queryTaskConnectionData() throws SQLException, ClassNotFoundException {
-        resetDb();
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        resetDatabase();
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
             Task task = new Task(1, 4, "Csba Task 1", "Content");
-            task = controlTable.queryTaskConnectionData(task);
+            task = controlTable.queryTaskConnectionData(task, 0);
 
             assertEquals(4, task.getColId());
             assertEquals(4, task.getSchedId());
@@ -47,13 +41,13 @@ class TaskAssignmentDaoTest {
 
     @Test
     void insertTask() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
             controlTable.insertTask(29, 12, 6, 6, 12);
 
             Task task = new Task(29, 7, "Csanád Task 1", "Content");
-            task = controlTable.queryTaskConnectionData(task);
+            task = controlTable.queryTaskConnectionData(task, 0);
 
             assertEquals(12, task.getColId());
             assertEquals(6, task.getSchedId());
@@ -64,13 +58,13 @@ class TaskAssignmentDaoTest {
 
     @Test
     void updateTaskSchedule() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
             controlTable.updateTaskSchedule(30, 12, 6, 4, 5);
 
             Task task = new Task(30, 7, "Csanád Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task);
+            task = controlTable.queryTaskConnectionData(task, 0);
 
             assertEquals(12, task.getColId());
             assertEquals(6, task.getSchedId());
@@ -81,13 +75,13 @@ class TaskAssignmentDaoTest {
 
     @Test
     void updateTaskTime() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.updateTaskTime(30, 4, 5);
+            controlTable.updateTaskTime(30, 0, 4, 5);
 
             Task task = new Task(30, 7, "Csanád Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task);
+            task = controlTable.queryTaskConnectionData(task, 0);
 
             assertEquals(4, task.getStart());
             assertEquals(5, task.getEnd());
@@ -96,13 +90,13 @@ class TaskAssignmentDaoTest {
 
     @Test
     void updateTaskColumn() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.updateTaskColumn(2, 6, 4, 5);
+            controlTable.updateTaskColumn(2, 0, 6, 4, 5);
 
             Task task = new Task(2, 4, "Csba Task 2", "Content");
-            task = controlTable.queryTaskConnectionData(task);
+            task = controlTable.queryTaskConnectionData(task, 0);
 
             assertEquals(6, task.getColId());
             assertEquals(4, task.getStart());
@@ -112,19 +106,12 @@ class TaskAssignmentDaoTest {
 
     @Test
     void deleteTask() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            TaskAssignmentDaoImpl controlTable = new TaskAssignmentDaoImpl(connection);
 
-            controlTable.deleteTask(30);
+            controlTable.removeTaskFromSchedule(30, 0);
 
             assertFalse(controlTable.queryTaskPresent(30));
-        }
-    }
-
-    void resetDb() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
         }
     }*/
 }

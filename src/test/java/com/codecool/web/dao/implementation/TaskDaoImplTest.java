@@ -13,21 +13,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskDaoImplTest {
-
-    String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
-
-    @BeforeEach
-    void setUp() throws SQLException {
-
-    }
-
-    /*@Test
-    void findById() throws SQLException, ClassNotFoundException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            Task task1 = new TaskDaoImpl(con).findById(1);
-            Task task2 = new TaskDaoImpl(con).findById(2);
-            Task task3 = new TaskDaoImpl(con).findById(10);
+class TaskDaoImplTest extends AbstractTest {
+    /*
+    @Test
+    void findById() throws SQLException {
+        try (Connection connection = getConnection()) {
+            Task task1 = new TaskDaoImpl(connection).findById(1);
+            Task task2 = new TaskDaoImpl(connection).findById(2);
+            Task task3 = new TaskDaoImpl(connection).findById(10);
 
             assertEquals("Csba Task 1", task1.getName());
             assertEquals("Content", task1.getContent());
@@ -40,9 +33,9 @@ class TaskDaoImplTest {
 
     @Test
     void findAllByUserId() throws SQLException, ClassNotFoundException {
-        resetDb();
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            List<Task> tasks = new TaskDaoImpl(con).findAllByUserId(4);
+        resetDatabase();
+        try (Connection connection = getConnection()) {
+            List<Task> tasks = new TaskDaoImpl(connection).findAllByUserId(4);
 
             assertEquals("Csba Task 1", tasks.get(0).getName());
             assertEquals("Csba Task 2", tasks.get(1).getName());
@@ -52,16 +45,16 @@ class TaskDaoImplTest {
 
     @Test
     void insertTask() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
 
             int id = 44;
             String name = "Csba Task 4";
             String content = "Content";
 
-            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            TaskDaoImpl taskDao = new TaskDaoImpl(connection);
             taskDao.insertTask(4, name, content);
 
-            List<Task> tasksAgain = new TaskDaoImpl(con).findAllByUserId(4);
+            List<Task> tasksAgain = new TaskDaoImpl(connection).findAllByUserId(4);
             assertEquals(id, tasksAgain.get(3).getId());
             assertEquals(name, tasksAgain.get(3).getName());
             assertEquals(content, tasksAgain.get(3).getContent());
@@ -70,15 +63,15 @@ class TaskDaoImplTest {
 
     @Test
     void deleteTask() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int id = 27;
 
-            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            TaskDaoImpl taskDao = new TaskDaoImpl(connection);
             Task task = taskDao.findById(id);
             assertEquals("Bence Task 24", task.getName());
 
-            TaskAssignmentDaoImpl connectorDao = new TaskAssignmentDaoImpl(con);
-            connectorDao.deleteTask(id);
+            TaskAssignmentDaoImpl connectorDao = new TaskAssignmentDaoImpl(connection);
+            connectorDao.removeTaskFromSchedule(id, 0);
             taskDao.deleteTask(id);
             assertNull(taskDao.findById(id));
         }
@@ -86,11 +79,11 @@ class TaskDaoImplTest {
 
     @Test
     void updateName() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int id = 20;
             String name = "Bence Task update";
 
-            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            TaskDaoImpl taskDao = new TaskDaoImpl(connection);
             Task task = taskDao.findById(id);
             assertEquals("Bence Task 17", task.getName());
 
@@ -103,11 +96,11 @@ class TaskDaoImplTest {
 
     @Test
     void updateContent() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
+        try (Connection connection = getConnection()) {
             int id = 21;
             String content = "ContentUpdate";
 
-            TaskDaoImpl taskDao = new TaskDaoImpl(con);
+            TaskDaoImpl taskDao = new TaskDaoImpl(connection);
             Task task = taskDao.findById(id);
             assertEquals("Content", task.getContent());
 
@@ -115,13 +108,7 @@ class TaskDaoImplTest {
             Task taskUpdateContent = taskDao.findById(id);
             assertEquals("ContentUpdate", taskUpdateContent.getContent());
         }
-    }
-
-    void resetDb() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
     }*/
+
 }
 

@@ -15,24 +15,13 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserDaoImplTest {
+class UserDaoImplTest extends AbstractTest {
 
-    String dbUrl = "jdbc:postgresql://localhost:5432/sm2000_test";
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    /*@Test
-    public void findById() throws SQLException, ClassNotFoundException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            resetDb();
-            UserDao userDao = new UserDaoImpl(con);
+    @Test
+    void findById() throws SQLException, ClassNotFoundException {
+        try (Connection connection = getConnection()) {
+            resetDatabase();
+            UserDao userDao = new UserDaoImpl(connection);
             User user = userDao.findById(1);
             assertEquals("Admin", user.getName());
 
@@ -49,8 +38,8 @@ public class UserDaoImplTest {
 
     @Test
     void findByEmail() throws SQLException, ServiceException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            UserDao userDao = new UserDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            UserDao userDao = new UserDaoImpl(connection);
             User user = userDao.findByEmail("admin@codecool.hu");
             assertEquals("Admin", user.getName());
 
@@ -70,8 +59,8 @@ public class UserDaoImplTest {
 
     @Test
     void insertUser() throws SQLException, ServiceException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            UserDao userDao = new UserDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            UserDao userDao = new UserDaoImpl(connection);
 
             User insertUser = userDao.insertUser("test", "test@test", "test");
 
@@ -89,8 +78,8 @@ public class UserDaoImplTest {
 
     @Test
     void changeRole() throws SQLException {
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            UserDao userDao = new UserDaoImpl(con);
+        try (Connection connection = getConnection()) {
+            UserDao userDao = new UserDaoImpl(connection);
 
             userDao.changeRole(1, false);
             User user = userDao.findById(1);
@@ -101,11 +90,4 @@ public class UserDaoImplTest {
             assertTrue(user.isAdmin());
         }
     }
-
-    void resetDb() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection con = DriverManager.getConnection(dbUrl, "test", "test")) {
-            ScriptUtils.executeSqlScript(con, new ClassPathResource("/init.sql"));
-        }
-    }*/
 }
