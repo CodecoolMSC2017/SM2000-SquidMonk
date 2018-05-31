@@ -1,3 +1,42 @@
+function sendFilterData() {
+    const formServletFilter = document.getElementById('servlet-filter');
+    const formLogLevelFilter = document.getElementById('level-filter');
+
+    const servletElements = formServletFilter.elements;
+    const logLevelElements = formLogLevelFilter.elements;
+
+    let servletToFilter;
+    let logLevelToFilter;
+
+    for (let i = 0; i<servletElements.length; i++) {
+        const element = servletElements[i];
+
+        if (element.checked === true) {
+            servletToFilter = element.value;
+            break;
+        }
+    }
+
+    for (let i = 0; i<logLevelElements.length; i++) {
+        const element = logLevelElements[i];
+
+        if (element.checked === true) {
+            logLevelToFilter = element.value;
+            break;
+        }
+    }
+
+    const params = new URLSearchParams();
+    params.append('servlet', servletToFilter);
+    params.append('loglevel', logLevelToFilter);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onLogReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/logview/' + "filter" + "?" + params.toString());
+    xhr.send();
+}
+
 function onLogReceived() {
     const log = JSON.parse(this.responseText);
     const mainDiv = document.getElementById('main-content');
@@ -22,6 +61,7 @@ function onLogReceived() {
     const buttonFilter = document.createElement('button');
     buttonFilter.setAttribute('style', 'margin-left: 80px');
     buttonFilter.textContent = "Filter";
+    buttonFilter.addEventListener('click', sendFilterData);
 
     const formServletFilter = document.createElement('form');
     formServletFilter.setAttribute('id', 'servlet-filter');
@@ -67,6 +107,6 @@ function onMenuLogClick() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLogReceived);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/logview');
+    xhr.open('GET', 'protected/logview/' + "pageload");
     xhr.send();
 }

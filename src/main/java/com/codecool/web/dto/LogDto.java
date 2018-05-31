@@ -30,4 +30,8 @@ public class LogDto {
     public void setLogServlets(List<String> logServlets) {
         this.logServlets = logServlets;
     }
+
+    public void setLogText(List<String> logText) {
+        this.logText = logText;
+    }
 }
