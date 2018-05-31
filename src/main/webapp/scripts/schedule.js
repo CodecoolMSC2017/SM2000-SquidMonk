@@ -144,6 +144,11 @@ function createTitleButtons() {
     const buttonDivEl = document.createElement('div');
     buttonDivEl.classList.add('h-centered-div');
 
+    const dragDropButton = document.createElement('button');
+    dragDropButton.setAttribute('class', 'schedule-button');
+    dragDropButton.addEventListener('click', () => {onDragDropClick(currentSchedule.columns[0].id)});
+    dragDropButton.textContent = 'Switch to drag & drop';
+
     const buttonAdd = document.createElement('button');
     buttonAdd.classList.add('schedule-button');
     buttonAdd.addEventListener('click', addColumn);
@@ -168,6 +173,7 @@ function createTitleButtons() {
         buttonDivEl.appendChild(buttonAdd);
     }
 
+    buttonDivEl.appendChild(dragDropButton);
     buttonDivEl.appendChild(buttonPublish);
     buttonDivEl.appendChild(buttonDeleteSchedule);
     mainDiv.appendChild(buttonDivEl);

@@ -287,7 +287,7 @@ function createHeaderRow(isGuest) {
     }
 }
 
-function createTimeslotRows() {
+function createTimeslotRows(needed) {
     let taskSpaceCounter = 0;
     let tdHeight = 0;
 
@@ -326,8 +326,9 @@ function createTimeslotRows() {
                 if (tdHeight >= 120) {
                     tdEl.innerHTML = "<b>" + task.name + "</b><br><i>" + task.content + "</i><br><br>" + task.start + ":00 to " + task.end +":00";
                 }
-
-                tdEl.addEventListener('click', getTasksToView);
+                if (!needed) {
+                    tdEl.addEventListener('click', getTasksToView);
+                }
                 tdEl.style.cursor = 'pointer';
                 trEl.appendChild(tdEl);
             }
@@ -336,8 +337,9 @@ function createTimeslotRows() {
                 tdEl.classList.add('no-task');
                 tdEl.setAttribute('startTime', n);
                 tdEl.textContent = n + ":00 - " + (n+1) + ":00";
-
-                tdEl.addEventListener('click', function() {onEmptyRowClicked(column.id, n)});
+                if (!needed) {
+                    tdEl.addEventListener('click', function() {onEmptyRowClicked(column.id, n)});
+                }
                 trEl.appendChild(tdEl);
             }
 

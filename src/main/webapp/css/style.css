@@ -1109,3 +1109,77 @@ div.table-title {
   transition-duration: 300ms;
   transition-timing-function: ease-out;
 }
+
+.side-bar {
+    height: 92%;
+    width: 272px;
+    position: fixed;
+    z-index: 1;
+    text-align:center;
+    bottom: 0;
+    left: 0;
+    background-color: #333;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+.dragdrop-task {
+  height: 35px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 2.5;
+  width: 100%;
+}
+
+.dragdrop-task:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+#drag-drop-main {
+    margin-left: 300px;
+    text-align: center;
+}
+
+.dragdrop-schedule-table {
+  margin-top: 5px;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-bottom: 10px;
+  display: inline-block;
+  border-spacing: 0;
+  /*border-collapse: collapse;*/
+  text-align: center;
+}
+
+.dragdrop-schedule-table th:hover {
+  background-color: #555555;
+  color: white;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.dragdrop-schedule-table th {
+  font-size: 1.2em;
+  padding: 15px;
+}
+
+.dragdrop-schedule-table td {
+  font-size: 1.1em;
+}
+
+.dragdrop-target[drop-active=true] {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
