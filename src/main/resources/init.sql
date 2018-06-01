@@ -105,6 +105,8 @@ CREATE OR REPLACE FUNCTION check_task_overlap()
                     RAISE EXCEPTION ''Task start time intersects another task'';
                 ELSIF NEW.task_end <= r.task_end AND NEW.task_end > r.task_start THEN
                     RAISE EXCEPTION ''Task end time intersects another task'';
+                ELSIF NEW.task_start <= r.task_start AND NEW.task_end >= r.task_end THEN
+                    RAISE EXCEPTION ''Another task intersects this task'';
                 END IF;
             END LOOP;
             RETURN NEW;

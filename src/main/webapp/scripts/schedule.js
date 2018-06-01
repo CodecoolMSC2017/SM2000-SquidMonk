@@ -229,18 +229,18 @@ function onSchedulePublishReceived() {
     }
 }
 
-function onScheduleConflictResponse() {
+function onScheduleConflictResponse(message) {
     document.getElementById('schedule-add-column').remove();
     let errorMessage;
-    const error = JSON.parse(this.responseText);
-    if (error.message.startsWith('ERROR: Task start')) {
+    console.log(message);
+    if (message.startsWith('ERROR: Task start')) {
         errorMessage = 'Task start time intersects another task';
-    } else if (error.message.startsWith('ERROR: Task end')) {
+    } else if (message.startsWith('ERROR: Task end')) {
         errorMessage = 'Task end time intersects another task';
-    } else if (error.message.startsWith('ERROR: new row')) {
+    } else if (message.startsWith('ERROR: new row')) {
         errorMessage = 'End time of task can\'t be before start time';
     } else {
-        errorMessage = 'Something went wrong. Try again.';
+        errorMessage = 'Invalid task position. Try again.';
     }
     const darkBackgroundDiv = document.createElement('div');
     darkBackgroundDiv.classList.add('schedule-above-div-dark');
@@ -273,7 +273,7 @@ function onScheduleReceived() {
             createTimeslotRows();
         }
     } else if (this.status === CONFLICT) {
-        onScheduleConflictResponse();
+        onScheduleConflictResponse(this.responseText);
     } else {
         onOtherResponse(this);
     }
