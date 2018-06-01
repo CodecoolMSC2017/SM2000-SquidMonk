@@ -134,6 +134,8 @@ function onLogReceived() {
     logViewDiv.appendChild(divTextAreaEl);
 
     mainDiv.appendChild(logViewDiv);
+
+    timedRefreshLogView();
 }
 
 function onMenuLogClick() {
@@ -142,4 +144,8 @@ function onMenuLogClick() {
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/logview/' + "pageload");
     xhr.send();
+}
+
+function timedRefreshLogView() {
+    const timer = setInterval(onMenuLogClick, 10000); // 10 seconds
 }
