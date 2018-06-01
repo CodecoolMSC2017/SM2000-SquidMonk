@@ -135,7 +135,7 @@ function onLogReceived() {
 
     mainDiv.appendChild(logViewDiv);
 
-    timedRefreshLogView();
+    //timedRefreshLogView();
 }
 
 function onMenuLogClick() {
