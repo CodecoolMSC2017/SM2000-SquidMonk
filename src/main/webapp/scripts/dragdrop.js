@@ -28,6 +28,7 @@ function onDragDropTasksReceived() {
         hEl.style.color = 'white';
         hEl.setAttribute('class', 'hv-centered-text')
         hEl.textContent = 'Available tasks';
+        hEl.style.paddingTop = '10%';
         sideBar.appendChild(hEl);
 
         for (let i = 0; i < tasks.length; i++) {
