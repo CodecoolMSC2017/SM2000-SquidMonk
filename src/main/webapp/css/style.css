@@ -868,7 +868,7 @@ div.table-title {
 
 #schedule-dialog-share-button {
     left: 50%;
-    bottom: 15px;
+    bottom: 4px;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     transform: translateX(-50%);
