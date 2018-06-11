@@ -1,6 +1,5 @@
+
 function onLogoutClick() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    localStorage.removeItem('user');
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'logout');
     xhr.addEventListener('load', onLogoutResponse);
@@ -8,7 +7,11 @@ function onLogoutClick() {
 }
 
 function onLogoutResponse() {
+    if (isGoogle) {
+        const auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+    }
+    localStorage.removeItem('user');
+
     showContents(['message-content', 'login-content']);
-    const message = JSON.parse(this.responseText);
-    document.getElementById('message-content').textContent = message.message;
 }

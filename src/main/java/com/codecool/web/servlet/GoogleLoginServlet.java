@@ -48,8 +48,8 @@ public class GoogleLoginServlet extends AbstractServlet {
                 user = loginService.loginUser(email, "google");
             } catch (ServiceException e) {
                 user = registerService.registerUser(name, email, "google");
-                req.getSession().setAttribute("user", user);
             }
+            req.getSession().setAttribute("user", user);
             sendMessage(resp, HttpServletResponse.SC_OK, user);
         } catch (GeneralSecurityException e) {
             sendMessage(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());
