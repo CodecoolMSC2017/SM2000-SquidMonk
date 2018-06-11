@@ -13,6 +13,7 @@ class TaskAssignmentDaoTest extends AbstractTest {
 
     // execution order: 2 6 5 3 4 1 7
 
+    /*
     @Test
         // 1
     void queryTaskPresent() throws SQLException {
@@ -121,4 +122,5 @@ class TaskAssignmentDaoTest extends AbstractTest {
             assertFalse(controlTable.queryTaskPresent(30));
         }
     }
+    */
 }

@@ -13,6 +13,7 @@ class IntegrationTest extends AbstractTest {
 
     // execution order: 2 6 5 7 3 1 4
 
+    /*
     @Test
         // 1
     void deleteSchedule() throws SQLException {
@@ -154,5 +155,5 @@ class IntegrationTest extends AbstractTest {
             assertThrows(SQLException.class, () -> controlTable.insertTask(44, 8, 4, 2, 4));
         }
     }
-
+    */
 }

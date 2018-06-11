@@ -14,6 +14,7 @@ class ScheduleDaoImplTest extends AbstractTest {
 
     // execution order: 2 1 5 3 4 6
 
+    /*
     @Test
         // 1
     void findById() throws SQLException {
@@ -109,4 +110,5 @@ class ScheduleDaoImplTest extends AbstractTest {
 
         }
     }
+    */
 }

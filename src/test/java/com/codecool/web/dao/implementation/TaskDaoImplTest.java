@@ -15,6 +15,7 @@ class TaskDaoImplTest extends AbstractTest {
 
     // execution order: 2 1 6 5 3 4
 
+    /*
     @Test
         // 1
     void findById() throws SQLException {
@@ -123,5 +124,6 @@ class TaskDaoImplTest extends AbstractTest {
             assertEquals("ContentUpdate", taskUpdateContent.getContent());
         }
     }
-
+    /
+    */
 }

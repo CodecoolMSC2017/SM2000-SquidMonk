@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ColumnDaoImplTest extends AbstractTest {
 
     // execution order: 5 2 1 4 3
-
+    /*
     @Test
         // 1
     void findById() throws SQLException {
@@ -94,4 +94,5 @@ class ColumnDaoImplTest extends AbstractTest {
     void deleteColumn() {
         resetDatabase();
     }
+    */
 }

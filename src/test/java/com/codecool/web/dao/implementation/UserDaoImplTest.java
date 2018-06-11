@@ -14,6 +14,7 @@ class UserDaoImplTest extends AbstractTest {
 
     // execution order: 4 1 3 2
 
+    /*
     @Test
         // 1
     void findById() throws SQLException {
@@ -93,4 +94,5 @@ class UserDaoImplTest extends AbstractTest {
             assertTrue(user.isAdmin());
         }
     }
+    */
 }
