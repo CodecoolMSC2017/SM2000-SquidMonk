@@ -23,8 +23,9 @@ function handleLoginResponse(xhr) {
             logButtonEl.style.display = 'none';
         }
     } else {
+        const message = JSON.parse(xhr.responseText);
         const messageEl = document.getElementById('message-content');
-        messageEl.innerHTML = json.message;
+        messageEl.innerHTML = message.message;
         showContents(['login-content', 'message-content']);
     }
 }

@@ -25,6 +25,7 @@ import java.util.Collections;
 public class GoogleLoginServlet extends AbstractServlet {
 
     private final String CLIENT_ID = "105491068237-gtraci9t7kvk3grfevgd5vrf339u1snt.apps.googleusercontent.com";
+    private final String pass = "qFy5HoRWvVMbZvcQfUi1CwgRgIlSeReqEjMkjMkfVcdFv";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,9 +46,9 @@ public class GoogleLoginServlet extends AbstractServlet {
 
             User user;
             try {
-                user = loginService.loginUser(email, "google");
+                user = loginService.loginUser(email, pass);
             } catch (ServiceException e) {
-                user = registerService.registerUser(name, email, "google");
+                user = registerService.registerUser(name, email, pass);
             }
             req.getSession().setAttribute("user", user);
             sendMessage(resp, HttpServletResponse.SC_OK, user);
