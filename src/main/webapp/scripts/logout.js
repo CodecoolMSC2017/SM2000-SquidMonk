@@ -13,5 +13,5 @@ function onLogoutResponse() {
     }
     localStorage.removeItem('user');
 
-    showContents(['message-content', 'login-content']);
+    showContents(['login-content']);
 }
