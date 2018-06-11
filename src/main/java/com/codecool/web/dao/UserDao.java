@@ -24,4 +24,8 @@ public interface UserDao {
 
     List<User> findAll() throws SQLException;
 
+    int counterTaskByUserId(int userId) throws SQLException;
+
+    int counterScheduleByUserId(int userId) throws SQLException;
+
 }

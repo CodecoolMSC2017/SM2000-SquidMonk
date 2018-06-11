@@ -56,4 +56,10 @@ public class JsProfileService implements ProfileService {
         boolean isAdmin = userDto.setAdmin(user);
         userDao.changeRole(user.getId(), isAdmin);
     }
+
+    @Override
+    public void setTaskAndScheduleCounterByUser(User user) throws SQLException {
+        user.setTaskCounter(userDao.counterTaskByUserId(user.getId()));
+        user.setScheduleCounter(userDao.counterScheduleByUserId(user.getId()));
+    }
 }
