@@ -23,9 +23,8 @@ function handleLoginResponse(xhr) {
             logButtonEl.style.display = 'none';
         }
     } else {
-        const messageEl = document.getElementById('message-content');
-        messageEl.innerHTML = json.message;
-        showContents(['login-content', 'message-content']);
+        const message = JSON.parse(xhr.responseText);
+        // error message when failed login
     }
 }
 

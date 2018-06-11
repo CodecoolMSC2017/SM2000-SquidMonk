@@ -8,9 +8,8 @@ function onRegisterClick() {
 
 function onRegisterResponse() {
     const json = JSON.parse(this.responseText);
-    document.getElementById('message-content').textContent = json.message;
     if (this.status === OK) {
-        showContents(['login-content', 'message-content']);
+        showContents(['login-content']);
     }
 }
 
