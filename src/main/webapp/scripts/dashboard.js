@@ -399,7 +399,6 @@ function setupWelcomeDiv() {
     welcomeDiv.id = 'welcome-text';
     welcomeDiv.textContent = "Welcome, " + user.name + "!";
 
-    const mainDiv = document.getElementById('main-content');
     mainDiv.appendChild(welcomeDiv);
 }
 

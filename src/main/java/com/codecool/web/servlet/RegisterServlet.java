@@ -36,8 +36,6 @@ public final class RegisterServlet extends AbstractServlet {
             service.registerUser(name, email, password);
             sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
             logger.debug("post method successful");
-        } catch (ServiceException ex) {
-            sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex);
         } catch (SQLException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Email already exists");
         }

@@ -7,5 +7,5 @@ import java.sql.SQLException;
 
 public interface RegisterService {
 
-    User registerUser(String name, String email, String password) throws SQLException, ServiceException;
+    User registerUser(String name, String email, String password) throws SQLException;
 }
