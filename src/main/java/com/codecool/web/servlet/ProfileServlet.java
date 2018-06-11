@@ -28,7 +28,6 @@ public class ProfileServlet extends AbstractServlet {
             int userId = getUserId(req.getRequestURI());
             ProfileService profileService = new JsProfileService(connection);
             User getUser = profileService.showDataByUserId(userId);
-            req.getSession().setAttribute("user", getUser);
             sendMessage(resp, HttpServletResponse.SC_OK, getUser);
             logger.debug("get method successful");
         } catch (SQLException e) {
