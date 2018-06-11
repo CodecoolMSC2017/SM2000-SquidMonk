@@ -24,9 +24,7 @@ function handleLoginResponse(xhr) {
         }
     } else {
         const message = JSON.parse(xhr.responseText);
-        const messageEl = document.getElementById('message-content');
-        messageEl.innerHTML = message.message;
-        showContents(['login-content', 'message-content']);
+        // error message when failed login
     }
 }
 

@@ -145,9 +145,7 @@ function roleResponse() {
     if (this.status === OK) {
         onUsersMenuClick();
     } else {
-        const messageEl = document.getElementById('message-content');
-        messageEl.innerHTML = user.message;
-        showContents(['login-content', 'message-content']);
+        showContents(['login-content']);
     }
 }
 
@@ -226,9 +224,7 @@ function usersResponse() {
             usersButtonEl.style.display = 'none';
         }
     } else {
-        const messageEl = document.getElementById('message-content');
-        messageEl.innerHTML = json.message;
-        showContents(['login-content', 'message-content']);
+        showContents(['login-content']);
     }
 }
 
