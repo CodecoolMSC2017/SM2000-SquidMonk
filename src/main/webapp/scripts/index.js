@@ -74,9 +74,6 @@ function onLoad() {
     document.getElementById('menu-profile').addEventListener('click', onMenuProfileClick);
     document.getElementById('sound-content').addEventListener('click', onSoundClicked);
 
-    const gSignIn = document.getElementById('g-signin');
-
-
     if (localStorage.getItem('user') != null) {
         showDashboard();
     }
