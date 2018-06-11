@@ -76,6 +76,7 @@ function onLoad() {
 
     const gSignIn = document.getElementById('g-signin');
 
+    console.log(gSignIn);
 
     if (localStorage.getItem('user') != null) {
         showDashboard();
