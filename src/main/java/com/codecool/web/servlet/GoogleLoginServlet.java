@@ -46,7 +46,7 @@ public class GoogleLoginServlet extends AbstractServlet {
 
             User user;
             try {
-                user = loginService.loginUser(email, password);
+                user = loginService.loginGoogleUser(email);
             } catch (ServiceException e) {
                 user = registerService.registerUser(name, email, password);
             }

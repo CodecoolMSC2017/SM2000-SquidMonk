@@ -31,7 +31,6 @@ function handleLoginResponse(xhr) {
 function onLoginResponse() {
     const xhr = this;
     passwordInputEl.value = '';
-    emailInputEl.value = '';
     handleLoginResponse(xhr);
 }
 
