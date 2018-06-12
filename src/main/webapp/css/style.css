@@ -625,7 +625,7 @@ div.table-title {
   vertical-align:middle;
 }
 
-.prof-table td:first-child {
+.prof-table td.first-td {
   color:#D5DDE5;;
   background:#1b1e24;
   border-bottom:4px solid #9ea7af;
@@ -656,7 +656,7 @@ div.table-title {
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
 
-.prof-table tr:hover td.change-button {
+.prof-table td.change-button:hover {
   background:#4E5066;
   color:#FFFFFF;
   cursor: pointer;
@@ -672,7 +672,7 @@ div.table-title {
   background:#EBEBEB;
 }
 
-.prof-table td:first-child {
+.prof-table td.first-td {
   border-bottom-left-radius:35px;
 }
 
@@ -685,6 +685,10 @@ div.table-title {
   font-size:18px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+}
+
+.prof-table td.sched-counter-td {
+  border-left: 1px solid #C1C3D1;
 }
 
 .prof-table td:last-child {
@@ -703,7 +707,7 @@ div.table-title {
   background:#EBEBEB;
 }
 
-.prof-table tr:nth-child(odd):hover td:last-child {
+.prof-table tr:nth-child(odd) td.change-button:hover {
   background:#4E5066;
 }
 
