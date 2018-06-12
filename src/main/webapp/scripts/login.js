@@ -30,8 +30,8 @@ function handleLoginResponse(xhr) {
 
 function onLoginResponse() {
     const xhr = this;
+    isGoogle = false;
     passwordInputEl.value = '';
-    emailInputEl.value = '';
     handleLoginResponse(xhr);
 }
 
@@ -70,12 +70,8 @@ function onLoginClick() {
 
 function onGoogleSignInResponse() {
     const xhr = this;
-    if (xhr.status === OK) {
-        isGoogle = true;
-        handleLoginResponse(xhr);
-    } else {
-        onOtherResponse(xhr);
-    }
+    isGoogle = true;
+    handleLoginResponse(xhr);
 }
 
 function onSignIn(googleUser) {
