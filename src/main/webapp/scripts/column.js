@@ -314,7 +314,7 @@ function createTimeslotRows() {
 
             if (typeof task != 'undefined') {
                 const slotsTaken = task.end - task.start;
-                tdHeight = 32 * slotsTaken;
+                tdHeight = 49 * slotsTaken; // If styling changes this must change too or switch to full td rendering!
 
                 tdEl.innerHTML = "<b>" + task.name + "</b><br>" + task.start + ":00 to " + task.end +":00";
                 tdEl.setAttribute('rowspan', slotsTaken);
