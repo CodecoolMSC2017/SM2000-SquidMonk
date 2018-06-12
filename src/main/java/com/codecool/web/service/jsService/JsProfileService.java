@@ -28,7 +28,9 @@ public class JsProfileService implements ProfileService {
     @Override
     public User showDataByUserId(int userId) throws SQLException {
         logger.debug("fetching user with id " + userId);
-        return userDao.findById(userId);
+        User user = userDao.findById(userId);
+        setTaskAndScheduleCounterByUser(user);
+        return user;
     }
 
     @Override

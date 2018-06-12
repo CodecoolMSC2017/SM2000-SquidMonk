@@ -21,7 +21,7 @@ function receiveProfile() {
     params.append('userId', user.id);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', setupProfileContentEl(user));
+    xhr.addEventListener('load', onProfileReceived);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/profile/user/' + user.id);
     xhr.send(params);
@@ -70,6 +70,8 @@ function setupProfileContentEl(user) {
 
     profileTable.appendChild(firstTableRow('My Data'));
 
+    profileTable.appendChild(quantityTableRow(user));
+
     profileTable.appendChild(nameProfileRow(user));
 
     profileTable.appendChild(emailProfileRow(user));
@@ -83,11 +85,29 @@ function setupProfileContentEl(user) {
 function firstTableRow(text) {
     const tableHeadTr = document.createElement('tr');
     const tableHeadTh = document.createElement('th');
-    tableHeadTh.colSpan = '3';
+    tableHeadTh.colSpan = '4';
     tableHeadTh.textContent = text;
     tableHeadTr.appendChild(tableHeadTh);
     tableHeadTh.className = 'table-head';
     return tableHeadTr;
+}
+
+function quantityTableRow(user) {
+    const profTableQuantityTr = document.createElement('tr');
+
+    const scheduleQuantityTd = document.createElement('td');
+    scheduleQuantityTd.textContent = 'Schedules: ' + user.scheduleCounter;
+    scheduleQuantityTd.colSpan = '2';
+    scheduleQuantityTd.className = 'sched-counter-td';
+
+    const taskQuantityTd = document.createElement('td');
+    taskQuantityTd.textContent = 'Tasks: ' + user.taskCounter;
+    taskQuantityTd.colSpan = '2';
+
+    profTableQuantityTr.appendChild(scheduleQuantityTd);
+    profTableQuantityTr.appendChild(taskQuantityTd);
+
+    return profTableQuantityTr;
 }
 
 function nameProfileRow(user) {
@@ -96,10 +116,12 @@ function nameProfileRow(user) {
     const profTableNameTd = document.createElement('td');
     profTableNameTd.textContent = 'Name';
     profTableNameTd.id = 'prof-name-title';
+    profTableNameTd.className = 'first-td';
 
     const profEntryNameTd = document.createElement('td');
     profEntryNameTd.id = 'prof-name';
     profEntryNameTd.textContent = user.name;
+    profEntryNameTd.colSpan = '2';
 
     const profUpdateNameTd = document.createElement('td');
     profUpdateNameTd.addEventListener('click', onChangeProfileNameClicked);
@@ -162,10 +184,12 @@ function emailProfileRow(user) {
     const profTableEmailTd = document.createElement('td');
     profTableEmailTd.textContent = 'Email';
     profTableEmailTd.id = 'profile-email-title';
+    profTableEmailTd.className = 'first-td';
 
     const profEntryEmailTd = document.createElement('td');
     profEntryEmailTd.id = 'profile-email';
     profEntryEmailTd.textContent = user.email;
+    profEntryEmailTd.colSpan = '2';
 
     const profUpdateEmailTd = document.createElement('td');
     profUpdateEmailTd.addEventListener('click', onChangeProfileEmailClicked);
@@ -214,9 +238,11 @@ function roleProfileRow(user) {
     const profTableRoleTr = document.createElement('tr');
     const profTableRoleTd = document.createElement('td');
     profTableRoleTd.textContent = 'Role';
+    profTableRoleTd.className = 'first-td';
 
     const profEntryRoleTd = document.createElement('td');
     profEntryRoleTd.id = user.id;
+    profEntryRoleTd.colSpan = '2';
     if (user.admin === true) {
         profEntryRoleTd.innerHTML = 'Admin';
     } else {
