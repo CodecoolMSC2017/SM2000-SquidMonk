@@ -14,6 +14,7 @@
     <script src="../../scripts/schedule.js"></script>
     <script src="../../scripts/column.js"></script>
     <script src="../../scripts/task.js"></script>
+    <script src="../../scripts/taskOnSchedule.js"></script>
 </head>
 <body>
     <div id="main-content" class="content"></div>
