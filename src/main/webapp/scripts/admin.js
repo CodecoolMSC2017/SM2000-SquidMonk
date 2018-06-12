@@ -52,9 +52,11 @@ function createUsersTableHead() {
 
     const usersTableScheduleQuantityTh = document.createElement('th');
     usersTableScheduleQuantityTh.textContent = 'Schedule (quantity)';
+    usersTableScheduleQuantityTh.className = 'quantity';
 
     const usersTableTaskQuantityTh = document.createElement('th');
     usersTableTaskQuantityTh.textContent = 'Task (quantity)';
+    usersTableTaskQuantityTh.className = 'quantity';
 
     /*const usersTablePasswordTh = document.createElement('th');
     usersTablePasswordTh.textContent = 'Password';*/
