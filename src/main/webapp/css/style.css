@@ -533,6 +533,9 @@ div.table-title {
 
 .schedule-table td {
   font-size: 1.1em;
+  padding: 0;
+  margin: 0;
+  height: 47px;
 }
 
 .no-task {
