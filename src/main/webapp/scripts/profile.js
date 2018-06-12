@@ -55,6 +55,11 @@ function receiveUpdateProfile() {
 
 function setupProfileContentEl(user) {
     //const user = JSON.parse(this.responseText);
+
+    /*const myImage = new Image(100, 200);
+    myImage.src = 'picture.jpg';
+    document.body.appendChild(myImage);*/
+
     const userDiv = document.createElement('div');
     userDiv.className = 'prof-table';
     userDiv.id = 'userDiv';

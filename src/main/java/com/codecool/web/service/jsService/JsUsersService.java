@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JsUsersService implements UsersService {
@@ -24,6 +25,12 @@ public class JsUsersService implements UsersService {
     @Override
     public List<User> getUsers() throws SQLException {
         logger.info("fetching all users");
-        return userDao.findAll();
+        List<User> users = new ArrayList<>();
+        for (User user : userDao.findAll()) {
+            user.setTaskCounter(userDao.counterTaskByUserId(user.getId()));
+            user.setScheduleCounter(userDao.counterScheduleByUserId(user.getId()));
+            users.add(user);
+        }
+        return users;
     }
 }

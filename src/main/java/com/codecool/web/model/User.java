@@ -14,8 +14,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.isAdmin = false;
-        this.taskCounter = 0;
-        this.scheduleCounter = 0;
     }
 
     // Getters
@@ -52,11 +50,11 @@ public class User {
         isAdmin = true;
     }
 
-    public void setTaskCounter(int taskCounter) {
-        this.taskCounter = taskCounter;
+    public void setTaskCounter(int taskCount) {
+        this.taskCounter = taskCount;
     }
 
-    public void setScheduleCounter(int scheduleCounter) {
-        this.scheduleCounter = scheduleCounter;
+    public void setScheduleCounter(int scheduleCount) {
+        this.scheduleCounter = scheduleCount;
     }
 }
