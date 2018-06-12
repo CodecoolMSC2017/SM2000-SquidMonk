@@ -30,7 +30,7 @@ function requestUsers() {
 function createTableDivHead() {
     const tableHeadTr = document.createElement('tr');
     const tableHeadTh = document.createElement('th');
-    tableHeadTh.colSpan = '4';
+    tableHeadTh.colSpan = '6';
     tableHeadTh.textContent = 'Users';
     tableHeadTh.className = 'table-head';
     tableHeadTr.appendChild(tableHeadTh);
@@ -50,6 +50,12 @@ function createUsersTableHead() {
     const usersTableEmailTh = document.createElement('th');
     usersTableEmailTh.textContent = 'Email';
 
+    const usersTableScheduleQuantityTh = document.createElement('th');
+    usersTableScheduleQuantityTh.textContent = 'Schedule (quantity)';
+
+    const usersTableTaskQuantityTh = document.createElement('th');
+    usersTableTaskQuantityTh.textContent = 'Task (quantity)';
+
     /*const usersTablePasswordTh = document.createElement('th');
     usersTablePasswordTh.textContent = 'Password';*/
 
@@ -60,6 +66,8 @@ function createUsersTableHead() {
     usersTableHeaderTr.appendChild(usersTableIdTh);
     usersTableHeaderTr.appendChild(usersTableNameTh);
     usersTableHeaderTr.appendChild(usersTableEmailTh);
+    usersTableHeaderTr.appendChild(usersTableScheduleQuantityTh);
+    usersTableHeaderTr.appendChild(usersTableTaskQuantityTh);
     /*usersTableHeaderTr.appendChild(usersTablePasswordTh);*/
     usersTableHeaderTr.appendChild(usersTableRoleTh);
 
