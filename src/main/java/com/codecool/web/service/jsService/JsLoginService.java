@@ -41,4 +41,16 @@ public class JsLoginService implements LoginService {
         logger.info("login of user with email [" + email + "] was successful");
         return user;
     }
+
+    @Override
+    public User loginGoogleUser(String email) throws SQLException, ServiceException {
+        logger.info("logging in google user with email [" + email + "]");
+        User user = userDao.findByEmail(email);
+        if (user == null) {
+            logger.info("did not find user with email [" + email + "]");
+            throw new ServiceException("Invalid Login!");
+        }
+        logger.info("login of user with email [" + email + "] was successful");
+        return user;
+    }
 }

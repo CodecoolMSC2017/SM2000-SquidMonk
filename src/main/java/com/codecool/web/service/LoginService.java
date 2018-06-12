@@ -8,4 +8,6 @@ import java.sql.SQLException;
 public interface LoginService {
 
     User loginUser(String email, String password) throws SQLException, ServiceException;
+
+    User loginGoogleUser(String email) throws SQLException, ServiceException;
 }
