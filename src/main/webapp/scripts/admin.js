@@ -98,6 +98,18 @@ function createUserRow(user) {
     userEmailTd.id = user.id;
     userEmailTd.addEventListener('click', onUserClick);
 
+    const userScheduleQuantityTd = document.createElement('td');
+    userScheduleQuantityTd.textContent = user.scheduleCounter;
+    userScheduleQuantityTd.className = 'entry';
+    userScheduleQuantityTd.id = user.id;
+    userScheduleQuantityTd.addEventListener('click', onUserClick);
+
+    const userTaskQuantityTd = document.createElement('td');
+    userTaskQuantityTd.textContent = user.taskCounter;
+    userTaskQuantityTd.className = 'entry';
+    userTaskQuantityTd.id = user.id;
+    userTaskQuantityTd.addEventListener('click', onUserClick);
+
     /*const userPasswordTd = document.createElement('td');
     userPasswordTd.textContent = user.password;
     userPasswordTd.className = 'entry';*/
@@ -119,6 +131,8 @@ function createUserRow(user) {
     userTr.appendChild(userIdTd);
     userTr.appendChild(userNameTd);
     userTr.appendChild(userEmailTd);
+    userTr.appendChild(userScheduleQuantityTd);
+    userTr.appendChild(userTaskQuantityTd);
     /*userTr.appendChild(userPasswordTd);*/
     userTr.appendChild(userRoleTd);
 
