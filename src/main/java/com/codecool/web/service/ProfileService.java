@@ -14,4 +14,6 @@ public interface ProfileService {
     void changeUserEmail(int userId, String email) throws SQLException, ServiceException;
 
     void changeUserRole(User user) throws SQLException, ServiceException;
+
+    void setTaskAndScheduleCounterByUser(User user) throws SQLException;
 }

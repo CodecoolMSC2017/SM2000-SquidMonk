@@ -6,6 +6,7 @@ import com.codecool.web.model.User;
 import com.codecool.web.service.LoginService;
 import com.codecool.web.service.PassEncrypt;
 import com.codecool.web.service.exception.ServiceException;
+import com.codecool.web.servlet.GoogleLoginServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,16 +26,17 @@ public class JsLoginService implements LoginService {
     @Override
     public User loginUser(String email, String password) throws SQLException, ServiceException {
         logger.info("logging in user with email [" + email + "]");
+        ServiceException invalidLoginEx = new ServiceException("Invalid Login!");
         User user = userDao.findByEmail(email);
 
         if (user == null) {
             logger.info("did not find user with email [" + email + "]");
-            throw new ServiceException("Invalid Login!");
+            throw invalidLoginEx;
         }
         String decryptedPassword = new PassEncrypt().decrypt(user.getPassword());
-        if (!decryptedPassword.equals(password)) {
+        if (!decryptedPassword.equals(password) || password.equals(GoogleLoginServlet.password)) {
             logger.info("incorrect password of user with email [" + email + "]");
-            throw new ServiceException("Invalid Login!");
+            throw invalidLoginEx;
         }
         logger.info("login of user with email [" + email + "] was successful");
         return user;

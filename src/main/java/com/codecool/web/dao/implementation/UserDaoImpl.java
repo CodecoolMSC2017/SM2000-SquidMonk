@@ -124,6 +124,36 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         }
     }
 
+    @Override
+    public int counterTaskByUserId(int userId) throws SQLException {
+        int taskCounter = 0;
+        String sql = "SELECT * FROM tasks WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    taskCounter++;
+                }
+            }
+        }
+        return taskCounter;
+    }
+
+    @Override
+    public int counterScheduleByUserId(int userId) throws SQLException {
+        int scheduleCounter = 0;
+        String sql = "SELECT * FROM schedules WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    scheduleCounter++;
+                }
+            }
+        }
+        return scheduleCounter;
+    }
+
     private User fetchUser(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
