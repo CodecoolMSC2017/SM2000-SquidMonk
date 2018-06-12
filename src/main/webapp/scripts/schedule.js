@@ -26,31 +26,6 @@ function scheduleDeleteTask() {
     xhr.send();
 }
 
-function sendModifiedTaskData() {
-    const taskId = this.getAttribute('data-task-id');
-    const titleInputEl = document.getElementById('modify-task-title-input');
-    const descriptionInputEl = document.getElementById('modify-task-description-input');
-    const startInputEl = document.getElementById('modify-task-start-input');
-    const endInputEl = document.getElementById('modify-task-end-input');
-
-    const params = new URLSearchParams();
-    params.append('title', titleInputEl.value);
-    params.append('description', descriptionInputEl.value);
-    params.append('start', startInputEl.value);
-    params.append('end', endInputEl.value);
-    params.append('scheduleId', currentSchedule.id);
-    
-    const xhr = new XMLHttpRequest();
-    if (!needed) {
-        xhr.addEventListener('load', onScheduleReceived);
-    } else {
-        xhr.addEventListener('load', doRequestScheduleForDrag);
-    }
-    xhr.addEventListener('error', onNetworkError);
-    xhr.open('PUT', 'protected/schedule/task/' + taskId + '?' + params.toString(), true);
-    xhr.send();
-}
-
 function sharePopupDialog() {
     const buttonEl = this;
     const public = (buttonEl.getAttribute('public-schedule') == 'true');

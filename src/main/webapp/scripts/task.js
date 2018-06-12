@@ -1,54 +1,6 @@
 
 let currentTask;
 
-function createAvailableTaskList(tasks) {
-    const ulEl = document.createElement('ul');
-    ulEl.classList.add('task-list');
-
-    if (tasks.length === 0) {
-        const liEl = document.createElement('li');
-        liEl.textContent = 'There are no free tasks.';
-        ulEl.appendChild(liEl);
-        return ulEl;
-    }
-
-    for (let i = 0; i < tasks.length; i++) {
-        const task = tasks[i];
-
-        const liEl = document.createElement('li');
-        const aEl = document.createElement('a');
-        aEl.href = 'javascript:void(0)';
-        aEl.addEventListener('click', function() {onAddTaskToColumnClicked(task.id)});
-        aEl.textContent = task.name;
-
-        liEl.appendChild(aEl);
-        ulEl.appendChild(liEl);
-    }
-    return ulEl;
-}
-
-function onAvailableTasksReceived() {
-    if (this.status === OK) {
-        const tasks = JSON.parse(this.responseText);
-
-        const darkBackgroundDiv = document.createElement('div');
-        darkBackgroundDiv.classList.add('schedule-above-div-dark');
-        darkBackgroundDiv.addEventListener('click', requestCurrentSchedule);
-
-        const aboveDivEl = document.createElement('div');
-        aboveDivEl.classList.add('schedule-above-div-task');
-        aboveDivEl.style.overflow = 'auto';
-        aboveDivEl.id = 'column-add-task';
-
-        aboveDivEl.appendChild(createAvailableTaskList(tasks));
-
-        mainDiv.appendChild(darkBackgroundDiv);
-        mainDiv.appendChild(aboveDivEl);
-    } else {
-        onOtherResponse(this);
-    }
-}
-
 function onDeleteResponse() {
     if (this.status = NO_CONTENT) {
         showDashboard();

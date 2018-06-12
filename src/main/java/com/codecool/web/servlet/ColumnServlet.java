@@ -1,5 +1,6 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dto.ScheduleTaskListDto;
 import com.codecool.web.model.Task;
 import com.codecool.web.model.User;
 import com.codecool.web.service.ColumnService;
@@ -30,9 +31,12 @@ public class ColumnServlet extends AbstractServlet {
 
             User user = (User) req.getSession().getAttribute("user");
             int columnId = getColumnId(req.getRequestURI());
+            int startTime = Integer.parseInt(req.getParameter("startTime"));
+
             if (req.getRequestURI().endsWith("/availableTasks")) {
                 List<Task> tasks = service.getAvailableTasks(user.getId(), columnId);
-                sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+                ScheduleTaskListDto taskListDto = new ScheduleTaskListDto(tasks, columnId, startTime);
+                sendMessage(resp, HttpServletResponse.SC_OK, taskListDto);
                 logger.debug("get method successful");
             }
         } catch (SQLException e) {

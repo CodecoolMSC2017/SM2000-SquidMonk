@@ -6,9 +6,12 @@ function onEmptyRowClicked(columnId, start) {
     currentColumnId = columnId;
     startTime = start;
 
+    const params = new URLSearchParams();
+    params.append('startTime', startTime);
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onAvailableTasksReceived);
-    xhr.open('GET', 'protected/column/' + columnId + '/availableTasks');
+    xhr.open('GET', 'protected/column/' + columnId + '/availableTasks?' + params.toString());
     xhr.send();
 }
 

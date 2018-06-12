@@ -42,12 +42,18 @@ public class JsTaskService implements TaskService {
     }
 
     @Override
-    public void insertTask(int userId, String name, String content) throws SQLException, ServiceException {
+    public int insertTask(int userId, String name, String content) throws SQLException, ServiceException {
         logger.info("inserting task for user with id " + userId);
         if (name == null || name.equals("")) {
             throw new ServiceException("Task name can not be empty!");
         }
-        taskDao.insertTask(userId, name, content);
+        return taskDao.insertTask(userId, name, content);
+    }
+
+    @Override
+    public void assignTask(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException {
+        logger.info("Assining task to schedule " + scheduleId + ", column " + colId);
+        taskAssignmentDao.insertTask(taskId, colId, scheduleId, taskStart, taskEnd);
     }
 
     @Override

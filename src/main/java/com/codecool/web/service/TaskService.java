@@ -12,7 +12,9 @@ public interface TaskService {
 
     List<Task> findAllByUserId(int userId) throws SQLException;
 
-    void insertTask (int userId, String name, String content) throws SQLException, ServiceException;
+    int insertTask (int userId, String name, String content) throws SQLException, ServiceException;
+
+    void assignTask(int taskId, int colId, int scheduleId, int taskStart, int taskEnd) throws SQLException;
 
     void updateTask(int taskId, String newName, String newContent) throws SQLException, ServiceException;
 
