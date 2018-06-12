@@ -1055,6 +1055,10 @@ div.table-title {
     padding: 18px;
 }
 
+.users-table th.quantity {
+    width: 10%;;
+}
+
 .users-table th.id {
     width: 10%;
 }
