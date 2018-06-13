@@ -53,17 +53,27 @@ function receiveUpdateProfile() {
     xhr.send();
 }
 
-function setupProfileContentEl(user) {
-    //const user = JSON.parse(this.responseText);
+function googleImg() {
 
-    /*const myImage = new Image(100, 200);
-    myImage.src = 'picture.jpg';
-    document.body.appendChild(myImage);*/
+    const x = document.createElement('img');
+    x.setAttribute('src', profileImgUrl);
+    x.setAttribute('alt', 'Profile img');
+    x.className = 'prof-img';
+
+    const mainDiv = document.getElementById('main-content');
+    mainDiv.appendChild(x);
+}
+
+function setupProfileContentEl(user) {
 
     const userDiv = document.createElement('div');
     userDiv.className = 'prof-table';
     userDiv.id = 'userDiv';
     userDiv.style.float = 'center';
+
+    if (isGoogle) {
+        googleImg();
+    }
 
     const profileTable = document.createElement('table');
     profileTable.className = 'profboard-table';

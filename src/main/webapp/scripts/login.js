@@ -2,6 +2,7 @@ let passwordInputEl;
 let mainContentEl;
 let emailInputEl;
 let isGoogle = false;
+let profileImgUrl;
 
 function handleLoginResponse(xhr) {
     if (xhr.status === OK) {
@@ -78,6 +79,11 @@ function onSignIn(googleUser) {
     const params = new URLSearchParams();
     const id_token = googleUser.getAuthResponse().id_token;
     params.append('idToken', id_token);
+
+    const profile = googleUser.getBasicProfile();
+    profile.id = 'google-profile';
+    const profileImg = profile.getImageUrl();
+    profileImgUrl = profileImg;
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onGoogleSignInResponse);
