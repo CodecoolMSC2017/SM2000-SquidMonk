@@ -480,7 +480,7 @@ INSERT INTO tasks (user_id, name, content) VALUES
 INSERT INTO col_tsk (task_id, col_id, schedule_id, task_start, task_end) VALUES
     (1, 4, 4, 10, 14),
     (2, 5, 4, 8, 10),
-    (3, 6, 4, 7, 18),
+    (3, 6, 4, 0, 24),
     (4, 11, 5, 0, 1),
     (5, 11, 5, 1, 2),
     (6, 11, 5, 2, 3),
