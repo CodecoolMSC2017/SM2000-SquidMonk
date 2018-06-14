@@ -21,12 +21,12 @@ public class Column {
         return name;
     }
 
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
     // Setters
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getScheduleId() {
-        return scheduleId;
     }
 }
