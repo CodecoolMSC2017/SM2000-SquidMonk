@@ -17,6 +17,12 @@
   font-size: 17px;
 }
 
+#topnav-content #user-img {
+    float:right;
+    width: 47.5px;
+    height: 47.5px;
+}
+
 #topnav-content #logout-button {
     float:right;
 }

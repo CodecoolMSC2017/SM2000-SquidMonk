@@ -23,6 +23,14 @@ function handleLoginResponse(xhr) {
             usersButtonEl.style.display = 'none';
             logButtonEl.style.display = 'none';
         }
+        const userImgEl = document.getElementById('user-img');
+        if (isGoogle) {
+            userImgEl.style.display = 'block';
+            userImgEl.src = profileImgUrl;
+            userImgEl.className = 'top-user-img';
+        } else {
+            userImgEl.style.display = 'none';
+        }
     } else {
         const message = JSON.parse(xhr.responseText);
         // error message when failed login
