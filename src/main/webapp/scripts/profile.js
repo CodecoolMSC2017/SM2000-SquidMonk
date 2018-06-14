@@ -202,10 +202,14 @@ function emailProfileRow(user) {
     profEntryEmailTd.colSpan = '2';
 
     const profUpdateEmailTd = document.createElement('td');
-    profUpdateEmailTd.addEventListener('click', onChangeProfileEmailClicked);
-    profUpdateEmailTd.id = 'profile-email-change-button-td';
-    profUpdateEmailTd.textContent = 'Change';
-    profUpdateEmailTd.className = 'change-button';
+    if (!isGoogle) {
+        profUpdateEmailTd.addEventListener('click', onChangeProfileEmailClicked);
+        profUpdateEmailTd.id = 'profile-email-change-button-td';
+        profUpdateEmailTd.textContent = 'Change';
+        profUpdateEmailTd.className = 'change-button';
+    } else {
+        profUpdateEmailTd.textContent = 'Can not change';
+    }
 
     profTableEmailTr.appendChild(profTableEmailTd);
     profTableEmailTr.appendChild(profEntryEmailTd);
