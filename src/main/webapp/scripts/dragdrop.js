@@ -103,6 +103,10 @@ function createDragDropMain() {
     return dragDropMainEl;
 }
 
+function setDragColumnId(id) {
+    dragColumnId = id;
+}
+
 function createDragDropTableHeader() {
     const tableDivEl = document.createElement('div');
     tableDivEl.setAttribute('class', 'schedule-div-table');
@@ -113,6 +117,7 @@ function createDragDropTableHeader() {
         const tableEl = document.createElement('table');
         tableEl.setAttribute('class', 'dragdrop-schedule-table');
         tableEl.setAttribute('id', column.id);
+        tableEl.addEventListener('mouseover', function() {setDragColumnId(column.id);});
 
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'header-row-' + column.id);
@@ -162,7 +167,6 @@ function drop(ev) {
     const task = document.getElementById('data-to-drop');
     const taskId = task.getAttribute('task-id');
     const startTime = ev.target.getAttribute('starttime');
-    dragColumnId = ev.target.parentNode.parentNode.id;
     onDragAddTaskToColumn(taskId, startTime);
 }
 
