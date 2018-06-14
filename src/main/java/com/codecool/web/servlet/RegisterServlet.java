@@ -20,7 +20,7 @@ public final class RegisterServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.debug("post method start");
+        logger.trace("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             RegisterService service = new JsRegisterService(connection);
 
@@ -35,7 +35,7 @@ public final class RegisterServlet extends AbstractServlet {
 
             service.registerUser(name, email, password);
             sendMessage(resp, HttpServletResponse.SC_OK, "Registration successful");
-            logger.debug("post method successful");
+            logger.trace("post method successful");
         } catch (SQLException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "Email already exists");
         }

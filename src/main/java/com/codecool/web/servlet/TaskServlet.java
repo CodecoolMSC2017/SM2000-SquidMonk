@@ -24,7 +24,7 @@ public class TaskServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService service = new JsTaskService(connection);
 
@@ -40,7 +40,7 @@ public class TaskServlet extends AbstractServlet {
                 taskDto = service.getDtoById(taskId);
             }
             sendMessage(resp, HttpServletResponse.SC_OK, taskDto);
-            logger.debug("get method successful");
+            logger.trace("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -50,7 +50,7 @@ public class TaskServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("put method start");
+        logger.trace("put method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
 
@@ -60,7 +60,7 @@ public class TaskServlet extends AbstractServlet {
 
             taskService.updateTask(taskId, newName, newContent);
             resp.setStatus(HttpServletResponse.SC_OK);
-            logger.debug("put method successful");
+            logger.trace("put method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -70,7 +70,7 @@ public class TaskServlet extends AbstractServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("delete method start");
+        logger.trace("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
 
@@ -78,7 +78,7 @@ public class TaskServlet extends AbstractServlet {
 
             taskService.deleteTask(taskId);
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            logger.debug("delete method successful");
+            logger.trace("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

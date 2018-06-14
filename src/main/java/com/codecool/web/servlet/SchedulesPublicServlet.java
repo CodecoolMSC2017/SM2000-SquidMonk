@@ -25,7 +25,7 @@ public class SchedulesPublicServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -44,7 +44,7 @@ public class SchedulesPublicServlet extends AbstractServlet {
                 } else {
                     sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, "This schedule is not public.");
                 }
-                logger.debug("get method successful");
+                logger.trace("get method successful");
             } else {
                 logger.debug("invalid schedule id");
                 sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "The schedule does not exist.");

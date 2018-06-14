@@ -22,7 +22,7 @@ public class LogServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         LogDao logDao = new LogDaoLocal();
         LogService logService = new JsLogService(logDao);
         LogDto logDto = null;
@@ -41,7 +41,7 @@ public class LogServlet extends AbstractServlet {
             }
 
             sendMessage(resp, HttpServletResponse.SC_OK, logDto);
-            logger.debug("get method successful");
+            logger.trace("get method successful");
 
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e);

@@ -24,7 +24,7 @@ public class ScheduleUserServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleUserService service = new JsScheduleUserService(connection);
 
@@ -37,7 +37,7 @@ public class ScheduleUserServlet extends AbstractServlet {
             }
             List<DashboardScheduleDto> scheduleList = service.findAllByUserId(userId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleList);
-            logger.debug("get method successful");
+            logger.trace("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -47,7 +47,7 @@ public class ScheduleUserServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("post method start");
+        logger.trace("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleUserService service = new JsScheduleUserService(connection);
 
@@ -55,7 +55,7 @@ public class ScheduleUserServlet extends AbstractServlet {
             User user = (User) req.getSession().getAttribute("user");
             service.addSchedule(user.getId(), name);
             resp.setStatus(HttpServletResponse.SC_OK);
-            logger.debug("post method successful");
+            logger.trace("post method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

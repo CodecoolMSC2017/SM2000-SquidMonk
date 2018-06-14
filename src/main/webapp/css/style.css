@@ -227,19 +227,20 @@ div.table-title {
 }
 
 .textarealike {
-  width: 70%;
-  height: 88%;
+  width: 81%;
+  height: 93%;
 
   position: absolute;
-  margin-top: 25px;
-  margin-left: 300px;
+  margin-top: 8px;
+  margin-left: 282px;
 
   min-width: 800px;
   min-height: 500px;
 
   max-width: 100%;
   max-height: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   border-style: solid;
   border-width: 1px;
@@ -256,11 +257,30 @@ div.table-title {
 }
 
 .log-small-margin {
-  margin: 10px 5px 10px 5px;
-  border-style: solid;
-  border-width: 1px;
+  margin: 10px 0px 20px 0px;
 }
 
+.log-table {
+    width: 100%;
+}
+
+.log-table-head-row {
+  text-align: center;
+  background-color: #555555;
+  color: white;
+}
+
+.log-table-body-row {
+
+}
+
+.log-table-head-entry {
+
+}
+
+.log-table-body-entry {
+
+}
 /* LOG styling END */
 
 /* General Schedule styling START */
@@ -1300,4 +1320,21 @@ div.table-title {
 .g-td div {
     align: center;
     margin: 0 auto;
+}
+
+.log-entry {
+    height: 35px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 2.5;
+    width: 100%;
+}
+
+.log-entry:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }

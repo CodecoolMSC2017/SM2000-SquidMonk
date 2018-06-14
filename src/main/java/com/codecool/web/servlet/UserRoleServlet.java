@@ -21,7 +21,7 @@ public class UserRoleServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("put method start");
+        logger.trace("put method start");
 
         try (Connection connection = getConnection(req.getServletContext())) {
 
@@ -34,7 +34,7 @@ public class UserRoleServlet extends AbstractServlet {
             profileService.changeUserRole(user);
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            logger.debug("put method successful");
+            logger.trace("put method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
