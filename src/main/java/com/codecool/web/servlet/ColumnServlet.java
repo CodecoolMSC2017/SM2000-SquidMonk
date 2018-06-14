@@ -31,14 +31,20 @@ public class ColumnServlet extends AbstractServlet {
 
             User user = (User) req.getSession().getAttribute("user");
             int columnId = getColumnId(req.getRequestURI());
-            int startTime = Integer.parseInt(req.getParameter("startTime"));
+            List<Task> tasks = service.getAvailableTasks(user.getId(), columnId);
+
+            String startTimeString = req.getParameter("startTime");
 
             if (req.getRequestURI().endsWith("/availableTasks")) {
-                List<Task> tasks = service.getAvailableTasks(user.getId(), columnId);
-                ScheduleTaskListDto taskListDto = new ScheduleTaskListDto(tasks, columnId, startTime);
-                sendMessage(resp, HttpServletResponse.SC_OK, taskListDto);
-                logger.debug("get method successful");
+                if (startTimeString != null) {
+                    int startTime = Integer.parseInt(req.getParameter("startTime"));
+                    ScheduleTaskListDto taskListDto = new ScheduleTaskListDto(tasks, columnId, startTime);
+                    sendMessage(resp, HttpServletResponse.SC_OK, taskListDto);
+                } else {
+                    sendMessage(resp, HttpServletResponse.SC_OK, tasks);
+                }
             }
+            logger.debug("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

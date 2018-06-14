@@ -541,6 +541,10 @@ div.table-title {
   height: 50px;
 }
 
+.dragdrop-schedule-table tr {
+  height: 50px;
+}
+
 .no-task {
   color: gray;
   background-color: lightgoldenrodyellow;
