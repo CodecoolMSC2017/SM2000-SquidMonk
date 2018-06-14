@@ -47,7 +47,7 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("post method start");
+        logger.trace("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             TaskService taskService = new JsTaskService(connection);
             ScheduleService scheduleService = new JsScheduleService(connection);
@@ -71,9 +71,8 @@ public class ScheduleTaskServlet extends AbstractServlet {
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
-            logger.debug("post method successful");
+            logger.trace("post method successful");
         } catch (SQLException e) {
-            logger.error("sql error", e);
             sendMessage(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());
         } catch (ServiceException e) {
             sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());

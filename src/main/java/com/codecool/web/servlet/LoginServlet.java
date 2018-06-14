@@ -21,7 +21,7 @@ public final class LoginServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.debug("post method start");
+        logger.trace("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             LoginService loginService = new JsLoginService(connection);
 
@@ -32,7 +32,7 @@ public final class LoginServlet extends AbstractServlet {
             req.getSession().setAttribute("user", user);
 
             sendMessage(resp, HttpServletResponse.SC_OK, user);
-            logger.debug("post method successful");
+            logger.trace("post method successful");
         } catch (ServiceException ex) {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex);
         } catch (SQLException ex) {

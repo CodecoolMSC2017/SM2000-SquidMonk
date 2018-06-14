@@ -22,7 +22,7 @@ public class ProfileServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         //User user = (User) req.getSession().getAttribute("user");
         try (Connection connection = getConnection(req.getServletContext())) {
             int userId = getUserId(req.getRequestURI());
@@ -30,7 +30,7 @@ public class ProfileServlet extends AbstractServlet {
             User getUser = profileService.showDataByUserId(userId);
 
             sendMessage(resp, HttpServletResponse.SC_OK, getUser);
-            logger.debug("get method successful");
+            logger.trace("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -40,7 +40,7 @@ public class ProfileServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("put method start");
+        logger.trace("put method start");
         //User user = (User) req.getSession().getAttribute("user");
         try (Connection connection = getConnection(req.getServletContext())) {
             ProfileService profileService = new JsProfileService(connection);
@@ -57,7 +57,7 @@ public class ProfileServlet extends AbstractServlet {
             }
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            logger.debug("put method successful");
+            logger.trace("put method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {

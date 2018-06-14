@@ -18,7 +18,7 @@ public class LogoutServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
@@ -26,6 +26,6 @@ public class LogoutServlet extends AbstractServlet {
         logger.info(String.format("session of user with email %s is invalidated", user.getEmail()));
 
         sendMessage(resp, HttpServletResponse.SC_OK, "Successfully logged out");
-        logger.debug("get method successful");
+        logger.trace("get method successful");
     }
 }

@@ -23,14 +23,14 @@ public class ScheduleServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("get method start");
+        logger.trace("get method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
             int scheduleId = getScheduleId(req.getRequestURI());
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
-            logger.debug("get method successful");
+            logger.trace("get method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -40,7 +40,7 @@ public class ScheduleServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("post method start");
+        logger.trace("post method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -50,7 +50,7 @@ public class ScheduleServlet extends AbstractServlet {
 
             ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
             sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
-            logger.debug("post method successful");
+            logger.trace("post method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -60,7 +60,7 @@ public class ScheduleServlet extends AbstractServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("delete method start");
+        logger.trace("delete method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -68,7 +68,7 @@ public class ScheduleServlet extends AbstractServlet {
             scheduleService.deleteSchedule(scheduleId);
 
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            logger.debug("delete method successful");
+            logger.trace("delete method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
@@ -78,7 +78,7 @@ public class ScheduleServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("put method start");
+        logger.trace("put method start");
         try (Connection connection = getConnection(req.getServletContext())) {
             ScheduleService scheduleService = new JsScheduleService(connection);
 
@@ -99,7 +99,7 @@ public class ScheduleServlet extends AbstractServlet {
                 ScheduleDto scheduleDto = scheduleService.fillScheduleDto(scheduleId);
                 sendMessage(resp, HttpServletResponse.SC_OK, scheduleDto);
             }
-            logger.debug("put method successful");
+            logger.trace("put method successful");
         } catch (SQLException e) {
             handleSqlError(resp, e);
         } catch (ServiceException e) {
