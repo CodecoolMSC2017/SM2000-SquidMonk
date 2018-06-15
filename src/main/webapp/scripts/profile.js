@@ -167,20 +167,25 @@ function onChangeProfileNameClicked() {
 
     const profTableChangeNameTd = document.createElement('td');
     profTableChangeNameTd.textContent = 'Name';
+    profTableChangeNameTd.className = 'first-td';
 
     const inputTdEl = document.createElement('td');
+    inputTdEl.colSpan = 2;
+    inputTdEl.className = 'prof-row-input-td';
 
     const buttonTdEl = document.createElement('td');
+    buttonTdEl.className = 'prof-row-button-td';
 
     const inputNameEl = document.createElement('input');
     inputNameEl.id = 'new-profile-name-input';
     inputNameEl.setAttribute('placeholder', 'New profile name');
+    inputNameEl.className = 'prof-name-input';
     inputTdEl.appendChild(inputNameEl);
 
     const buttonEl = document.createElement('button');
     buttonEl.textContent = 'Submit';
     buttonEl.addEventListener('click', onChangeProfileSubmitClicked);
-    //buttonEl.setAttribute('class', 'task-button');
+    buttonEl.className = 'prof-create-button';
     buttonTdEl.appendChild(buttonEl);
 
     createChangesRow.appendChild(profTableChangeNameTd);
@@ -227,21 +232,26 @@ function onChangeProfileEmailClicked() {
 
     const profTableChangeEmailTd = document.createElement('td');
     profTableChangeEmailTd.textContent = 'Email';
+    profTableChangeEmailTd.className = 'first-td';
 
     const inputTdEl = document.createElement('td');
+    inputTdEl.colSpan = 2;
+    inputTdEl.className = 'prof-row-input-td';
 
     const buttonTdEl = document.createElement('td');
+    buttonTdEl.className = 'prof-row-button-td';
 
     const inputEmailEl = document.createElement('input');
     inputEmailEl.id = 'new-profile-email-input';
+    inputEmailEl.className = 'prof-name-input';
     inputEmailEl.setAttribute('placeholder', 'New profile email');
     inputTdEl.appendChild(inputEmailEl);
 
     const buttonEl = document.createElement('button');
     buttonEl.textContent = 'Submit';
     buttonEl.addEventListener('click', onChangeProfileSubmitClicked);
-    //buttonEl.setAttribute('class', 'task-button');
     buttonTdEl.appendChild(buttonEl);
+    buttonEl.className = 'prof-create-button';
 
     createChangesRow.appendChild(profTableChangeEmailTd);
     createChangesRow.appendChild(inputTdEl);
@@ -293,7 +303,8 @@ function onCreateProfileResponse() {
         const message = JSON.parse(this.responseText);
 
         const newTdEl = document.createElement('td');
-        newTdEl.colSpan = '3';
+        newTdEl.colSpan = '4';
+        newTdEl.className = 'bad-td';
         newTdEl.textContent = message.message + ' (click here to continue)';
         createButtonRow.appendChild(newTdEl);
         createButtonRow.addEventListener('click', onMenuProfileClick);

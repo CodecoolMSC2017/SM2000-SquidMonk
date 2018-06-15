@@ -674,6 +674,24 @@ div.table-title {
   vertical-align:middle;
 }
 
+.prof-table td.bad-td {
+  color:#D5DDE5;
+  background:#1b1e24;
+  border-bottom:4px solid #9ea7af;
+  border-right: 1px solid #343a45;
+  border-bottom-left-radius:35px;
+  font-size:23px;
+  font-weight: 100;
+  padding:24px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+.prof-table tr:nth-child(odd) td.bad-td:last-child {
+  background:#1b1e24;
+}
+
 .prof-table th:first-child {
   border-top-left-radius:3px;
 }
@@ -746,6 +764,68 @@ div.table-title {
 .prof-table tr:nth-child(odd) td.change-button:hover {
   background:#4E5066;
 }
+
+/****   *****/
+
+
+.prof-name-input {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: auto;
+}
+
+.prof-row-input-td input:focus {
+    background-color: #555555;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+.prof-row-input-td input:focus::-webkit-input-placeholder {
+    color: #555555;
+    transition-duration: 0.4s;
+}
+
+.prof-create-button {
+    width: 100%;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    padding: 16px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.prof-create-button:hover {
+    background-color: #555555;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+.prof-row-input-td {
+    margin: 5px;
+    padding: 5px;
+    width: 90%;
+}
+
+.prof-row-button-td {
+    margin: 5px;
+    padding: 5px;
+    width: 10%;
+}
+
+
+/****  ******/
 
 
 .item-name-input {
